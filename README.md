@@ -1,58 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Reservasi & Pelaporan Fasilitas Kampus
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web untuk mengelola reservasi fasilitas kampus (ruang kelas, aula, laboratorium, alat,
+lapangan) serta pelaporan kerusakan fasilitas. Dibangun dengan Laravel sebagai tugas Project PPK
+2026 (Sebelum UTS).
 
-## About Laravel
+## Tech Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.2+ / Laravel 11.x
+- MySQL 8.x
+- Blade Templates
+- Tailwind CSS untuk styling
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Struktur Folder
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+/app              -> Models, Controllers, business logic
+/public           -> Entry point aplikasi, assets statis
+/resources/views  -> Blade templates (tampilan)
+/config           -> Konfigurasi aplikasi Laravel + config custom
+/database/migrations -> Skema database
+/routes           -> Definisi route (web.php)
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Aktor & Role
 
-## Contributing
+| Role | Deskripsi |
+|---|---|
+| Pengunjung | Lihat daftar fasilitas & ketersediaan, tanpa login |
+| Pengguna | Mahasiswa/dosen/staf — bisa reservasi & lapor kerusakan |
+| Petugas | Proses reservasi & laporan, update status fasilitas |
+| Admin | Kelola data master, akun, rekap, verifikasi registrasi |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Prasyarat
 
-## Code of Conduct
+- PHP >= 8.2 beserta ekstensi wajib Laravel (mbstring, openssl, pdo_mysql, tokenizer, xml, ctype, json)
+- Composer
+- MySQL 8.x (server lokal via XAMPP/MAMP/Homebrew/native — pastikan semua anggota tim pakai versi
+  MySQL 8.x, jangan campur dengan 5.7)
+- Node.js & npm (jika menggunakan Vite untuk asset build)
+- Git
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Instalasi & Setup
 
-## Security Vulnerabilities
+1. **Clone repository**
+   ```bash
+   git clone <url-repo-github>
+   cd <nama-folder-project>
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. **Install dependency PHP**
+   ```bash
+   composer install
+   ```
 
-## License
+3. **Salin file environment**
+   ```bash
+   cp .env.example .env
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+4. **Generate application key**
+   ```bash
+   php artisan key:generate
+   ```
+
+5. **Konfigurasi database di `.env`**
+
+   Sesuaikan nilai berikut dengan setup MySQL lokal masing-masing:
+   ```
+   DB_DATABASE=ppk2026_reservasi_fasilitas
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+   Buat database kosong dengan nama yang sama di MySQL sebelum lanjut ke langkah berikutnya
+   (`CREATE DATABASE ppk2026_reservasi_fasilitas;`).
+
+6. **Jalankan migration (+ seeder untuk akun dummy tiap role)**
+   ```bash
+   php artisan migrate --seed
+   ```
+
+7. **Buat symbolic link storage** (wajib untuk fitur upload foto laporan kerusakan)
+   ```bash
+   php artisan storage:link
+   ```
+
+8. **Install dependency frontend (jika pakai Vite/Tailwind)**
+   ```bash
+   npm install
+   npm run build
+   ```
+
+9. **Jalankan development server**
+   ```bash
+   php artisan serve
+   ```
+   Aplikasi bisa diakses di `http://localhost:8000`.
+
+## Menjalankan Ulang dari Awal (Reset Database)
+
+Kalau skema database berubah setelah `git pull`, jalankan:
+```bash
+php artisan migrate:fresh --seed
+```
+Perintah ini akan menghapus semua tabel dan membuat ulang dari migration terbaru — **jangan
+jalankan di data yang belum di-backup**.
+
+## Konvensi Tim
+
+- Nama tabel & kolom database: **snake_case**, huruf kecil semua (mengikuti konvensi Laravel dan
+  menghindari isu case-sensitivity antar OS — lihat `ASSUMPTIONS.md`)
+- Branch: jangan push langsung ke `main`, buat branch per fitur (`feature/nama-fitur`), merge lewat
+  Pull Request
+- Commit message: jelas dan deskriptif, gunakan `Closes #<nomor-issue>` jika menyelesaikan task di
+  GitHub Project
+
+## Dokumen Terkait
+
+- `ASSUMPTIONS.md` — asumsi bisnis dan pertanyaan terbuka terkait requirement
+- GitHub Project board — task list dan progress tracking tim
+
+## Anggota Tim
+
+| Nama | NIM | Modul |
+|---|---|---|
+| _Joshua Satria Kusuma_ | _24060124130113_ | Ketua — Setup repo & database |
+| _Iza Yunus Andhika_ | _24060124140153_ | Modul Reservasi |
+| _Novelya Cherina_ | _24060124140174_ | Modul Reservasi |
+| _Joshua Satria Kusuma_ | _24060124130113_ | Modul Laporan Kerusakan |
+| _Menza Isaiah Tampubolon_ | _24060124140138_ | Modul Laporan Kerusakan |
