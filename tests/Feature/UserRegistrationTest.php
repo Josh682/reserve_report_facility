@@ -81,3 +81,50 @@ test('registration validation fails if password is less than 8 chars or confirma
     expect($validator->fails())->toBeTrue()
         ->and($validator->errors()->has('password'))->toBeTrue();
 });
+
+test('guest can view registration page', function () {
+    $response = $this->get('/register');
+
+    $response->assertStatus(200);
+    $response->assertSee('Daftar Akun');
+});
+
+test('guest can register with valid data and receives pending status', function () {
+    $userData = [
+        'name' => 'Menza Isaiah',
+        'email' => 'menza@mahasiswa.test',
+        'tipe_pengguna' => 'mahasiswa',
+        'password' => 'password123',
+        'password_confirmation' => 'password123',
+    ];
+
+    $response = $this->post('/register', $userData);
+
+    $this->assertDatabaseHas('users', [
+        'name' => 'Menza Isaiah',
+        'email' => 'menza@mahasiswa.test',
+        'role' => 'pengguna',
+        'tipe_pengguna' => 'mahasiswa',
+        'status_akun' => 'pending',
+    ]);
+
+    $this->assertGuest();
+    $response->assertRedirect('/login');
+    $response->assertSessionHas('status');
+});
+
+test('registration fails and redirects back with session errors on invalid input', function () {
+    $response = $this->post('/register', [
+        'name' => '',
+        'email' => 'not-an-email',
+        'tipe_pengguna' => 'invalid-role',
+        'password' => '123',
+        'password_confirmation' => '456',
+    ]);
+
+    $response->assertSessionHasErrors(['name', 'email', 'tipe_pengguna', 'password']);
+    $this->assertDatabaseMissing('users', [
+        'email' => 'not-an-email',
+    ]);
+});
+
