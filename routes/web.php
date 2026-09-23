@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Models\Facility;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,7 +23,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+        $stats = [
+            'total' => Facility::count(),
+            'aktif' => Facility::where('status', 'aktif')->count(),
+            'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
+            'nonaktif' => Facility::where('status', 'nonaktif')->count(),
+        ];
+
+        return view('admin.dashboard', compact('stats'));
     })->name('dashboard');
 
     Route::patch('/facilities/{facility}/status', [FacilityController::class, 'updateStatus'])
