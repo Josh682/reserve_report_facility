@@ -79,3 +79,23 @@ test('guest is redirected to login when accessing protected role route', functio
 
     $response->assertRedirect(route('login'));
 });
+
+test('admin dashboard route is protected and only accessible by admin', function () {
+    $admin = User::factory()->create(['role' => 'admin', 'status_akun' => 'verified']);
+    $petugas = User::factory()->create(['role' => 'petugas', 'status_akun' => 'verified']);
+    $pengguna = User::factory()->create(['role' => 'pengguna', 'status_akun' => 'verified']);
+
+    $this->actingAs($admin)->get('/admin/dashboard')->assertStatus(200);
+    $this->actingAs($petugas)->get('/admin/dashboard')->assertStatus(403);
+    $this->actingAs($pengguna)->get('/admin/dashboard')->assertStatus(403);
+});
+
+test('petugas dashboard route is protected and only accessible by petugas', function () {
+    $admin = User::factory()->create(['role' => 'admin', 'status_akun' => 'verified']);
+    $petugas = User::factory()->create(['role' => 'petugas', 'status_akun' => 'verified']);
+    $pengguna = User::factory()->create(['role' => 'pengguna', 'status_akun' => 'verified']);
+
+    $this->actingAs($petugas)->get('/petugas/dashboard')->assertStatus(200);
+    $this->actingAs($admin)->get('/petugas/dashboard')->assertStatus(403);
+    $this->actingAs($pengguna)->get('/petugas/dashboard')->assertStatus(403);
+});

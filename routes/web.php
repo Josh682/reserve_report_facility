@@ -17,13 +17,16 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+});
 
-    // Placeholder sementara untuk tujuan redirect role di Tahap 1
-    Route::get('/admin/dashboard', function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
         return 'Admin Dashboard Placeholder';
-    })->name('admin.dashboard');
+    })->name('dashboard');
+});
 
-    Route::get('/petugas/dashboard', function () {
+Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
+    Route::get('/dashboard', function () {
         return 'Petugas Dashboard Placeholder';
-    })->name('petugas.dashboard');
+    })->name('dashboard');
 });
