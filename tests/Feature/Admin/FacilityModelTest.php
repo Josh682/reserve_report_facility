@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Requests\Admin\FacilityRequest;
 use App\Models\Facility;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Validator;
 
 uses(RefreshDatabase::class);
 
@@ -29,4 +31,36 @@ test('facility model scopes filter by status and tipe correctly', function () {
 
     expect(Facility::aktif()->count())->toBe(1)
         ->and(Facility::where('tipe', 'aula')->count())->toBe(1);
+});
+
+test('facility request validation passes with valid attributes', function () {
+    $request = new FacilityRequest;
+    $validator = Validator::make([
+        'nama' => 'Ruang Seminar 1',
+        'tipe' => 'aula',
+        'lokasi' => 'Gedung A Lantai 2',
+        'kapasitas' => 50,
+        'deskripsi' => 'Ruangan ber-AC dengan proyektor.',
+        'status' => 'aktif',
+    ], $request->rules());
+
+    expect($validator->passes())->toBeTrue();
+});
+
+test('facility request validation fails when required attributes are missing or invalid', function () {
+    $request = new FacilityRequest;
+    $validator = Validator::make([
+        'nama' => '',
+        'tipe' => 'invalid-type',
+        'lokasi' => '',
+        'kapasitas' => 0,
+        'status' => 'invalid-status',
+    ], $request->rules());
+
+    expect($validator->fails())->toBeTrue()
+        ->and($validator->errors()->has('nama'))->toBeTrue()
+        ->and($validator->errors()->has('tipe'))->toBeTrue()
+        ->and($validator->errors()->has('lokasi'))->toBeTrue()
+        ->and($validator->errors()->has('kapasitas'))->toBeTrue()
+        ->and($validator->errors()->has('status'))->toBeTrue();
 });
