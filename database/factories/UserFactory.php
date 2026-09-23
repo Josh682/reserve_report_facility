@@ -42,4 +42,73 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+            'tipe_pengguna' => null,
+            'status_akun' => 'verified',
+        ]);
+    }
+
+    public function petugas(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'petugas',
+            'tipe_pengguna' => null,
+            'status_akun' => 'verified',
+        ]);
+    }
+
+    public function pengguna(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'pengguna',
+            'tipe_pengguna' => 'mahasiswa',
+            'status_akun' => 'pending',
+        ]);
+    }
+
+    public function pending(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status_akun' => 'pending',
+        ]);
+    }
+
+    public function verified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status_akun' => 'verified',
+        ]);
+    }
+
+    public function rejected(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status_akun' => 'rejected',
+        ]);
+    }
+
+    public function mahasiswa(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipe_pengguna' => 'mahasiswa',
+        ]);
+    }
+
+    public function dosen(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipe_pengguna' => 'dosen',
+        ]);
+    }
+
+    public function staf(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipe_pengguna' => 'staf',
+        ]);
+    }
 }
