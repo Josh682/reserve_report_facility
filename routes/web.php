@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FacilityController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Models\Facility;
@@ -36,6 +37,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::patch('/facilities/{facility}/status', [FacilityController::class, 'updateStatus'])
         ->name('facilities.status');
     Route::resource('facilities', FacilityController::class);
+
+    Route::patch('/users/{user}/approve', [UserController::class, 'approve'])
+        ->name('users.approve');
+    Route::patch('/users/{user}/reject', [UserController::class, 'reject'])
+        ->name('users.reject');
+    Route::resource('users', UserController::class)
+        ->only(['index', 'create', 'store']);
 });
 
 Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
