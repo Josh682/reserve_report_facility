@@ -23,7 +23,7 @@ test('user model can mass assign role, tipe_pengguna, and status_akun', function
 });
 
 test('registration validation passes with valid data', function () {
-    $request = new RegisterRequest();
+    $request = new RegisterRequest;
     $rules = $request->rules();
 
     $validator = Validator::make([
@@ -38,7 +38,7 @@ test('registration validation passes with valid data', function () {
 });
 
 test('registration validation fails if required fields are missing', function () {
-    $request = new RegisterRequest();
+    $request = new RegisterRequest;
     $rules = $request->rules();
 
     $validator = Validator::make([], $rules);
@@ -51,7 +51,7 @@ test('registration validation fails if required fields are missing', function ()
 });
 
 test('registration validation fails if tipe_pengguna is invalid', function () {
-    $request = new RegisterRequest();
+    $request = new RegisterRequest;
     $rules = $request->rules();
 
     $validator = Validator::make([
@@ -67,7 +67,7 @@ test('registration validation fails if tipe_pengguna is invalid', function () {
 });
 
 test('registration validation fails if password is less than 8 chars or confirmation mismatch', function () {
-    $request = new RegisterRequest();
+    $request = new RegisterRequest;
     $rules = $request->rules();
 
     $validator = Validator::make([
@@ -127,4 +127,3 @@ test('registration fails and redirects back with session errors on invalid input
         'email' => 'not-an-email',
     ]);
 });
-
