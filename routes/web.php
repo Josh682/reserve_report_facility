@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +22,12 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
-        return 'Admin Dashboard Placeholder';
+        return view('admin.dashboard');
     })->name('dashboard');
+
+    Route::patch('/facilities/{facility}/status', [FacilityController::class, 'updateStatus'])
+        ->name('facilities.status');
+    Route::resource('facilities', FacilityController::class);
 });
 
 Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
