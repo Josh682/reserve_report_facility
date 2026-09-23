@@ -5,7 +5,7 @@
 ])
 
 @section('content')
-    <!-- Status Alert (misal: pesan sukses setelah registrasi) -->
+    <!-- Status Alert Sukses (misal: pesan sukses setelah registrasi / logout) -->
     @if (session('status'))
         <div class="mb-6 rounded-lg bg-green-50 dark:bg-green-900/30 p-4 border border-green-200 dark:border-green-800">
             <div class="flex items-start">
@@ -23,7 +23,43 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ url('/login') }}" class="space-y-5">
+    <!-- Status Alert Peringatan (misal: akun pending verifikasi admin) -->
+    @if (session('status_warning'))
+        <div class="mb-6 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 p-4 border border-yellow-200 dark:border-yellow-800">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 text-yellow-500 dark:text-yellow-400">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                        {{ session('status_warning') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Status Alert Error (misal: akun ditolak admin) -->
+    @if (session('status_error'))
+        <div class="mb-6 rounded-lg bg-red-50 dark:bg-red-900/30 p-4 border border-red-200 dark:border-red-800">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 text-red-500 dark:text-red-400">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-red-800 dark:text-red-200">
+                        {{ session('status_error') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
         <!-- Email -->
@@ -55,6 +91,17 @@
             @error('password')
                 <p class="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">{{ $message }}</p>
             @enderror
+        </div>
+
+        <!-- Remember Me -->
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <input id="remember" name="remember" type="checkbox"
+                    class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700">
+                <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                    Ingat Saya
+                </label>
+            </div>
         </div>
 
         <div>
