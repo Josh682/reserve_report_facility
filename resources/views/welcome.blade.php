@@ -22,12 +22,45 @@
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
                     @auth
-                        <a
-                            href="{{ url('/dashboard') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                        >
-                            Dashboard
-                        </a>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-gray-600 dark:text-gray-400">
+                                Halo, <strong class="font-medium text-gray-900 dark:text-gray-100">{{ auth()->user()->name }}</strong>
+                                <span class="px-1.5 py-0.5 ml-1 text-xs rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 capitalize">{{ auth()->user()->role }}</span>
+                            </span>
+
+                            @if (auth()->user()->role === 'admin')
+                                <a
+                                    href="{{ route('admin.dashboard') }}"
+                                    class="inline-block px-4 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal font-medium"
+                                >
+                                    Dashboard Admin
+                                </a>
+                            @elseif (auth()->user()->role === 'petugas')
+                                <a
+                                    href="{{ route('petugas.dashboard') }}"
+                                    class="inline-block px-4 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal font-medium"
+                                >
+                                    Dashboard Petugas
+                                </a>
+                            @elseif (auth()->user()->role === 'pengguna')
+                                <a
+                                    href="{{ route('pengguna.dashboard') }}"
+                                    class="inline-block px-4 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal font-medium"
+                                >
+                                    Dashboard Saya
+                                </a>
+                            @endif
+
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                                @csrf
+                                <button
+                                    type="submit"
+                                    class="inline-block px-3 py-1.5 text-xs text-red-600 hover:text-red-700 dark:text-red-400 hover:underline cursor-pointer"
+                                >
+                                    Keluar
+                                </button>
+                            </form>
+                        </div>
                     @else
                         <a
                             href="{{ route('login') }}"

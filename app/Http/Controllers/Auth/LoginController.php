@@ -67,7 +67,8 @@ class LoginController extends Controller
         return match ($user->role) {
             'admin' => redirect()->intended(route('admin.dashboard')),
             'petugas' => redirect()->intended(route('petugas.dashboard')),
-            default => redirect()->intended(route('welcome')),
+            'pengguna' => redirect()->intended(route('pengguna.dashboard')),
+            default => redirect()->intended(route('login')),
         };
     }
 

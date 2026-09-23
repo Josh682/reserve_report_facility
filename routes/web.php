@@ -9,7 +9,16 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return match (auth()->user()->role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'petugas' => redirect()->route('petugas.dashboard'),
+            'pengguna' => redirect()->route('pengguna.dashboard'),
+            default => redirect()->route('login'),
+        };
+    }
+
+    return redirect()->route('login');
 })->name('welcome');
 
 Route::middleware('guest')->group(function () {
@@ -20,6 +29,15 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return match (auth()->user()->role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'petugas' => redirect()->route('petugas.dashboard'),
+            'pengguna' => redirect()->route('pengguna.dashboard'),
+            default => redirect()->route('login'),
+        };
+    })->name('dashboard');
+
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 });
 
@@ -51,6 +69,24 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
     Route::get('/dashboard', function () {
-        return 'Petugas Dashboard Placeholder';
+        $stats = [
+            'total_facilities' => Facility::count(),
+            'aktif' => Facility::where('status', 'aktif')->count(),
+            'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
+        ];
+
+        return view('petugas.dashboard', compact('stats'));
+    })->name('dashboard');
+});
+
+Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {
+    Route::get('/dashboard', function () {
+        $stats = [
+            'total_facilities' => Facility::count(),
+            'aktif' => Facility::where('status', 'aktif')->count(),
+            'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
+        ];
+
+        return view('pengguna.dashboard', compact('stats'));
     })->name('dashboard');
 });

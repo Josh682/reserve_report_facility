@@ -13,8 +13,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 </head>
-<body class="h-full font-sans antialiased text-gray-900 dark:text-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md text-center">
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans antialiased text-gray-900 dark:text-gray-100 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md mx-auto text-center">
         <a href="{{ url('/') }}" class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xl tracking-tight">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -31,8 +31,8 @@
         @endisset
     </div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-xl sm:px-10 border border-gray-200 dark:border-gray-700">
+    <div class="mt-8 w-full max-w-md mx-auto">
+        <div class="bg-white dark:bg-gray-800 py-8 px-6 sm:px-10 shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700">
             @yield('content')
         </div>
 

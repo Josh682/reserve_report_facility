@@ -65,19 +65,6 @@
                     </svg>
                     <span>Manajemen Pengguna</span>
                 </a>
-
-                <div class="pt-4 pb-2">
-                    <p class="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Aplikasi</p>
-                </div>
-
-                <!-- Beranda Publik -->
-                <a href="{{ url('/') }}"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    <span>Beranda Publik</span>
-                </a>
             </nav>
 
             <!-- Bottom Logout section -->

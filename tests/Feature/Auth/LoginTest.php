@@ -58,7 +58,7 @@ test('verified user can login with valid credentials and redirects based on role
 })->with([
     ['admin', '/admin/dashboard'],
     ['petugas', '/petugas/dashboard'],
-    ['pengguna', '/'],
+    ['pengguna', '/pengguna/dashboard'],
 ]);
 
 test('pending user cannot login and sees pending status warning', function () {
@@ -124,3 +124,41 @@ test('authenticated user can logout and session is cleared', function () {
     $response->assertRedirect(route('login'));
     $response->assertSessionHas('status', 'Anda telah berhasil keluar dari sistem.');
 });
+
+test('guest accessing dashboard route is redirected to login', function () {
+    $this->get('/dashboard')->assertRedirect(route('login'));
+});
+
+test('authenticated user accessing dashboard route redirects based on role', function (string $role, string $expectedDestination) {
+    $user = User::factory()->create([
+        'role' => $role,
+        'status_akun' => 'verified',
+    ]);
+
+    $this->actingAs($user)
+        ->get('/dashboard')
+        ->assertRedirect($expectedDestination);
+})->with([
+    ['admin', '/admin/dashboard'],
+    ['petugas', '/petugas/dashboard'],
+    ['pengguna', '/pengguna/dashboard'],
+]);
+
+test('guest accessing root route is redirected to login', function () {
+    $this->get('/')->assertRedirect(route('login'));
+});
+
+test('authenticated user accessing root route redirects based on role', function (string $role, string $expectedDestination) {
+    $user = User::factory()->create([
+        'role' => $role,
+        'status_akun' => 'verified',
+    ]);
+
+    $this->actingAs($user)
+        ->get('/')
+        ->assertRedirect($expectedDestination);
+})->with([
+    ['admin', '/admin/dashboard'],
+    ['petugas', '/petugas/dashboard'],
+    ['pengguna', '/pengguna/dashboard'],
+]);

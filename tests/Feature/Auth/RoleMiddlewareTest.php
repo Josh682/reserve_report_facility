@@ -99,3 +99,46 @@ test('petugas dashboard route is protected and only accessible by petugas', func
     $this->actingAs($admin)->get('/petugas/dashboard')->assertStatus(403);
     $this->actingAs($pengguna)->get('/petugas/dashboard')->assertStatus(403);
 });
+
+test('petugas dashboard renders view with statistics and logout button', function () {
+    $petugas = User::factory()->create([
+        'name' => 'Petugas Lapangan',
+        'role' => 'petugas',
+        'status_akun' => 'verified',
+    ]);
+
+    $response = $this->actingAs($petugas)->get('/petugas/dashboard');
+
+    $response->assertStatus(200);
+    $response->assertSee('Petugas Lapangan');
+    $response->assertSee('Dashboard Petugas');
+    $response->assertSee('Keluar');
+    $response->assertSee(route('logout'));
+});
+
+test('pengguna dashboard route is protected and only accessible by pengguna', function () {
+    $admin = User::factory()->create(['role' => 'admin', 'status_akun' => 'verified']);
+    $petugas = User::factory()->create(['role' => 'petugas', 'status_akun' => 'verified']);
+    $pengguna = User::factory()->create(['role' => 'pengguna', 'status_akun' => 'verified']);
+
+    $this->actingAs($pengguna)->get('/pengguna/dashboard')->assertStatus(200);
+    $this->actingAs($admin)->get('/pengguna/dashboard')->assertStatus(403);
+    $this->actingAs($petugas)->get('/pengguna/dashboard')->assertStatus(403);
+});
+
+test('pengguna dashboard renders view with statistics and single logout button', function () {
+    $pengguna = User::factory()->create([
+        'name' => 'Mahasiswa Teladan',
+        'role' => 'pengguna',
+        'tipe_pengguna' => 'mahasiswa',
+        'status_akun' => 'verified',
+    ]);
+
+    $response = $this->actingAs($pengguna)->get('/pengguna/dashboard');
+
+    $response->assertStatus(200);
+    $response->assertSee('Mahasiswa Teladan');
+    $response->assertSee('Dashboard Saya');
+    $response->assertSee('Keluar');
+    $response->assertSee(route('logout'));
+});
