@@ -24,26 +24,12 @@
 
     <!-- Overview Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <!-- Total Fasilitas (Blue) -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-xs flex items-center justify-between">
-            <div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Total Fasilitas</p>
-                <p class="mt-2 text-3xl font-extrabold text-blue-600 dark:text-blue-400">{{ $stats['total'] ?? 0 }}</p>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Semua unit terdaftar</p>
-            </div>
-            <div class="p-3 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-xl">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-            </div>
-        </div>
-
         <!-- Fasilitas Aktif (Green) -->
         <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-xs flex items-center justify-between">
             <div>
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Fasilitas Aktif</p>
                 <p class="mt-2 text-3xl font-extrabold text-green-600 dark:text-green-400">{{ $stats['aktif'] ?? 0 }}</p>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Siap dipinjam/digunakan</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Dari total {{ $stats['total'] ?? 0 }} unit</p>
             </div>
             <div class="p-3 bg-green-50 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-xl">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,16 +52,30 @@
             </div>
         </div>
 
-        <!-- Fasilitas Nonaktif (Gray/Red) -->
+        <!-- Menunggu Verifikasi (Amber / Alert) -->
         <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-xs flex items-center justify-between">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Fasilitas Nonaktif</p>
-                <p class="mt-2 text-3xl font-extrabold text-gray-600 dark:text-gray-400">{{ $stats['nonaktif'] ?? 0 }}</p>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Tidak beroperasi</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Menunggu Verifikasi</p>
+                <p class="mt-2 text-3xl font-extrabold {{ ($stats['pending_users'] ?? 0) > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300' }}">{{ $stats['pending_users'] ?? 0 }}</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Pendaftar akun mandiri</p>
             </div>
-            <div class="p-3 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl">
+            <div class="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-xl">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Total Pengguna (Purple) -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-xs flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Total Pengguna</p>
+                <p class="mt-2 text-3xl font-extrabold text-purple-600 dark:text-purple-400">{{ $stats['total_users'] ?? 0 }}</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Civitas & petugas terdaftar</p>
+            </div>
+            <div class="p-3 bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 rounded-xl">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
             </div>
         </div>
@@ -83,8 +83,45 @@
 
     <!-- Quick Navigation Shortcuts -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-xs">
-        <h3 class="text-base font-bold text-gray-900 dark:text-white mb-4">Aksi Cepat Manajemen Fasilitas</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <h3 class="text-base font-bold text-gray-900 dark:text-white mb-4">Aksi Cepat Administrator</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Shortcut 1: Verifikasi Akun Pending -->
+            <a href="{{ route('admin.users.index', ['tab' => 'pending']) }}"
+               class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-amber-500 dark:hover:border-amber-400 hover:bg-amber-50/40 dark:hover:bg-amber-950/20 transition-all group">
+                <div class="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-lg group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                        Verifikasi Akun
+                    </h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                        Persetujuan atau penolakan pendaftaran pengguna mandiri baru.
+                    </p>
+                </div>
+            </a>
+
+            <!-- Shortcut 2: Tambah Akun Baru -->
+            <a href="{{ route('admin.users.create') }}"
+               class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 hover:bg-purple-50/40 dark:hover:bg-purple-950/20 transition-all group">
+                <div class="p-3 bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 rounded-lg group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                        Tambah Akun Langsung
+                    </h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                        Registrasikan akun petugas atau pengguna terverifikasi langsung.
+                    </p>
+                </div>
+            </a>
+
+            <!-- Shortcut 3: Kelola Fasilitas -->
             <a href="{{ route('admin.facilities.index') }}"
                class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-400 hover:bg-indigo-50/40 dark:hover:bg-indigo-950/20 transition-all group">
                 <div class="p-3 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-lg group-hover:scale-105 transition-transform">
@@ -97,24 +134,25 @@
                         Kelola Fasilitas
                     </h4>
                     <p class="text-xs text-gray-500 dark:text-gray-400">
-                        Lihat daftar lengkap fasilitas, filter berdasarkan kategori, ubah status, atau edit detail.
+                        Daftar lengkap fasilitas, filter kategori, dan status operasional.
                     </p>
                 </div>
             </a>
 
+            <!-- Shortcut 4: Tambah Fasilitas Baru -->
             <a href="{{ route('admin.facilities.create') }}"
-               class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-400 hover:bg-indigo-50/40 dark:hover:bg-indigo-950/20 transition-all group">
+               class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-500 dark:hover:border-green-400 hover:bg-green-50/40 dark:hover:bg-green-950/20 transition-all group">
                 <div class="p-3 bg-green-50 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-lg group-hover:scale-105 transition-transform">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                        Tambah Fasilitas Baru
+                    <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                        Tambah Fasilitas
                     </h4>
                     <p class="text-xs text-gray-500 dark:text-gray-400">
-                        Registrasikan gedung, laboratorium, aula, atau peralatan baru ke dalam sistem reservasi.
+                        Registrasikan unit gedung, lab, aula, atau alat ke sistem.
                     </p>
                 </div>
             </a>

@@ -100,3 +100,14 @@ test('regular user cannot access admin user management routes', function () {
     $response = $this->actingAs($user)->get(route('admin.users.index'));
     $response->assertForbidden();
 });
+
+test('admin dashboard displays pending users count and quick action shortcuts', function () {
+    $admin = User::factory()->admin()->create();
+    User::factory()->pengguna()->pending()->count(3)->create();
+
+    $response = $this->actingAs($admin)->get(route('admin.dashboard'));
+    $response->assertOk()
+        ->assertSee('Menunggu Verifikasi')
+        ->assertSee('Verifikasi Akun')
+        ->assertSee('Tambah Akun Langsung');
+});
