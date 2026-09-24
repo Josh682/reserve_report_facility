@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PublicFacilityController;
 use App\Models\Facility;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'store']);
 });
 
-Route::view('/facilities', 'facilities')->name('facilities');
+Route::get('/facilities', [PublicFacilityController::class, 'index'])->name('facilities');
+Route::get('/facilities/{facility}/schedule', [PublicFacilityController::class, 'schedule'])->name('facilities.schedule');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
