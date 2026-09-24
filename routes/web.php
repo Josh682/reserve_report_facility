@@ -28,6 +28,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'store']);
 });
 
+Route::view('/facilities', 'facilities')->name('facilities');
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return match (auth()->user()->role) {
@@ -39,6 +41,17 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+    Route::view('/reservation', 'reservation')->name('reservation');
+    Route::view('/report', 'report')->name('report');
+
+    Route::post('/reservations', function () {
+        return redirect()->route('reservation')->with('status', 'Pengajuan reservasi berhasil dikirim dan menunggu persetujuan petugas.');
+    });
+
+    Route::post('/reports', function () {
+        return redirect()->route('report')->with('status', 'Laporan kerusakan fasilitas berhasil dikirim dan menunggu tindak lanjut teknisi.');
+    });
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
