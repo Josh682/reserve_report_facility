@@ -28,28 +28,28 @@
 
         <nav class="sidebar-menu">
 
-            <a href="/facilities"
-               class="menu-item {{ request()->is('facilities*') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}"
+               class="menu-item {{ request()->is('dashboard') || request()->is('pengguna*') || request()->is('admin*') || request()->is('petugas*') ? 'active' : '' }}">
                 <span>⌂</span>
                 Dashboard
             </a>
 
-            <a href="/facilities"
-               class="menu-item">
+            <a href="{{ route('facilities') }}"
+               class="menu-item {{ request()->is('facilities*') ? 'active' : '' }}">
                 <span>▦</span>
-                Facilitys
+                Katalog Fasilitas
             </a>
 
-            <a href="/reservation"
+            <a href="{{ route('reservation') }}"
                class="menu-item {{ request()->is('reservation*') ? 'active' : '' }}">
                 <span>◷</span>
-                My Reservation
+                Reservasi Saya
             </a>
 
-            <a href="/report"
+            <a href="{{ route('report') }}"
                class="menu-item {{ request()->is('report*') ? 'active' : '' }}">
                 <span>!</span>
-                Reports
+                Laporan Kerusakan
             </a>
 
         </nav>

@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PublicFacilityController;
+use App\Http\Controllers\ReservationController;
 use App\Models\Facility;
+use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -44,12 +46,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
-    Route::view('/reservation', 'reservation')->name('reservation');
+    Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
     Route::view('/report', 'report')->name('report');
-
-    Route::post('/reservations', function () {
-        return redirect()->route('reservation')->with('status', 'Pengajuan reservasi berhasil dikirim dan menunggu persetujuan petugas.');
-    });
 
     Route::post('/reports', function () {
         return redirect()->route('report')->with('status', 'Laporan kerusakan fasilitas berhasil dikirim dan menunggu tindak lanjut teknisi.');
@@ -96,12 +96,27 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
 
 Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {
     Route::get('/dashboard', function () {
+        $user = auth()->user();
         $stats = [
             'total_facilities' => Facility::count(),
             'aktif' => Facility::where('status', 'aktif')->count(),
             'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
+            'my_reservations' => Reservation::where('user_id', $user->id)->count(),
+            'my_pending' => Reservation::where('user_id', $user->id)->where('status', 'pending')->count(),
+            'my_approved' => Reservation::where('user_id', $user->id)->where('status', 'approved')->count(),
         ];
 
-        return view('pengguna.dashboard', compact('stats'));
+        $recentReservations = Reservation::with('facility')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $availableFacilities = Facility::where('status', 'aktif')
+            ->orderBy('nama')
+            ->take(4)
+            ->get();
+
+        return view('pengguna.dashboard', compact('stats', 'recentReservations', 'availableFacilities'));
     })->name('dashboard');
 });
