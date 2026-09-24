@@ -106,9 +106,33 @@
 
         <div>
             <button type="submit"
-                class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                 Masuk
             </button>
+        </div>
+
+        <!-- Tombol Masuk Sebagai Guest -->
+        <div class="relative my-4">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+            </div>
+            <div class="relative flex justify-center text-xs uppercase">
+                <span class="px-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium tracking-wider">
+                    Atau jelajahi tanpa akun
+                </span>
+            </div>
+        </div>
+
+        <div>
+            <a href="{{ route('facilities') }}"
+                id="guest-login-button"
+                class="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 border-2 border-emerald-500/30 dark:border-emerald-500/40 rounded-lg shadow-sm text-sm font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50/70 hover:bg-emerald-100/80 dark:bg-emerald-950/30 dark:hover:bg-emerald-900/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all">
+                <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>Masuk sebagai Guest (Lihat Fasilitas)</span>
+            </a>
         </div>
 
         <div class="text-center pt-2">

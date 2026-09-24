@@ -33,11 +33,13 @@ test('login validation fails when email or password is empty or invalid format',
         ->and($validator->errors()->has('password'))->toBeTrue();
 });
 
-test('guest can view login page', function () {
+test('guest can view login page and access guest button', function () {
     $response = $this->get('/login');
 
     $response->assertStatus(200);
     $response->assertSee('Masuk ke Sistem');
+    $response->assertSee('Masuk sebagai Guest (Lihat Fasilitas)');
+    $response->assertSee(route('facilities'));
 });
 
 test('verified user can login with valid credentials and redirects based on role', function (string $role, string $expectedRoute) {
