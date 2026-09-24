@@ -64,32 +64,32 @@
 
         <!-- Email -->
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 Alamat Email
             </label>
             <div class="mt-1">
                 <input id="email" name="email" type="email" autocomplete="email" required
                     value="{{ old('email') }}"
-                    class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-gray-900 dark:text-white placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-gray-700 sm:text-sm"
+                    class="block w-full rounded-xl border border-slate-300 dark:border-slate-700 px-3.5 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50 dark:bg-slate-900 sm:text-sm"
                     placeholder="nama@kampus.test">
             </div>
             @error('email')
-                <p class="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">{{ $message }}</p>
+                <p class="mt-1 text-xs text-rose-600 dark:text-rose-400 font-medium">{{ $message }}</p>
             @enderror
         </div>
 
         <!-- Password -->
         <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 Kata Sandi
             </label>
             <div class="mt-1">
                 <input id="password" name="password" type="password" autocomplete="current-password" required
-                    class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-gray-900 dark:text-white placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-gray-700 sm:text-sm"
+                    class="block w-full rounded-xl border border-slate-300 dark:border-slate-700 px-3.5 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50 dark:bg-slate-900 sm:text-sm"
                     placeholder="••••••••">
             </div>
             @error('password')
-                <p class="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">{{ $message }}</p>
+                <p class="mt-1 text-xs text-rose-600 dark:text-rose-400 font-medium">{{ $message }}</p>
             @enderror
         </div>
 
@@ -97,8 +97,8 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center">
                 <input id="remember" name="remember" type="checkbox"
-                    class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700">
-                <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                    class="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900">
+                <label for="remember" class="ml-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                     Ingat Saya
                 </label>
             </div>
@@ -106,18 +106,18 @@
 
         <div>
             <button type="submit"
-                class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-                Masuk
+                class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-xs text-sm font-bold text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors cursor-pointer">
+                Masuk ke Akun
             </button>
         </div>
 
         <!-- Tombol Masuk Sebagai Guest -->
         <div class="relative my-4">
             <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                <div class="w-full border-t border-slate-200 dark:border-slate-800"></div>
             </div>
-            <div class="relative flex justify-center text-xs uppercase">
-                <span class="px-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium tracking-wider">
+            <div class="relative flex justify-center text-[11px] uppercase">
+                <span class="px-3 bg-white dark:bg-[#0b171c] text-slate-400 dark:text-slate-500 font-medium tracking-wider">
                     Atau jelajahi tanpa akun
                 </span>
             </div>
@@ -126,8 +126,8 @@
         <div>
             <a href="{{ route('facilities') }}"
                 id="guest-login-button"
-                class="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 border-2 border-emerald-500/30 dark:border-emerald-500/40 rounded-lg shadow-sm text-sm font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50/70 hover:bg-emerald-100/80 dark:bg-emerald-950/30 dark:hover:bg-emerald-900/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all">
-                <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 border border-teal-200 dark:border-teal-900/60 rounded-xl shadow-xs text-sm font-bold text-teal-800 dark:text-teal-300 bg-teal-50/70 hover:bg-teal-100/80 dark:bg-teal-950/40 dark:hover:bg-teal-900/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all">
+                <svg class="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
@@ -136,10 +136,10 @@
         </div>
 
         <div class="text-center pt-2">
-            <span class="text-sm text-gray-600 dark:text-gray-400">
+            <span class="text-xs text-slate-500 dark:text-slate-400">
                 Belum memiliki akun?
             </span>
-            <a href="{{ route('register') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 ml-1">
+            <a href="{{ route('register') }}" class="text-xs font-bold text-teal-700 hover:text-teal-800 dark:text-teal-400 ml-1 hover:underline">
                 Daftar sekarang
             </a>
         </div>

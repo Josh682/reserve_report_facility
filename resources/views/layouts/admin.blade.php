@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-50 dark:bg-gray-900">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full {{ request()->cookie('theme') === 'dark' ? 'dark' : '' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,7 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
+    @include('partials.theme-script')
 </head>
 <body class="h-full font-sans antialiased text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900">
     <div class="min-h-screen flex flex-col lg:flex-row">
@@ -97,8 +98,10 @@
                     </h1>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3">
+                    @include('partials.theme-toggle')
+
+                    <div class="flex items-center gap-3 pl-2 border-l border-slate-200 dark:border-slate-700">
                         <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
                             {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
                         </div>
