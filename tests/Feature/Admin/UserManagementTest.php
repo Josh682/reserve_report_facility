@@ -109,5 +109,8 @@ test('admin dashboard displays pending users count and quick action shortcuts', 
     $response->assertOk()
         ->assertSee('Menunggu Verifikasi')
         ->assertSee('Verifikasi Akun')
-        ->assertSee('Tambah Akun Langsung');
+        ->assertSee('Tambah Akun Langsung')
+        ->assertSee('Tambah Fasilitas Langsung')
+        ->assertSee(route('admin.users.create'))
+        ->assertSee(route('admin.facilities.create'));
 });

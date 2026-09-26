@@ -23,6 +23,8 @@ class UserController extends Controller
 
         $pendingCount = User::where('status_akun', 'pending')->count();
         $allCount = User::count();
+        $petugasCount = User::where('role', 'petugas')->count();
+        $penggunaCount = User::where('role', 'pengguna')->count();
 
         // Query untuk pending users (Tab 1)
         $pendingUsers = User::where('status_akun', 'pending')
@@ -58,6 +60,8 @@ class UserController extends Controller
             'currentTab',
             'pendingCount',
             'allCount',
+            'petugasCount',
+            'penggunaCount',
             'search',
             'roleFilter',
             'statusFilter'

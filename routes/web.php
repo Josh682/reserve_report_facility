@@ -6,12 +6,18 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PublicFacilityController;
 use App\Models\Facility;
+use App\Models\Reservation;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    if (auth()->check()) {
-        return match (auth()->user()->role) {
+    if (Auth::check()) {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return match ($user->role) {
             'admin' => redirect()->route('admin.dashboard'),
             'petugas' => redirect()->route('petugas.dashboard'),
             'pengguna' => redirect()->route('pengguna.dashboard'),
@@ -34,7 +40,10 @@ Route::get('/facilities/{facility}/schedule', [PublicFacilityController::class, 
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        return match (auth()->user()->role) {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return match ($user->role) {
             'admin' => redirect()->route('admin.dashboard'),
             'petugas' => redirect()->route('petugas.dashboard'),
             'pengguna' => redirect()->route('pengguna.dashboard'),
@@ -58,16 +67,83 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
+        $facilityCount = Facility::count();
+        $aktifFacilityCount = Facility::where('status', 'aktif')->count();
+        $repairFacilityCount = Facility::where('status', 'dalam_perbaikan')->count();
+        $inactiveFacilityCount = Facility::where('status', 'nonaktif')->count();
+        $pendingUsersCount = User::where('status_akun', 'pending')->count();
+        $totalUsersCount = User::count();
+
+        // Reservasi statistik aktual
+        $totalReservations = Reservation::count();
+        $approvedReservations = Reservation::where('status', 'approved')->count();
+        $pendingReservations = Reservation::where('status', 'pending')->count();
+        $rejectedReservations = Reservation::where('status', 'rejected')->count();
+
+        // Laporan kerusakan aktual
+        $newReportsCount = DB::table('reports')->where('status', 'baru')->count();
+        $inProgressReportsCount = DB::table('reports')->where('status', 'diproses')->count();
+        $resolvedReportsCount = DB::table('reports')->where('status', 'selesai')->count();
+
+        // Okupansi / Rasio Kesiapan Fasilitas Operasional
+        $occupancyRate = $facilityCount > 0 ? round(($aktifFacilityCount / $facilityCount) * 100) : 0;
+
         $stats = [
-            'total' => Facility::count(),
-            'aktif' => Facility::where('status', 'aktif')->count(),
-            'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
-            'nonaktif' => Facility::where('status', 'nonaktif')->count(),
-            'pending_users' => User::where('status_akun', 'pending')->count(),
-            'total_users' => User::count(),
+            'total' => $facilityCount,
+            'aktif' => $aktifFacilityCount,
+            'dalam_perbaikan' => $repairFacilityCount,
+            'nonaktif' => $inactiveFacilityCount,
+            'pending_users' => $pendingUsersCount,
+            'total_users' => $totalUsersCount,
+            'total_reservations' => $totalReservations,
+            'approved_reservations' => $approvedReservations,
+            'pending_reservations' => $pendingReservations,
+            'rejected_reservations' => $rejectedReservations,
+            'new_reports' => $newReportsCount,
+            'in_progress_reports' => $inProgressReportsCount,
+            'resolved_reports' => $resolvedReportsCount,
+            'occupancy_rate' => $occupancyRate,
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        // Upcoming major event / reservation aktual
+        $upcomingReservation = Reservation::with(['facility', 'user'])
+            ->where('tanggal', '>=', now()->toDateString())
+            ->where('status', 'approved')
+            ->orderBy('tanggal')
+            ->orderBy('start_time')
+            ->first();
+
+        if (! $upcomingReservation) {
+            $upcomingReservation = Reservation::with(['facility', 'user'])
+                ->orderBy('tanggal', 'desc')
+                ->first();
+        }
+
+        // Fasilitas utama aktual dari database (maksimal 5 item teratas)
+        $mainFacilities = Facility::orderByRaw("CASE WHEN status = 'aktif' THEN 1 WHEN status = 'dalam_perbaikan' THEN 2 ELSE 3 END")
+            ->orderBy('kapasitas', 'desc')
+            ->take(5)
+            ->get();
+
+        // Notifikasi aktual
+        $recentPendingUsers = User::where('status_akun', 'pending')->latest()->take(3)->get();
+        $recentPendingReservations = Reservation::with(['facility', 'user'])->where('status', 'pending')->latest()->take(3)->get();
+        $recentReports = DB::table('reports')
+            ->join('facilities', 'reports.facility_id', '=', 'facilities.id')
+            ->select('reports.*', 'facilities.nama as facility_nama')
+            ->where('reports.status', 'baru')
+            ->latest('reports.created_at')
+            ->take(3)
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'stats',
+            'upcomingReservation',
+            'mainFacilities',
+            'recentPendingUsers',
+            'recentPendingReservations',
+            'recentReports'
+        ));
     })->name('dashboard');
 
     Route::patch('/facilities/{facility}/status', [FacilityController::class, 'updateStatus'])
