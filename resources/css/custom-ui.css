@@ -8,9 +8,25 @@
 
 body {
     margin: 0;
-    font-family: Inter, Arial, sans-serif;
-    background: #f6f8fc;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #EDF7F4;
     color: #1e293b;
+}
+
+.kezak-btn-primary {
+    background-color: #0F5143 !important;
+    color: #FFFFFF !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(15, 81, 67, 0.25);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kezak-btn-primary:hover {
+    background-color: #146353 !important;
+    box-shadow: 0 6px 20px rgba(15, 81, 67, 0.35);
+    transform: translateY(-1px);
+}
+.kezak-btn-primary:active {
+    transform: translateY(0);
 }
 
 button,
