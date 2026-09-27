@@ -6,8 +6,8 @@
 @section('content')
 <div class="space-y-6">
 
-    {{-- HEADER & TOMBOL AKSI UTAMA (SWISS HIGH-DENSITY MINIMAL) --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    {{-- HEADER & TOMBOL AKSI UTAMA (RAYCAST ACCENTED SWISS MINIMAL) --}}
+    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
                 Peminjaman Fasilitas Saya
@@ -20,11 +20,12 @@
         <button type="button"
                 id="toggleReservationForm"
                 onclick="toggleForm()"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors shrink-0 cursor-pointer">
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors shrink-0 cursor-pointer border-t border-white/20">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
             <span id="toggleButtonText">Buat Pengajuan Baru</span>
+            <kbd class="raycast-kbd ml-1 hidden sm:inline-flex text-[9px] bg-teal-800 border-teal-600 text-teal-100">N</kbd>
         </button>
     </div>
 
@@ -61,14 +62,15 @@
     {{-- FORMULIR PENGAJUAN PINJAM RUANG (TOGGLEABLE) --}}
     <div id="reservationFormWrapper"
          class="{{ ($selectedFacilityId || $errors->any()) ? 'block' : 'hidden' }} transition-all duration-200">
-        <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-teal-600/70 dark:border-teal-500/70 shadow-none">
+        <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
             <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100 dark:border-slate-800">
                 <div>
                     <h3 class="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white">Formulir Peminjaman Fasilitas</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pilih ruangan, tanggal, dan durasi slot (07.00 - 20.00 WIB).</p>
                 </div>
-                <button type="button" onclick="toggleForm()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-xs cursor-pointer">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button type="button" onclick="toggleForm()" class="inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-xs cursor-pointer">
+                    <kbd class="raycast-kbd text-[9px] hidden sm:inline-flex">ESC</kbd>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
@@ -159,7 +161,7 @@
                 {{-- Action Buttons --}}
                 <div class="flex items-center gap-3 pt-2">
                     <button type="submit"
-                            class="px-5 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors cursor-pointer">
+                            class="px-5 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors cursor-pointer border-t border-white/20">
                         Kirim Pengajuan
                     </button>
                     <button type="button"
@@ -172,8 +174,8 @@
         </div>
     </div>
 
-    {{-- DAFTAR RIWAYAT RESERVASI (SWISS STRUCTURED LIST) --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none space-y-4">
+    {{-- DAFTAR RIWAYAT RESERVASI (RAYCAST STRUCTURED LIST) --}}
+    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
             <div>
                 <h3 class="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white">Riwayat Pengajuan Peminjaman</h3>
@@ -186,7 +188,7 @@
 
         <div class="space-y-3">
             @forelse ($reservations as $res)
-                <div class="p-4 rounded-xs border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
+                <div class="p-4 rounded-xs bg-slate-50/50 dark:bg-slate-900/40 raycast-card flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-teal-600/60 transition-colors">
                     <div class="space-y-1.5 flex-1 min-w-0">
                         <div class="flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded-xs text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
@@ -199,19 +201,19 @@
 
                         <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                             <span class="flex items-center gap-1 font-mono text-[11px]">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                 </svg>
                                 {{ $res->facility->lokasi ?? '-' }}
                             </span>
                             <span class="flex items-center gap-1 font-mono text-[11px]">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                                 {{ \Illuminate\Support\Carbon::parse($res->tanggal)->translatedFormat('l, d F Y') }}
                             </span>
                             <span class="flex items-center gap-1 font-mono text-[11px] font-semibold text-slate-700 dark:text-slate-300">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 {{ substr($res->start_time, 0, 5) }} – {{ substr($res->end_time, 0, 5) }} WIB
@@ -233,7 +235,11 @@
                     <div class="flex items-center md:flex-col md:items-end justify-between gap-2 shrink-0">
                         @if ($res->status === 'approved')
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-[10px] font-mono uppercase tracking-wider font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/50">
-                                <span class="w-1.5 h-1.5 rounded-xs bg-emerald-500"></span> Disetujui
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                Disetujui
                             </span>
                         @elseif ($res->status === 'pending')
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-[10px] font-mono uppercase tracking-wider font-bold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/50">
@@ -292,5 +298,19 @@
             text.innerText = 'Buat Pengajuan Baru';
         }
     }
+
+    // Raycast-style keyboard shortcut (N to toggle new reservation form, ESC to close)
+    window.addEventListener('keydown', function(event) {
+        if (event.key.toLowerCase() === 'n' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+            event.preventDefault();
+            toggleForm();
+        }
+        if (event.key === 'Escape') {
+            const wrapper = document.getElementById('reservationFormWrapper');
+            if (wrapper && !wrapper.classList.contains('hidden')) {
+                toggleForm();
+            }
+        }
+    });
 </script>
 @endsection

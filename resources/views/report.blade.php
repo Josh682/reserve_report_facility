@@ -34,11 +34,14 @@
 
 <div class="space-y-6 max-w-5xl">
 
-    {{-- HEADER BANNER (SWISS HIGH-DENSITY MINIMAL) --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    {{-- HEADER BANNER (RAYCAST ACCENTED SWISS MINIMAL) --}}
+    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <div class="inline-flex items-center gap-2 px-2 py-0.5 rounded-xs text-[11px] font-mono uppercase tracking-wider bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/40 mb-2">
-                <span class="w-1.5 h-1.5 rounded-xs bg-teal-500"></span>
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-teal-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-teal-500"></span>
+                </span>
                 <span>Layanan Sarana & Prasarana Kampus</span>
             </div>
             <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
@@ -75,7 +78,7 @@
 
         {{-- FORMULIR UTAMA (2 KOLOM) --}}
         <div class="lg:col-span-2">
-            <div class="p-6 sm:p-7 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none">
+            <div class="p-6 sm:p-7 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
                 <div class="pb-4 mb-6 border-b border-slate-100 dark:border-slate-800/80">
                     <h2 class="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white">Detail Kerusakan / Kendala</h2>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -170,7 +173,7 @@
                             Batal
                         </a>
                         <button type="submit"
-                                class="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors cursor-pointer">
+                                class="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors cursor-pointer border-t border-white/20">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                             </svg>
@@ -183,7 +186,7 @@
 
         {{-- SIDEBAR INFORMASI PROSEDUR PELAPORAN --}}
         <div class="space-y-4">
-            <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none">
+            <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
                 <div class="flex items-center gap-2.5 mb-4">
                     <div class="p-2 rounded-xs bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-400 border border-teal-200/60 dark:border-teal-800/40">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,7 +224,7 @@
                 </ol>
             </div>
 
-            <div class="p-5 rounded-xs bg-teal-50/60 dark:bg-teal-950/20 border border-teal-200/70 dark:border-teal-900/40 text-xs text-teal-900 dark:text-teal-200">
+            <div class="p-5 rounded-xs bg-teal-50/60 dark:bg-teal-950/20 raycast-card text-xs text-teal-900 dark:text-teal-200">
                 <div class="font-bold flex items-center gap-1.5 mb-1 text-teal-800 dark:text-teal-300 font-mono text-[11px] uppercase tracking-wider">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />

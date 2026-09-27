@@ -127,8 +127,8 @@
         {{-- MAIN CONTENT WRAPPER --}}
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-            {{-- TOPBAR --}}
-            <header class="h-16 bg-white dark:bg-[#0c1419] border-b border-slate-200 dark:border-teal-950/80 flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0">
+            {{-- TOPBAR (RAYCAST SUBTLE BLUR) --}}
+            <header class="h-16 bg-white/95 dark:bg-[#0c1419]/95 backdrop-blur-md border-b border-slate-200 dark:border-teal-950/80 flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0">
                 <div class="flex items-center gap-3">
                     <button type="button"
                             class="lg:hidden p-2 rounded-xs text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"

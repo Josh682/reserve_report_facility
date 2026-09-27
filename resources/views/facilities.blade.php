@@ -6,11 +6,14 @@
 @section('content')
 <div class="space-y-6">
 
-    {{-- WELCOME & VALUE BANNER (SWISS HIGH-DENSITY MINIMAL) --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none flex flex-col md:flex-row md:items-center justify-between gap-4">
+    {{-- WELCOME & VALUE BANNER (RAYCAST ACCENTED SWISS MINIMAL) --}}
+    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="inline-flex items-center gap-2 px-2 py-0.5 rounded-xs text-[11px] font-mono uppercase tracking-wider bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/40 mb-2">
-                <span class="w-1.5 h-1.5 rounded-xs bg-teal-500"></span>
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-teal-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-teal-500"></span>
+                </span>
                 <span>Operasional: 07.00 – 20.00 WIB (26 Slot)</span>
             </div>
             <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
@@ -24,7 +27,7 @@
         <div class="flex items-center gap-3 shrink-0">
             @auth
                 <a href="{{ route('reservation') }}"
-                   class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors">
+                   class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors border-t border-white/20">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -45,7 +48,7 @@
     {{-- RINGKASAN METRIK STATUS FASILITAS --}}
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {{-- Total --}}
-        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none">
+        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
             <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Total Sarana</span>
             <div class="mt-2 flex items-baseline justify-between">
                 <span class="text-2xl font-mono font-black text-slate-900 dark:text-white">{{ $stats['total'] }}</span>
@@ -54,10 +57,13 @@
         </div>
 
         {{-- Aktif --}}
-        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none">
+        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Siap Dipakai</span>
-                <span class="w-2 h-2 rounded-xs bg-emerald-500"></span>
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-emerald-500"></span>
+                </span>
             </div>
             <div class="mt-2 flex items-baseline justify-between">
                 <span class="text-2xl font-mono font-black text-emerald-600 dark:text-emerald-400">{{ $stats['aktif'] }}</span>
@@ -66,7 +72,7 @@
         </div>
 
         {{-- Dalam Perbaikan --}}
-        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none">
+        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400">Pemeliharaan</span>
                 <span class="w-2 h-2 rounded-xs bg-amber-500"></span>
@@ -78,7 +84,7 @@
         </div>
 
         {{-- Nonaktif --}}
-        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none">
+        <div class="p-4 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">Nonaktif</span>
                 <span class="w-2 h-2 rounded-xs bg-slate-400"></span>
@@ -90,11 +96,11 @@
         </div>
     </div>
 
-    {{-- SEARCH & MULTI-FILTER FORM (US 2) --}}
-    <div class="p-5 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none">
+    {{-- SEARCH & MULTI-FILTER FORM (RAYCAST COMMAND BAR STYLE) --}}
+    <div class="p-5 rounded-xs bg-white dark:bg-[#0c1419] raycast-card">
         <form method="GET" action="{{ route('facilities') }}" class="space-y-4">
-            {{-- Search Bar Input --}}
-            <div class="relative">
+            {{-- Search Bar Input with Raycast Shortcut Badge --}}
+            <div class="relative flex items-center">
                 <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -103,11 +109,13 @@
                 <input
                     type="text"
                     name="search"
+                    id="facilitySearchInput"
                     value="{{ request('search') }}"
                     placeholder="Cari nama ruangan, gedung, alat laboratorium, atau kata kunci deskripsi..."
-                    class="block w-full pl-10 pr-24 py-2 rounded-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                    class="block w-full pl-10 pr-28 py-2 rounded-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                 >
-                <div class="absolute inset-y-0 right-1 flex items-center">
+                <div class="absolute inset-y-0 right-1 flex items-center gap-1.5 pr-1">
+                    <kbd class="raycast-kbd hidden sm:inline-flex cursor-pointer" title="Tekan '/' untuk fokus pencarian" onclick="document.getElementById('facilitySearchInput').focus()">/</kbd>
                     <button type="submit"
                             class="px-3.5 py-1 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 transition-colors cursor-pointer shadow-none">
                         Cari
@@ -189,10 +197,10 @@
         </form>
     </div>
 
-    {{-- DAFTAR KARTU FASILITAS (GRID TEGAS & PRESISI) --}}
+    {{-- DAFTAR KARTU FASILITAS (RAYCAST SPECULAR ACCENTED GRID) --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         @forelse ($facilities as $facility)
-            <div class="rounded-xs border border-slate-200 dark:border-teal-950/80 bg-white dark:bg-[#0c1419] shadow-none flex flex-col justify-between hover:border-teal-600/70 dark:hover:border-teal-500/70 transition-colors">
+            <div class="rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex flex-col justify-between hover:border-teal-600/70 dark:hover:border-teal-500/70 transition-colors group">
                 {{-- Card Header --}}
                 <div class="p-5 pb-4 border-b border-slate-100 dark:border-slate-800/80">
                     <div class="flex items-center justify-between gap-2 mb-3">
@@ -202,7 +210,10 @@
 
                         @if ($facility->status === 'aktif')
                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-[10px] font-mono uppercase tracking-wider font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/40">
-                                <span class="w-1.5 h-1.5 rounded-xs bg-emerald-500"></span>
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-emerald-500"></span>
+                                </span>
                                 Aktif
                             </span>
                         @elseif ($facility->status === 'dalam_perbaikan')
@@ -218,7 +229,7 @@
                         @endif
                     </div>
 
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">
                         {{ $facility->nama }}
                     </h3>
 
@@ -275,7 +286,7 @@
                         @auth
                             @if ($facility->status === 'aktif')
                                 <a href="{{ route('reservation', ['facility_id' => $facility->id]) }}"
-                                   class="py-2 px-3.5 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors shrink-0">
+                                   class="py-2 px-3.5 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors shrink-0 border-t border-white/20">
                                     + Pinjam
                                 </a>
                             @endif
@@ -284,8 +295,8 @@
                 </div>
             </div>
         @empty
-            <div class="col-span-full py-16 text-center bg-white dark:bg-[#0c1419] rounded-xs border border-dashed border-slate-300 dark:border-slate-800">
-                <div class="w-10 h-10 rounded-xs bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 mx-auto mb-3">
+            <div class="col-span-full py-16 text-center bg-white dark:bg-[#0c1419] rounded-xs raycast-card border-dashed">
+                <div class="w-10 h-10 rounded-xs bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 mx-auto mb-3 border border-slate-200 dark:border-slate-700">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
@@ -308,11 +319,11 @@
 
 </div>
 
-{{-- MODAL MATRIKS WAKTU 26 SLOT 30 MENIT (SWISS MODULAR DIALOG) --}}
+{{-- MODAL MATRIKS WAKTU 26 SLOT 30 MENIT (RAYCAST MODULAR DIALOG) --}}
 <div id="scheduleModal"
-     class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs hidden items-center justify-center p-4 overflow-y-auto">
-    <div class="w-full max-w-3xl bg-white dark:bg-[#0c1419] rounded-xs border border-slate-200 dark:border-teal-950/80 shadow-none flex flex-col max-h-[90vh] my-auto overflow-hidden">
-        {{-- Modal Header --}}
+     class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="w-full max-w-3xl bg-white dark:bg-[#0c1419] rounded-xs raycast-card flex flex-col max-h-[90vh] my-auto overflow-hidden">
+        {{-- Modal Header with ESC Keycap --}}
         <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-start justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 mb-1.5">
@@ -325,8 +336,9 @@
                 </p>
             </div>
 
-            <button type="button" onclick="closeScheduleModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-xs hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button type="button" onclick="closeScheduleModal()" class="inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-xs hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+                <kbd class="raycast-kbd text-[9px] hidden sm:inline-flex">ESC</kbd>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
@@ -406,8 +418,8 @@
         {{-- Modal Footer --}}
         <div class="p-4 px-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#080d11] flex items-center justify-between">
             <button type="button" onclick="closeScheduleModal()"
-                    class="px-4 py-1.5 rounded-xs text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer">
-                Tutup
+                    class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xs text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer">
+                <span>Tutup</span>
             </button>
 
             <div id="modalActionContainer"></div>
@@ -444,7 +456,7 @@
             if (status === 'aktif') {
                 actionBox.innerHTML = `
                     <a href="/reservation?facility_id=${facilityId}&tanggal=${selectedDate}"
-                       class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 transition-colors shadow-none">
+                       class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 transition-colors shadow-none border-t border-white/20">
                         <span>+ Ajukan Peminjaman</span>
                     </a>
                 `;
@@ -454,7 +466,7 @@
         @else
             actionBox.innerHTML = `
                 <a href="{{ route('login') }}"
-                   class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 transition-colors shadow-none">
+                   class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 transition-colors shadow-none border-t border-white/20">
                     <span>Masuk untuk Meminjam</span>
                 </a>
             `;
@@ -515,5 +527,22 @@
             closeScheduleModal();
         }
     };
+
+    // Raycast-Style Global Keyboard Shortcuts
+    window.addEventListener('keydown', function(event) {
+        // Tekan '/' untuk fokus cepat ke kolom cari fasilitas
+        if (event.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+            event.preventDefault();
+            const searchInput = document.getElementById('facilitySearchInput');
+            if (searchInput) {
+                searchInput.focus();
+                searchInput.select();
+            }
+        }
+        // Tekan 'Escape' untuk menutup modal jadwal jika terbuka
+        if (event.key === 'Escape') {
+            closeScheduleModal();
+        }
+    });
 </script>
 @endsection

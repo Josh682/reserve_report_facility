@@ -5,11 +5,14 @@
 @section('content')
 <div class="space-y-6">
 
-    {{-- WELCOME BANNER (SWISS HIGH-DENSITY MINIMAL) --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none flex flex-col md:flex-row md:items-center justify-between gap-4">
+    {{-- WELCOME BANNER (RAYCAST ACCENTED SWISS MINIMAL) --}}
+    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="inline-flex items-center gap-2 px-2 py-0.5 rounded-xs text-[11px] font-mono uppercase tracking-wider bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/40 mb-2">
-                <span class="w-1.5 h-1.5 rounded-xs bg-teal-500"></span>
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-teal-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-teal-500"></span>
+                </span>
                 <span>Akun Terverifikasi — {{ ucfirst(auth()->user()->tipe_pengguna ?? 'Mahasiswa') }}</span>
             </div>
             <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
@@ -29,7 +32,7 @@
                 <span>Lihat Katalog</span>
             </a>
             <a href="{{ route('reservation') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors">
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors border-t border-white/20">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -38,10 +41,10 @@
         </div>
     </div>
 
-    {{-- STATS METRIK KPI (MONOSPACE METRICS) --}}
+    {{-- STATS METRIK KPI (RAYCAST SPECULAR METRICS) --}}
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {{-- Fasilitas Siap Pakai --}}
-        <a href="{{ route('facilities') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none flex items-center justify-between hover:border-teal-600/70 transition-colors group">
+        <a href="{{ route('facilities') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex items-center justify-between hover:border-teal-600/70 transition-colors group">
             <div>
                 <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Fasilitas Siap Pakai</span>
                 <span class="text-3xl font-mono font-black text-teal-700 dark:text-teal-400 mt-1 block">{{ $stats['aktif'] ?? 0 }}</span>
@@ -55,7 +58,7 @@
         </a>
 
         {{-- Peminjaman Disetujui --}}
-        <a href="{{ route('reservation') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none flex items-center justify-between hover:border-emerald-600/70 transition-colors group">
+        <a href="{{ route('reservation') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex items-center justify-between hover:border-emerald-600/70 transition-colors group">
             <div>
                 <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Peminjaman Disetujui</span>
                 <span class="text-3xl font-mono font-black text-emerald-600 dark:text-emerald-400 mt-1 block">{{ $stats['my_approved'] ?? 0 }}</span>
@@ -69,7 +72,7 @@
         </a>
 
         {{-- Menunggu Persetujuan --}}
-        <a href="{{ route('reservation') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none flex items-center justify-between hover:border-amber-600/70 transition-colors group">
+        <a href="{{ route('reservation') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex items-center justify-between hover:border-amber-600/70 transition-colors group">
             <div>
                 <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Menunggu Persetujuan</span>
                 <span class="text-3xl font-mono font-black text-amber-600 dark:text-amber-400 mt-1 block">{{ $stats['my_pending'] ?? 0 }}</span>
@@ -84,7 +87,7 @@
     </div>
 
     {{-- FASILITAS REKOMENDASI --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none space-y-4">
+    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
             <div>
                 <h3 class="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white">Fasilitas Kampus Siap Digunakan</h3>
@@ -97,14 +100,18 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             @forelse ($availableFacilities as $facility)
-                <div class="p-4 rounded-xs border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
+                <div class="p-4 rounded-xs bg-slate-50/50 dark:bg-slate-900/40 raycast-card flex flex-col justify-between hover:border-teal-600/70 transition-colors">
                     <div>
                         <div class="flex items-center justify-between gap-1 mb-2">
                             <span class="px-2 py-0.5 rounded-xs text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
                                 {{ str_replace('_', ' ', $facility->tipe) }}
                             </span>
                             <span class="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider font-semibold text-emerald-600 dark:text-emerald-400">
-                                <span class="w-1.5 h-1.5 rounded-xs bg-emerald-500"></span> Aktif
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                Aktif
                             </span>
                         </div>
                         <h4 class="font-bold text-sm text-slate-900 dark:text-white">{{ $facility->nama }}</h4>
@@ -121,7 +128,7 @@
                             Jadwal
                         </a>
                         <a href="{{ route('reservation', ['facility_id' => $facility->id]) }}"
-                           class="inline-flex items-center gap-1 px-3 py-1 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 shadow-none transition-colors">
+                           class="inline-flex items-center gap-1 px-3 py-1 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 shadow-none transition-colors border-t border-white/20">
                             <span>+ Pinjam</span>
                         </a>
                     </div>
@@ -134,8 +141,8 @@
         </div>
     </div>
 
-    {{-- TABEL PENGAJUAN TERAKHIR SAYA --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] border border-slate-200 dark:border-teal-950/80 shadow-none space-y-4">
+    {{-- TABEL PENGAJUAN TERAKHIR SAYA (RAYCAST TABLE CONTAINER) --}}
+    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
             <div>
                 <h3 class="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white">Riwayat Pengajuan Reservasi Terakhir</h3>
