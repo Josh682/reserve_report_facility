@@ -1,38 +1,42 @@
 @extends('layouts.pengguna')
 
 @section('title', 'Dashboard Mahasiswa')
+@section('header_title', 'Dashboard Mahasiswa')
+@section('header_subtitle', 'Pantau ketersediaan fasilitas dan status pengajuan peminjaman ruangan Anda secara realtime')
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-6 sm:space-y-8">
 
-    {{-- WELCOME BANNER (RAYCAST ACCENTED SWISS MINIMAL) --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <div class="inline-flex items-center gap-2 px-2 py-0.5 rounded-xs text-[11px] font-mono uppercase tracking-wider bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/40 mb-2">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-teal-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-teal-500"></span>
-                </span>
+    {{-- ==========================================
+         1. WELCOME BANNER (FROSTED GLASS HERO)
+         ========================================== --}}
+    <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+        <!-- Ambient radial glow inside hero -->
+        <div class="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 border border-emerald-500/20 text-[#0F5143] dark:text-[#34D399] mb-3">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Akun Terverifikasi — {{ ucfirst(auth()->user()->tipe_pengguna ?? 'Mahasiswa') }}</span>
             </div>
-            <h1 class="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}
             </h1>
-            <p class="mt-1 text-xs text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mt-1.5 leading-relaxed">
                 Cek fasilitas kampus yang siap digunakan, ajukan peminjaman ruangan mandiri, dan pantau status verifikasi jadwal secara transparan.
             </p>
         </div>
 
-        <div class="flex items-center gap-3 shrink-0">
+        <div class="relative z-10 shrink-0 flex items-center gap-3">
             <a href="{{ route('facilities') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700">
-                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-white/70 dark:bg-white/10 hover:bg-white/90 dark:hover:bg-white/20 transition-all border border-white/80 dark:border-white/15 shadow-xs">
+                <svg class="w-4 h-4 text-[#0F5143] dark:text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
                 <span>Lihat Katalog</span>
             </a>
             <a href="{{ route('reservation') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-none transition-colors border-t border-white/20">
+               class="kezak-btn-primary inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold shadow-md">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -41,161 +45,196 @@
         </div>
     </div>
 
-    {{-- STATS METRIK KPI (RAYCAST SPECULAR METRICS) --}}
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {{-- Fasilitas Siap Pakai --}}
-        <a href="{{ route('facilities') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex items-center justify-between hover:border-teal-600/70 transition-colors group">
+    {{-- ==========================================
+         2. STATS METRIK KPI (FROSTED GLASS CARDS)
+         ========================================== --}}
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        {{-- Card 1: Fasilitas Siap Pakai --}}
+        <a href="{{ route('facilities') }}"
+           class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between hover:scale-[1.01] hover:border-emerald-500/50 transition-all group">
             <div>
-                <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Fasilitas Siap Pakai</span>
-                <span class="text-3xl font-mono font-black text-teal-700 dark:text-teal-400 mt-1 block">{{ $stats['aktif'] ?? 0 }}</span>
-                <span class="text-[11px] font-mono text-slate-400 mt-0.5 block group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors uppercase">Buka katalog &rarr;</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Fasilitas Siap Pakai</span>
+                <span class="text-3xl sm:text-4xl font-extrabold text-[#0F5143] dark:text-white mt-1 block tracking-tight">{{ $stats['aktif'] ?? 0 }}</span>
+                <span class="text-xs font-semibold text-[#0F5143] dark:text-[#34D399] mt-1.5 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                    Buka katalog fasilitas &rarr;
+                </span>
             </div>
-            <div class="p-3 rounded-xs bg-teal-50 dark:bg-teal-950/50 text-teal-700 dark:text-teal-400 border border-teal-200/60 dark:border-teal-800/40">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100/80 dark:bg-emerald-950/60 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center shrink-0 shadow-2xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
             </div>
         </a>
 
-        {{-- Peminjaman Disetujui --}}
-        <a href="{{ route('reservation') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex items-center justify-between hover:border-emerald-600/70 transition-colors group">
+        {{-- Card 2: Peminjaman Disetujui --}}
+        <a href="{{ route('reservation') }}"
+           class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between hover:scale-[1.01] hover:border-emerald-500/50 transition-all group">
             <div>
-                <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Peminjaman Disetujui</span>
-                <span class="text-3xl font-mono font-black text-emerald-600 dark:text-emerald-400 mt-1 block">{{ $stats['my_approved'] ?? 0 }}</span>
-                <span class="text-[11px] font-mono text-slate-400 mt-0.5 block uppercase">Jadwal reservasi aktif</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Peminjaman Disetujui</span>
+                <span class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 block tracking-tight">{{ $stats['my_approved'] ?? 0 }}</span>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1.5 block">
+                    Jadwal peminjaman aktif
+                </span>
             </div>
-            <div class="p-3 rounded-xs bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/40">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100/80 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-2xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
         </a>
 
-        {{-- Menunggu Persetujuan --}}
-        <a href="{{ route('reservation') }}" class="p-5 rounded-xs bg-white dark:bg-[#0c1419] raycast-card flex items-center justify-between hover:border-amber-600/70 transition-colors group">
+        {{-- Card 3: Menunggu Persetujuan --}}
+        <a href="{{ route('reservation') }}"
+           class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between hover:scale-[1.01] hover:border-amber-500/50 transition-all group">
             <div>
-                <span class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Menunggu Persetujuan</span>
-                <span class="text-3xl font-mono font-black text-amber-600 dark:text-amber-400 mt-1 block">{{ $stats['my_pending'] ?? 0 }}</span>
-                <span class="text-[11px] font-mono text-slate-400 mt-0.5 block uppercase">Verifikasi petugas</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Menunggu Persetujuan</span>
+                <span class="text-3xl sm:text-4xl font-extrabold text-amber-600 dark:text-amber-400 mt-1 block tracking-tight">{{ $stats['my_pending'] ?? 0 }}</span>
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1.5 block">
+                    Dalam verifikasi petugas
+                </span>
             </div>
-            <div class="p-3 rounded-xs bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border border-amber-200/60 dark:border-amber-800/40">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100/80 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 shadow-2xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
         </a>
     </div>
 
-    {{-- FASILITAS REKOMENDASI --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+    {{-- ==========================================
+         3. FASILITAS KAMPUS SIAP DIGUNAKAN (SHOWCASE)
+         ========================================== --}}
+    <div class="rounded-3xl bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 p-6 sm:p-7 space-y-6 shadow-xs">
+        <div class="flex items-center justify-between pb-4 border-b border-white/40 dark:border-white/10">
             <div>
-                <h3 class="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white">Fasilitas Kampus Siap Digunakan</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pilih ruangan yang siap pakai untuk kegiatan akademik maupun organisasi.</p>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">Fasilitas Kampus Siap Digunakan</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">Pilih ruangan yang siap pakai untuk kegiatan akademik maupun organisasi mahasiswa.</p>
             </div>
-            <a href="{{ route('facilities') }}" class="text-xs font-mono font-semibold uppercase text-teal-700 dark:text-teal-400 hover:underline">
+            <a href="{{ route('facilities') }}" class="text-xs font-bold text-[#0F5143] dark:text-[#34D399] hover:underline flex items-center gap-1">
                 Lihat Semua &rarr;
             </a>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             @forelse ($availableFacilities as $facility)
-                <div class="p-4 rounded-xs bg-slate-50/50 dark:bg-slate-900/40 raycast-card flex flex-col justify-between hover:border-teal-600/70 transition-colors">
+                <div class="p-4 rounded-2xl bg-white/80 dark:bg-white/5 backdrop-blur-md border border-white/70 dark:border-white/10 flex flex-col justify-between hover:border-emerald-500/50 hover:shadow-md transition-all group">
                     <div>
-                        <div class="flex items-center justify-between gap-1 mb-2">
-                            <span class="px-2 py-0.5 rounded-xs text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
-                                {{ str_replace('_', ' ', $facility->tipe) }}
+                        <div class="flex items-center justify-between gap-1 mb-3">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/80 dark:bg-white/10 text-slate-700 dark:text-slate-200 border border-white/90 dark:border-white/15 shadow-2xs">
+                                <x-facility-icon :tipe="$facility->tipe" class="w-3.5 h-3.5 text-[#0F5143] dark:text-[#34D399]" />
+                                <span>{{ str_replace('_', ' ', ucfirst($facility->tipe)) }}</span>
                             </span>
-                            <span class="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider font-semibold text-emerald-600 dark:text-emerald-400">
-                                <span class="relative flex h-2 w-2">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-xs bg-emerald-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-xs h-2 w-2 bg-emerald-500"></span>
-                                </span>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-200/60 dark:border-emerald-800/40">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                 Aktif
                             </span>
                         </div>
-                        <h4 class="font-bold text-sm text-slate-900 dark:text-white">{{ $facility->nama }}</h4>
-                        <div class="mt-2 space-y-1 text-xs text-slate-500 dark:text-slate-400">
-                            <p class="truncate font-mono text-[11px]">⌖ {{ $facility->lokasi }}</p>
+
+                        <h4 class="font-extrabold text-sm text-slate-900 dark:text-white group-hover:text-[#0F5143] dark:group-hover:text-[#34D399] transition-colors leading-snug">
+                            {{ $facility->nama }}
+                        </h4>
+
+                        <div class="mt-2.5 space-y-1 text-xs text-slate-600 dark:text-slate-400">
+                            <p class="truncate flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span>{{ $facility->lokasi }}</span>
+                            </p>
                             @if ($facility->kapasitas)
-                                <p class="font-mono text-[11px]">♟ {{ $facility->kapasitas }} org</p>
+                                <p class="flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    <span>Kapasitas: {{ $facility->kapasitas }} orang</span>
+                                </p>
                             @endif
                         </div>
                     </div>
 
-                    <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                        <a href="{{ route('facilities') }}" class="text-xs font-mono uppercase text-slate-500 hover:text-slate-700 dark:text-slate-400 font-semibold">
-                            Jadwal
+                    <div class="mt-4 pt-3 border-t border-white/50 dark:border-white/10 flex items-center justify-between gap-2">
+                        <a href="{{ route('facilities') }}" class="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+                            Cek Jadwal
                         </a>
                         <a href="{{ route('reservation', ['facility_id' => $facility->id]) }}"
-                           class="inline-flex items-center gap-1 px-3 py-1 rounded-xs text-xs font-semibold uppercase tracking-wider text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 shadow-none transition-colors border-t border-white/20">
+                           class="kezak-btn-primary px-3 py-1.5 text-xs font-bold inline-flex items-center gap-1 shadow-xs">
                             <span>+ Pinjam</span>
                         </a>
                     </div>
                 </div>
             @empty
-                <div class="col-span-full py-8 text-center text-sm font-mono text-slate-500 dark:text-slate-400 uppercase">
-                    Belum ada fasilitas aktif yang tersedia saat ini.
+                <div class="col-span-full py-8 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    Belum ada fasilitas aktif yang siap digunakan saat ini.
                 </div>
             @endforelse
         </div>
     </div>
 
-    {{-- TABEL PENGAJUAN TERAKHIR SAYA (RAYCAST TABLE CONTAINER) --}}
-    <div class="p-6 rounded-xs bg-white dark:bg-[#0c1419] raycast-card space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+    {{-- ==========================================
+         4. RIWAYAT PENGAJUAN TERAKHIR SAYA (TABLE)
+         ========================================== --}}
+    <div class="rounded-3xl bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 p-6 sm:p-7 space-y-6 shadow-xs">
+        <div class="flex items-center justify-between pb-4 border-b border-white/40 dark:border-white/10">
             <div>
-                <h3 class="text-base font-bold uppercase tracking-tight text-slate-900 dark:text-white">Riwayat Pengajuan Reservasi Terakhir</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pantau status persetujuan dari petugas.</p>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">Riwayat Pengajuan Reservasi Terakhir</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">Pantau status persetujuan dari petugas fasilitas kampus.</p>
             </div>
-            <a href="{{ route('reservation') }}" class="text-xs font-mono font-semibold uppercase text-teal-700 dark:text-teal-400 hover:underline">
+            <a href="{{ route('reservation') }}" class="text-xs font-bold text-[#0F5143] dark:text-[#34D399] hover:underline flex items-center gap-1">
                 Kelola Semua &rarr;
             </a>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300">
-                <thead class="text-[11px] font-mono uppercase bg-slate-50 dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
-                    <tr>
+            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                <thead>
+                    <tr class="text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 border-b border-white/50 dark:border-white/10">
                         <th class="py-3 px-4">Fasilitas / Ruangan</th>
                         <th class="py-3 px-4">Waktu Pemakaian</th>
                         <th class="py-3 px-4">Tujuan Kegiatan</th>
-                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4">Status Validasi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                <tbody class="divide-y divide-white/40 dark:divide-white/5">
                     @forelse ($recentReservations as $res)
-                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
-                            <td class="py-3 px-4 font-bold text-slate-900 dark:text-white">
-                                {{ $res->facility->nama ?? 'Fasilitas #' . $res->facility_id }}
-                                <span class="block text-xs font-mono font-normal text-slate-400">{{ $res->facility->lokasi ?? '' }}</span>
+                        <tr class="hover:bg-white/50 dark:hover:bg-white/5 transition-colors">
+                            <td class="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-7 h-7 rounded-xl bg-white/80 dark:bg-white/10 border border-white/80 dark:border-white/15 flex items-center justify-center shrink-0">
+                                        <x-facility-icon :tipe="$res->facility->tipe ?? 'aula'" class="w-4 h-4 text-[#0F5143] dark:text-[#34D399]" />
+                                    </div>
+                                    <div>
+                                        <span class="block leading-tight font-extrabold">{{ $res->facility->nama ?? 'Fasilitas #' . $res->facility_id }}</span>
+                                        <span class="block text-[11px] font-normal text-slate-500 dark:text-slate-400">{{ $res->facility->lokasi ?? '' }}</span>
+                                    </div>
+                                </div>
                             </td>
-                            <td class="py-3 px-4 font-mono text-xs">
-                                <span class="font-bold text-slate-800 dark:text-slate-200 block">
+                            <td class="py-3.5 px-4">
+                                <span class="font-bold text-slate-800 dark:text-white block">
                                     {{ \Illuminate\Support\Carbon::parse($res->tanggal)->translatedFormat('d M Y') }}
                                 </span>
-                                <span class="text-slate-400">
+                                <span class="text-xs text-slate-500 dark:text-slate-400">
                                     {{ substr($res->start_time, 0, 5) }} - {{ substr($res->end_time, 0, 5) }} WIB
                                 </span>
                             </td>
-                            <td class="py-3 px-4 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate" title="{{ $res->tujuan_penggunaan }}">
-                                {{ $res->tujuan_penggunaan }}
+                            <td class="py-3.5 px-4 max-w-xs truncate" title="{{ $res->tujuan_penggunaan }}">
+                                <span class="text-slate-700 dark:text-slate-300 font-medium">{{ $res->tujuan_penggunaan }}</span>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3.5 px-4">
                                 @if ($res->status === 'approved')
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-[10px] font-mono uppercase tracking-wider font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60">
-                                        <span class="w-1.5 h-1.5 rounded-xs bg-emerald-500"></span> Disetujui
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Disetujui
                                     </span>
                                 @elseif ($res->status === 'pending')
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-[10px] font-mono uppercase tracking-wider font-bold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200/60">
-                                        <span class="w-1.5 h-1.5 rounded-xs bg-amber-500 animate-pulse"></span> Menunggu
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-800 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Menunggu
                                     </span>
                                 @elseif ($res->status === 'rejected')
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs text-[10px] font-mono uppercase tracking-wider font-bold bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200/60">
-                                        <span class="w-1.5 h-1.5 rounded-xs bg-rose-500"></span> Ditolak
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-800 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Ditolak
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-xs text-[10px] font-mono uppercase tracking-wider font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                                         Dibatalkan
                                     </span>
                                 @endif
@@ -203,9 +242,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-8 text-center text-xs font-mono text-slate-500 dark:text-slate-400 uppercase">
+                            <td colspan="4" class="py-8 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 Belum ada riwayat reservasi yang diajukan.
-                                <a href="{{ route('reservation') }}" class="text-teal-700 dark:text-teal-400 font-bold ml-1 hover:underline">
+                                <a href="{{ route('reservation') }}" class="text-[#0F5143] dark:text-[#34D399] font-bold ml-1 hover:underline">
                                     Ajukan ruangan &rarr;
                                 </a>
                             </td>
