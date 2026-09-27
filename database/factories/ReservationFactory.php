@@ -22,7 +22,7 @@ class ReservationFactory extends Factory
         return [
             'user_id' => User::factory(),
             'facility_id' => Facility::factory(),
-            'tanggal' => now()->toDateString(),
+            'tanggal' => now()->addDays(2)->toDateString(),
             'start_time' => '08:00',
             'end_time' => '09:00',
             'tujuan_penggunaan' => fake()->sentence(),

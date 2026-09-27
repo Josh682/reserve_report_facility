@@ -149,6 +149,7 @@ test('user can cancel their pending reservation', function () {
     $reservation = Reservation::factory()->create([
         'user_id' => $user->id,
         'facility_id' => $facility->id,
+        'tanggal' => now()->addDays(2)->toDateString(),
         'status' => 'pending',
     ]);
 
@@ -163,6 +164,79 @@ test('user can cancel their pending reservation', function () {
     ]);
 });
 
+test('user can cancel their approved reservation if done in advance (H-1) (US 4 & ASSUMPTION.md 1.2)', function () {
+    $user = User::factory()->create([
+        'role' => 'pengguna',
+        'status_akun' => 'verified',
+    ]);
+
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    $reservation = Reservation::factory()->create([
+        'user_id' => $user->id,
+        'facility_id' => $facility->id,
+        'tanggal' => now()->addDays(3)->toDateString(),
+        'status' => 'approved',
+    ]);
+
+    $response = $this->actingAs($user)->patch("/reservations/{$reservation->id}/cancel");
+
+    $response->assertRedirect(route('reservation'));
+    $response->assertSessionHas('status');
+
+    $this->assertDatabaseHas('reservations', [
+        'id' => $reservation->id,
+        'status' => 'cancelled',
+    ]);
+});
+
+test('user cannot cancel reservation on the day of use (violates H-1 boundary) (US 4 & ASSUMPTION.md 1.2)', function () {
+    $user = User::factory()->create([
+        'role' => 'pengguna',
+        'status_akun' => 'verified',
+    ]);
+
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    // Reservation is today (hari-H)
+    $reservation = Reservation::factory()->create([
+        'user_id' => $user->id,
+        'facility_id' => $facility->id,
+        'tanggal' => now()->toDateString(),
+        'status' => 'pending',
+    ]);
+
+    $response = $this->actingAs($user)->patch("/reservations/{$reservation->id}/cancel");
+
+    $response->assertSessionHas('status_error');
+
+    $this->assertDatabaseHas('reservations', [
+        'id' => $reservation->id,
+        'status' => 'pending',
+    ]);
+});
+
+test('user cannot submit reservation with non-30-minute interval', function () {
+    $user = User::factory()->create([
+        'role' => 'pengguna',
+        'status_akun' => 'verified',
+    ]);
+
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    $payload = [
+        'facility_id' => $facility->id,
+        'tanggal' => now()->addDays(2)->toDateString(),
+        'start_time' => '09:15', // Invalid: not :00 or :30
+        'end_time' => '10:45',   // Invalid: not :00 or :30
+        'tujuan_penggunaan' => 'Praktikum tidak valid interval',
+    ];
+
+    $response = $this->actingAs($user)->post('/reservations', $payload);
+
+    $response->assertSessionHasErrors(['start_time', 'end_time']);
+});
+
 test('user cannot cancel another users reservation', function () {
     $user1 = User::factory()->pengguna()->verified()->create();
     $user2 = User::factory()->pengguna()->verified()->create();
@@ -171,6 +245,7 @@ test('user cannot cancel another users reservation', function () {
     $reservation = Reservation::factory()->create([
         'user_id' => $user1->id,
         'facility_id' => $facility->id,
+        'tanggal' => now()->addDays(2)->toDateString(),
         'status' => 'pending',
     ]);
 

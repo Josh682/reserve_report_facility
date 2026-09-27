@@ -19,13 +19,42 @@
     </div>
 
     <!-- Overview Statistics Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <!-- Fasilitas Aktif (Emerald) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Menunggu Verifikasi (Amber / Pending) -->
+        <a href="{{ route('petugas.reservations.index') }}"
+           class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-amber-200 dark:border-amber-800/60 shadow-xs hover:border-amber-400 transition-all flex items-center justify-between group">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">Antrean Menunggu</p>
+                <p class="mt-2 text-3xl font-extrabold text-amber-600 dark:text-amber-400">{{ $stats['pending_reservations'] ?? 0 }}</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400 group-hover:underline">Tinjau antrean reservasi &rarr;</p>
+            </div>
+            <div class="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-xl">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </a>
+
+        <!-- Reservasi Hari Ini (Teal/Emerald) -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-xs flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Jadwal Hari Ini</p>
+                <p class="mt-2 text-3xl font-extrabold text-[#0F5143] dark:text-emerald-400">{{ $stats['today_reservations'] ?? 0 }}</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Reservasi aktif disetujui</p>
+            </div>
+            <div class="p-3 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Fasilitas Siap Pakai (Emerald) -->
         <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-xs flex items-center justify-between">
             <div>
                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Fasilitas Siap Pakai</p>
                 <p class="mt-2 text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">{{ $stats['aktif'] ?? 0 }}</p>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Status aktif dan dapat dipinjam</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Status operasional aktif</p>
             </div>
             <div class="p-3 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-xl">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,20 +73,6 @@
             <div class="p-3 bg-yellow-50 dark:bg-yellow-950/50 text-yellow-600 dark:text-yellow-400 rounded-xl">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-            </div>
-        </div>
-
-        <!-- Total Fasilitas (Blue/Indigo) -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 shadow-xs flex items-center justify-between">
-            <div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Total Fasilitas</p>
-                <p class="mt-2 text-3xl font-extrabold text-gray-900 dark:text-white">{{ $stats['total_facilities'] ?? 0 }}</p>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Terdaftar dalam sistem kampus</p>
-            </div>
-            <div class="p-3 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-xl">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
             </div>
         </div>

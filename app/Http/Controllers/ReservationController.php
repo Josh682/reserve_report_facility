@@ -80,7 +80,7 @@ class ReservationController extends Controller
     }
 
     /**
-     * Batalkan reservasi yang masih berstatus pending oleh pemohon.
+     * Batalkan reservasi mandiri oleh pemohon (maksimal H-1, US 4 & ASSUMPTION.md 1.2).
      */
     public function cancel(Request $request, Reservation $reservation): RedirectResponse
     {
@@ -88,13 +88,18 @@ class ReservationController extends Controller
             abort(403, 'Anda tidak berhak membatalkan reservasi ini.');
         }
 
-        if ($reservation->status !== 'pending') {
-            return back()->with('status_error', 'Hanya pengajuan peminjaman berstatus menunggu (pending) yang dapat dibatalkan.');
+        if (! in_array($reservation->status, ['pending', 'approved'], true)) {
+            return back()->with('status_error', 'Hanya pengajuan peminjaman berstatus menunggu atau disetujui yang dapat dibatalkan.');
+        }
+
+        // Pengecekan batas H-1: tanggal reservasi harus lebih besar dari hari ini
+        if ($reservation->tanggal->toDateString() <= now()->toDateString()) {
+            return back()->with('status_error', 'Pembatalan mandiri hanya diizinkan maksimal H-1 sebelum tanggal penggunaan fasilitas. Silakan hubungi petugas untuk kendala mendadak.');
         }
 
         $reservation->update([
             'status' => 'cancelled',
-            'cancelled_reason' => 'Dibatalkan langsung oleh pemohon.',
+            'cancelled_reason' => 'Dibatalkan langsung oleh pemohon (H-1).',
         ]);
 
         return redirect()

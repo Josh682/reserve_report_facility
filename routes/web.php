@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Petugas\ReservationController as PetugasReservationController;
 use App\Http\Controllers\PublicFacilityController;
 use App\Http\Controllers\ReservationController;
 use App\Models\Facility;
@@ -163,10 +164,24 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
             'total_facilities' => Facility::count(),
             'aktif' => Facility::where('status', 'aktif')->count(),
             'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
+            'pending_reservations' => Reservation::where('status', 'pending')->count(),
+            'today_reservations' => Reservation::where('status', 'approved')->whereDate('tanggal', now()->toDateString())->count(),
         ];
 
-        return view('petugas.dashboard', compact('stats'));
+        $pendingReservations = Reservation::with(['facility', 'user'])
+            ->where('status', 'pending')
+            ->orderBy('tanggal', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->take(5)
+            ->get();
+
+        return view('petugas.dashboard', compact('stats', 'pendingReservations'));
     })->name('dashboard');
+
+    Route::get('/reservations', [PetugasReservationController::class, 'index'])->name('reservations.index');
+    Route::patch('/reservations/{reservation}/approve', [PetugasReservationController::class, 'approve'])->name('reservations.approve');
+    Route::patch('/reservations/{reservation}/reject', [PetugasReservationController::class, 'reject'])->name('reservations.reject');
+    Route::patch('/reservations/{reservation}/emergency-cancel', [PetugasReservationController::class, 'emergencyCancel'])->name('reservations.emergency-cancel');
 });
 
 Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {

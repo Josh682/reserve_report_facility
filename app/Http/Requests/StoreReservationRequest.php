@@ -25,8 +25,30 @@ class StoreReservationRequest extends FormRequest
         return [
             'facility_id' => ['required', 'integer', 'exists:facilities,id'],
             'tanggal' => ['required', 'date', 'after_or_equal:today'],
-            'start_time' => ['required', 'date_format:H:i', 'after_or_equal:07:00', 'before:20:00'],
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time', 'before_or_equal:20:00'],
+            'start_time' => [
+                'required',
+                'date_format:H:i',
+                'after_or_equal:07:00',
+                'before:20:00',
+                function ($attribute, $value, $fail) {
+                    $parts = explode(':', (string) $value);
+                    if (count($parts) !== 2 || ! in_array($parts[1], ['00', '30'], true)) {
+                        $fail('Jam mulai peminjaman harus berupa slot kelipatan 30 menit (misal :00 atau :30).');
+                    }
+                },
+            ],
+            'end_time' => [
+                'required',
+                'date_format:H:i',
+                'after:start_time',
+                'before_or_equal:20:00',
+                function ($attribute, $value, $fail) {
+                    $parts = explode(':', (string) $value);
+                    if (count($parts) !== 2 || ! in_array($parts[1], ['00', '30'], true)) {
+                        $fail('Jam selesai peminjaman harus berupa slot kelipatan 30 menit (misal :00 atau :30).');
+                    }
+                },
+            ],
             'tujuan_penggunaan' => ['required', 'string', 'min:5', 'max:1000'],
         ];
     }
