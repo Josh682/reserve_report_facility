@@ -2,7 +2,7 @@
         onclick="window.toggleTheme()"
         aria-label="Ganti mode gelap/terang"
         title="Ganti Mode Tampilan (Terang / Gelap)"
-        class="inline-flex items-center justify-center p-2 rounded-xs border border-slate-200 dark:border-teal-950/80 text-slate-600 dark:text-teal-300 bg-white dark:bg-[#0c1419] hover:bg-slate-100 dark:hover:bg-teal-950/40 hover:text-teal-700 dark:hover:text-teal-200 focus:outline-none focus:ring-1 focus:ring-teal-500 transition-colors cursor-pointer shadow-none">
+        class="inline-flex items-center justify-center p-2.5 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-md border border-white/80 dark:border-white/15 text-[#0F5143] dark:text-[#34D399] hover:bg-white/90 dark:hover:bg-white/20 hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-2xs">
     <!-- Sun icon (shown when dark) -->
     <svg class="w-4 h-4 theme-toggle-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />

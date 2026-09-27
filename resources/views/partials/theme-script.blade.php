@@ -1,6 +1,13 @@
 <script>
     (function () {
         function getTheme() {
+            try {
+                const stored = localStorage.getItem('facilityhub_theme');
+                if (stored === 'dark' || stored === 'light') {
+                    return stored;
+                }
+            } catch (e) {}
+
             const match = document.cookie.match(/(?:^|; )theme=([^;]*)/);
             if (match) {
                 return decodeURIComponent(match[1]);
@@ -23,6 +30,9 @@
         const isDark = document.documentElement.classList.toggle('dark');
         const theme = isDark ? 'dark' : 'light';
         document.cookie = 'theme=' + theme + ';path=/;max-age=' + (60 * 60 * 24 * 365) + ';SameSite=Lax';
+        try {
+            localStorage.setItem('facilityhub_theme', theme);
+        } catch (e) {}
         window.updateThemeIcons(isDark);
     };
 
