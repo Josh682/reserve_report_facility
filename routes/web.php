@@ -4,10 +4,13 @@ use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Petugas\ReportController as PetugasReportController;
 use App\Http\Controllers\Petugas\ReservationController as PetugasReservationController;
 use App\Http\Controllers\PublicFacilityController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReservationController;
 use App\Models\Facility;
+use App\Models\Report;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -58,11 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
     Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
-    Route::view('/report', 'report')->name('report');
-
-    Route::post('/reports', function () {
-        return redirect()->route('report')->with('status', 'Laporan kerusakan fasilitas berhasil dikirim dan menunggu tindak lanjut teknisi.');
-    });
+    Route::get('/report', [ReportController::class, 'index'])->name('report');
+    Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -165,6 +165,7 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
             'aktif' => Facility::where('status', 'aktif')->count(),
             'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
             'pending_reservations' => Reservation::where('status', 'pending')->count(),
+            'pending_reports' => Report::where('status', 'baru')->count(),
             'today_reservations' => Reservation::where('status', 'approved')->whereDate('tanggal', now()->toDateString())->count(),
         ];
 
@@ -182,6 +183,9 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
     Route::patch('/reservations/{reservation}/approve', [PetugasReservationController::class, 'approve'])->name('reservations.approve');
     Route::patch('/reservations/{reservation}/reject', [PetugasReservationController::class, 'reject'])->name('reservations.reject');
     Route::patch('/reservations/{reservation}/emergency-cancel', [PetugasReservationController::class, 'emergencyCancel'])->name('reservations.emergency-cancel');
+
+    Route::get('/reports', [PetugasReportController::class, 'index'])->name('reports.index');
+    Route::patch('/reports/{report}', [PetugasReportController::class, 'update'])->name('reports.update');
 });
 
 Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {
