@@ -113,6 +113,81 @@
             caret-color: #0F5143 !important;
             transition: background-color 5000s ease-in-out 0s;
         }
+        /* --- DARK MODE (FULL DARK PAGE + FROSTED OBSIDIAN GLASS) --- */
+        html.dark body {
+            background-color: #040908 !important;
+            background-image: 
+                radial-gradient(ellipse at 50% 0%, #082620 0%, transparent 75%),
+                radial-gradient(ellipse at 85% 85%, #051A16 0%, transparent 65%),
+                linear-gradient(135deg, #040A09 0%, #020706 100%) !important;
+            color: #F8FAFC !important;
+        }
+
+        html.dark .ambient-blob-1 { background-color: rgba(16, 185, 129, 0.12) !important; }
+        html.dark .ambient-blob-2 { background-color: rgba(13, 148, 136, 0.10) !important; }
+        html.dark .ambient-blob-3 { background-color: rgba(5, 150, 105, 0.08) !important; }
+
+        html.dark .kezak-input {
+            background: rgba(14, 32, 26, 0.60) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            color: #FFFFFF !important;
+            box-shadow: 
+                inset 0 1px 2px rgba(0, 0, 0, 0.35), 
+                0 1px 1px rgba(255, 255, 255, 0.04) !important;
+        }
+        html.dark .kezak-input::placeholder { color: #64748B !important; }
+        html.dark .kezak-input:hover {
+            background: rgba(18, 42, 34, 0.75) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+        html.dark .kezak-input:focus,
+        html.dark .kezak-input:focus-within,
+        html.dark .kezak-input:active,
+        html.dark select.kezak-input:focus {
+            background-color: rgba(16, 44, 36, 0.85) !important;
+            border-color: #10B981 !important;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.2) !important;
+            color: #FFFFFF !important;
+            outline: none !important;
+        }
+        html.dark select.kezak-input option {
+            background-color: #071D18 !important;
+            color: #F8FAFC !important;
+        }
+
+        /* Dark Mode Autofill / Autocomplete Override (Deep Emerald Green #062E25) */
+        html.dark .kezak-input:-webkit-autofill,
+        html.dark .kezak-input:-webkit-autofill:hover, 
+        html.dark .kezak-input:-webkit-autofill:focus, 
+        html.dark .kezak-input:-webkit-autofill:active,
+        html.dark input:-webkit-autofill,
+        html.dark input:-webkit-autofill:hover, 
+        html.dark input:-webkit-autofill:focus, 
+        html.dark input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
+            box-shadow: 0 0 0 1000px #062E25 inset !important;
+            -webkit-text-fill-color: #ECFDF5 !important;
+            color: #ECFDF5 !important;
+            border-color: #059669 !important;
+            caret-color: #34D399 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        html.dark .kezak-input:autofill,
+        html.dark .kezak-input:autofill:hover,
+        html.dark .kezak-input:autofill:focus,
+        html.dark .kezak-input:autofill:active,
+        html.dark input:autofill,
+        html.dark input:autofill:hover,
+        html.dark input:autofill:focus,
+        html.dark input:autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
+            box-shadow: 0 0 0 1000px #062E25 inset !important;
+            -webkit-text-fill-color: #ECFDF5 !important;
+            color: #ECFDF5 !important;
+            border-color: #059669 !important;
+            caret-color: #34D399 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
     </style>
     @stack('styles')
 </head>
@@ -159,13 +234,13 @@
                 @include('partials.theme-toggle')
 
                 @auth
-                    <div class="flex items-center gap-3 bg-white/70 backdrop-blur-md border border-white/80 shadow-2xs rounded-2xl p-1.5 pr-3">
+                    <div class="flex items-center gap-3 bg-white/70 dark:bg-white/10 backdrop-blur-md border border-white/80 dark:border-white/15 shadow-2xs rounded-2xl p-1.5 pr-3">
                         <div class="w-8 h-8 rounded-xl bg-[#0F5143] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                             {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                         </div>
                         <div class="hidden sm:block text-left text-xs">
-                            <strong class="text-slate-800 font-bold block leading-tight">{{ auth()->user()->name }}</strong>
-                            <span class="text-[10px] text-slate-500">{{ ucfirst(auth()->user()->role) }}</span>
+                            <strong class="text-slate-800 dark:text-white font-bold block leading-tight">{{ auth()->user()->name }}</strong>
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400">{{ ucfirst(auth()->user()->role) }}</span>
                         </div>
                     </div>
 
@@ -183,14 +258,14 @@
 
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="p-2 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-rose-50/80 transition-colors cursor-pointer" title="Keluar (Logout)">
+                        <button type="submit" class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50/80 dark:hover:bg-rose-950/40 transition-colors cursor-pointer" title="Keluar (Logout)">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 bg-white/70 hover:bg-white/95 border border-white/80 transition-all shadow-2xs">
+                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-white/70 dark:bg-white/10 hover:bg-white/95 dark:hover:bg-white/20 border border-white/80 dark:border-white/15 transition-all shadow-2xs">
                         Masuk Akun
                     </a>
                     <a href="{{ route('register') }}" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0F5143] hover:bg-[#146353] shadow-xs hover:shadow-md transition-all">
