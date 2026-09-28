@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Facility;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\View\View;
@@ -12,8 +13,29 @@ class PublicFacilityController extends Controller
 {
     /**
      * Menampilkan katalog fasilitas dan status ketersediaannya untuk publik/pengunjung (US 1 & US 2).
+     * Jika pengguna telah login dengan peran 'pengguna', otomatis arahkan ke katalog fasilitas portal pengguna.
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
+    {
+        if (auth()->check() && auth()->user()->role === 'pengguna') {
+            return redirect()->route('pengguna.facilities', $request->query());
+        }
+
+        return $this->renderFacilitiesView($request, 'facilities');
+    }
+
+    /**
+     * Menampilkan katalog fasilitas di dalam Dashboard Pengguna (dengan sidebar terintegrasi).
+     */
+    public function indexPengguna(Request $request): View
+    {
+        return $this->renderFacilitiesView($request, 'pengguna.facilities');
+    }
+
+    /**
+     * Helper untuk memproses query filter fasilitas, statistik, dan ketersediaan 26 slot.
+     */
+    private function renderFacilitiesView(Request $request, string $viewName): View
     {
         $search = $request->query('search');
         $tipe = $request->query('tipe');
@@ -89,7 +111,7 @@ class PublicFacilityController extends Controller
         // Daftar lokasi unik untuk opsi dropdown filter
         $availableLocations = Facility::select('lokasi')->distinct()->pluck('lokasi');
 
-        return view('facilities', compact(
+        return view($viewName, compact(
             'facilities',
             'stats',
             'selectedDate',

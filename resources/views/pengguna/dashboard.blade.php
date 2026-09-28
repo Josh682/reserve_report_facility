@@ -14,7 +14,7 @@
     {{-- ==========================================
          1. WELCOME BANNER (FROSTED GLASS HERO)
          ========================================== --}}
-    <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+    <div class="glass-card-main rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
         <!-- Ambient radial glow inside hero -->
         <div class="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
 
@@ -32,8 +32,8 @@
         </div>
 
         <div class="relative z-10 shrink-0 flex items-center gap-3">
-            <a href="{{ route('facilities') }}"
-               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-white/70 dark:bg-white/10 hover:bg-white/90 dark:hover:bg-white/20 transition-all border border-white/80 dark:border-white/15 shadow-xs">
+            <a href="{{ route('pengguna.facilities') }}"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 glass-card-nested hover:bg-white/90 dark:hover:bg-white/20 transition-all shadow-xs">
                 <svg class="w-4 h-4 text-[#0F5143] dark:text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
@@ -54,8 +54,8 @@
          ========================================== --}}
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
         {{-- Card 1: Fasilitas Siap Pakai --}}
-        <a href="{{ route('facilities') }}"
-           class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between hover:scale-[1.01] hover:border-emerald-500/50 transition-all group">
+        <a href="{{ route('pengguna.facilities') }}"
+           class="p-5 rounded-2xl glass-card-interactive flex items-center justify-between hover:scale-[1.01] hover:border-emerald-500/50 transition-all group">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Fasilitas Siap Pakai</span>
                 <span class="text-3xl sm:text-4xl font-extrabold text-[#0F5143] dark:text-white mt-1 block tracking-tight">{{ $stats['aktif'] ?? 0 }}</span>
@@ -71,7 +71,7 @@
         </a>
 
         {{-- Card 2: Dalam Pemeliharaan --}}
-        <div class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between">
+        <div class="p-5 rounded-2xl glass-card-interactive flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Dalam Pemeliharaan</span>
                 <span class="text-3xl sm:text-4xl font-extrabold text-amber-600 dark:text-amber-400 mt-1 block tracking-tight">{{ $stats['dalam_perbaikan'] ?? 0 }}</span>
@@ -87,7 +87,7 @@
         </div>
 
         {{-- Card 3: Total Fasilitas --}}
-        <div class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between">
+        <div class="p-5 rounded-2xl glass-card-interactive flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Total Sarana Prasarana</span>
                 <span class="text-3xl sm:text-4xl font-extrabold text-slate-800 dark:text-white mt-1 block tracking-tight">{{ $stats['total_facilities'] ?? 0 }}</span>
@@ -106,7 +106,7 @@
     {{-- ==========================================
          3. DAFTAR FASILITAS POPULER / REKOMENDASI (PREVIEW)
          ========================================== --}}
-    <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-3xl p-6 sm:p-7">
+    <div class="glass-card-main rounded-3xl p-6 sm:p-7">
         <div class="flex items-center justify-between mb-5">
             <div>
                 <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
@@ -116,7 +116,7 @@
                     Fasilitas berstatus aktif yang siap diajukan untuk kegiatan akademik atau organisasi
                 </p>
             </div>
-            <a href="{{ route('facilities') }}"
+            <a href="{{ route('pengguna.facilities') }}"
                class="text-xs font-bold text-[#0F5143] dark:text-[#34D399] hover:underline flex items-center gap-1">
                 <span>Lihat Semua</span>
                 <span>&rarr;</span>

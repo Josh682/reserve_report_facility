@@ -180,4 +180,6 @@ Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna
 
         return view('pengguna.dashboard', compact('stats'));
     })->name('dashboard');
+
+    Route::get('/facilities', [PublicFacilityController::class, 'indexPengguna'])->name('facilities');
 });
