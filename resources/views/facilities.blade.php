@@ -5,8 +5,10 @@
 @push('styles')
 <style>
     html:not(.dark) .kezak-input {
-        border: 1.5px solid #94A3B8 !important;
-        background: rgba(255, 255, 255, 0.92) !important;
+        border: 1.5px solid rgba(148, 163, 184, 0.65) !important;
+        background: rgba(255, 255, 255, 0.55) !important;
+        backdrop-filter: blur(16px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
         color: #0F172A !important;
     }
     html:not(.dark) .kezak-input::placeholder {
@@ -14,7 +16,7 @@
     }
     html:not(.dark) .kezak-input:hover {
         border-color: #0F5143 !important;
-        background: #FFFFFF !important;
+        background: rgba(255, 255, 255, 0.75) !important;
     }
     html:not(.dark) .kezak-input:focus,
     html:not(.dark) .kezak-input:focus-within,
@@ -27,8 +29,10 @@
     }
 
     html.dark .kezak-input {
-        border: 1.5px solid rgba(255, 255, 255, 0.20) !important;
-        background: rgba(14, 32, 26, 0.70) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+        background: rgba(14, 32, 26, 0.60) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
         color: #FFFFFF !important;
     }
     html.dark .kezak-input::placeholder {
@@ -36,13 +40,13 @@
     }
     html.dark .kezak-input:hover {
         border-color: #10B981 !important;
-        background: rgba(18, 42, 34, 0.85) !important;
+        background: rgba(18, 42, 34, 0.75) !important;
     }
     html.dark .kezak-input:focus,
     html.dark .kezak-input:focus-within,
     html.dark .kezak-input:active,
     html.dark select.kezak-input:focus {
-        background-color: rgba(16, 44, 36, 0.90) !important;
+        background-color: rgba(16, 44, 36, 0.85) !important;
         border-color: #10B981 !important;
         box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.2) !important;
         outline: none !important;
@@ -60,12 +64,12 @@
     <!-- ==========================================
          1. HERO / WELCOME BANNER (FROSTED GLASS)
          ========================================== -->
-    <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+    <div class="glass-card-main rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
         <!-- Ambient radial glow inside hero -->
         <div class="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 border border-emerald-500/20 text-[#0F5143] dark:text-[#34D399] mb-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 border border-emerald-500/25 text-[#0F5143] dark:text-[#34D399] mb-3">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Mode Pengunjung</span>
             </div>
@@ -78,8 +82,8 @@
         </div>
 
         <div class="relative z-10 shrink-0 flex flex-col items-start md:items-end gap-2">
-            <div class="px-4 py-2.5 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-md border border-white/80 dark:border-white/15 shadow-2xs flex items-center gap-3">
-                <div class="w-8 h-8 rounded-xl bg-teal-500/15 dark:bg-teal-950/60 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center">
+            <div class="px-4 py-2.5 rounded-2xl glass-card-nested flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-teal-500/15 dark:bg-teal-950/60 border border-teal-500/20 dark:border-teal-500/30 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
@@ -103,7 +107,7 @@
          ========================================== -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
         <!-- 1. Total Fasilitas -->
-        <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] rounded-3xl p-5 sm:p-6 flex items-center justify-between transition-all hover:bg-white/80 dark:hover:bg-white/10">
+        <div class="glass-card-interactive rounded-3xl p-5 sm:p-6 flex items-center justify-between">
             <div>
                 <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Fasilitas</p>
                 <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white mt-1">{{ $stats['total'] }}</h3>
@@ -116,7 +120,7 @@
         </div>
 
         <!-- 2. Siap Digunakan (Aktif) -->
-        <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] rounded-3xl p-5 sm:p-6 flex items-center justify-between transition-all hover:bg-white/80 dark:hover:bg-white/10">
+        <div class="glass-card-interactive rounded-3xl p-5 sm:p-6 flex items-center justify-between">
             <div>
                 <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Siap Digunakan (Aktif)</p>
                 <h3 class="text-2xl sm:text-3xl font-extrabold text-emerald-800 dark:text-emerald-400 mt-1">{{ $stats['aktif'] }}</h3>
@@ -129,7 +133,7 @@
         </div>
 
         <!-- 3. Dalam Perbaikan -->
-        <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] rounded-3xl p-5 sm:p-6 flex items-center justify-between transition-all hover:bg-white/80 dark:hover:bg-white/10">
+        <div class="glass-card-interactive rounded-3xl p-5 sm:p-6 flex items-center justify-between">
             <div>
                 <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Dalam Perbaikan</p>
                 <h3 class="text-2xl sm:text-3xl font-extrabold text-rose-700 dark:text-rose-400 mt-1">{{ $stats['dalam_perbaikan'] }}</h3>
@@ -145,7 +149,7 @@
     <!-- ==========================================
          3. SEARCH & FILTER BAR (FROSTED GLASS)
          ========================================== -->
-    <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] rounded-3xl p-5 sm:p-6">
+    <div class="glass-card-main rounded-3xl p-5 sm:p-6">
         <form method="GET" action="{{ route('facilities') }}" class="space-y-4">
             <!-- Search Keyword Input with Icon -->
             <div class="relative">
@@ -215,7 +219,7 @@
                         Cari
                     </button>
                     @if (request()->hasAny(['search', 'tipe', 'lokasi', 'kapasitas', 'tanggal']))
-                        <a href="{{ route('facilities') }}" class="px-3 py-2 rounded-xl bg-white/70 dark:bg-white/10 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-800/40 text-rose-600 dark:text-rose-400 text-xs sm:text-sm font-semibold transition-all shadow-2xs text-center" title="Reset Filter">
+                        <a href="{{ route('facilities') }}" class="px-3 py-2 rounded-xl glass-card-nested hover:bg-rose-50/80 dark:hover:bg-rose-950/40 border border-rose-200/80 dark:border-rose-800/40 text-rose-600 dark:text-rose-400 text-xs sm:text-sm font-semibold transition-all shadow-2xs text-center" title="Reset Filter">
                             Reset
                         </a>
                     @endif
@@ -223,7 +227,6 @@
             </div>
         </form>
     </div>
-
     <!-- ==========================================
          4. CATALOG HEADER & FACILITY CARDS GRID
          ========================================== -->
@@ -236,7 +239,7 @@
                 </h2>
             </div>
             <div>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/70 dark:bg-white/10 backdrop-blur-md border border-white/80 dark:border-white/15 text-slate-600 dark:text-slate-300 shadow-2xs">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold glass-card-nested text-slate-600 dark:text-slate-300">
                     Menampilkan <strong class="text-slate-800 dark:text-white font-bold">{{ $facilities->count() }}</strong> dari <strong class="text-slate-800 dark:text-white font-bold">{{ $facilities->total() }}</strong> fasilitas
                 </span>
             </div>
@@ -245,7 +248,7 @@
         <!-- Facility Grid Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($facilities as $facility)
-                <div class="bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_40px_rgba(15,81,67,0.12)] dark:hover:shadow-[0_16px_40px_rgba(0,0,0,0.6)] hover:-translate-y-1 rounded-3xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 group">
+                <div class="glass-card-interactive rounded-3xl p-5 sm:p-6 flex flex-col justify-between group">
                     
                     <!-- Card Upper Area -->
                     <div>
@@ -292,14 +295,14 @@
 
                         <!-- Meta Pills (Lokasi & Kapasitas) -->
                         <div class="flex flex-wrap items-center gap-2 mt-2.5">
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-medium bg-white/70 dark:bg-white/10 border border-white/90 dark:border-white/10 text-slate-600 dark:text-slate-300 shadow-2xs">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-medium glass-card-nested text-slate-600 dark:text-slate-300">
                                 <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
                                 <span>{{ $facility->lokasi }}</span>
                             </span>
 
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-medium bg-white/70 dark:bg-white/10 border border-white/90 dark:border-white/10 text-slate-600 dark:text-slate-300 shadow-2xs">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-medium glass-card-nested text-slate-600 dark:text-slate-300">
                                 <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                 </svg>
@@ -316,9 +319,9 @@
                     </div>
 
                     <!-- Card Lower Area: Status & Action -->
-                    <div class="border-t border-white/70 dark:border-white/10 pt-4 mt-4">
+                    <div class="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                         <!-- Slot Status Box -->
-                        <div class="p-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-white/80 dark:border-white/10 flex items-center justify-between mb-3 text-xs shadow-2xs">
+                        <div class="p-3 rounded-2xl glass-card-nested flex items-center justify-between mb-3 text-xs">
                             @if ($facility->status === 'dalam_perbaikan')
                                 <span class="text-slate-500 dark:text-slate-400 font-medium">Status Pemeliharaan</span>
                                 <span class="text-rose-600 dark:text-rose-400 font-bold">Sedang perbaikan teknisi</span>
@@ -353,7 +356,7 @@
                 </div>
             @empty
                 <!-- Empty State -->
-                <div class="col-span-full bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] rounded-3xl p-10 sm:p-14 text-center">
+                <div class="col-span-full glass-card-main rounded-3xl p-10 sm:p-14 text-center">
                     <div class="w-16 h-16 rounded-3xl bg-teal-500/15 dark:bg-teal-950/60 border border-teal-500/20 dark:border-teal-500/30 text-[#0F5143] dark:text-[#34D399] mx-auto flex items-center justify-center mb-4 shadow-2xs">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -385,17 +388,17 @@
 <!-- ==========================================
      5. MODAL DETAIL 26 SLOT WAKTU (FROSTED GLASS)
      ========================================== -->
-<div id="scheduleModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto flex items-center justify-center" style="display: none;">
-    <div class="bg-white/90 dark:bg-[#081411]/95 backdrop-blur-2xl border border-white/80 dark:border-white/15 rounded-[28px] shadow-[0_25px_60px_rgba(0,0,0,0.22)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.85)] w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+<div id="scheduleModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 dark:bg-black/70 backdrop-blur-md p-4 overflow-y-auto flex items-center justify-center" style="display: none;">
+    <div class="bg-white/80 dark:bg-[#081411]/90 backdrop-blur-3xl border border-white/80 dark:border-white/15 rounded-[28px] shadow-[0_25px_60px_rgba(15,81,67,0.18)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.85)] w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
         
         <!-- Modal Header -->
-        <div class="p-5 sm:p-6 border-b border-white/60 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-md flex items-start justify-between sticky top-0 z-10">
+        <div class="p-5 sm:p-6 border-b border-white/60 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-md flex items-start justify-between sticky top-0 z-10">
             <div>
                 <span id="modalFacilityType" class="text-[11px] font-bold text-teal-700 dark:text-[#34D399] uppercase tracking-wider block"></span>
                 <h3 id="modalFacilityName" class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white mt-0.5"></h3>
                 <p id="modalFacilityLocation" class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1"></p>
             </div>
-            <button type="button" onclick="closeScheduleModal()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-500 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer" title="Tutup Dialog">
+            <button type="button" onclick="closeScheduleModal()" class="w-9 h-9 rounded-full glass-card-nested hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-500 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer" title="Tutup Dialog">
                 ✕
             </button>
         </div>
@@ -429,7 +432,7 @@
             </div>
 
             <!-- Privacy Notice (US 1) -->
-            <div class="p-3.5 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/80 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300 flex items-start gap-2.5 shadow-2xs">
+            <div class="p-3.5 rounded-2xl glass-card-nested text-xs text-slate-600 dark:text-slate-300 flex items-start gap-2.5">
                 <svg class="w-4 h-4 text-teal-700 dark:text-[#34D399] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                 </svg>
@@ -440,8 +443,8 @@
         </div>
 
         <!-- Modal Footer -->
-        <div class="p-4 sm:p-5 border-t border-white/60 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-md flex items-center justify-between">
-            <button type="button" onclick="closeScheduleModal()" class="px-4 py-2 rounded-xl bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-all shadow-2xs cursor-pointer">
+        <div class="p-4 sm:p-5 border-t border-white/60 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-md flex items-center justify-between">
+            <button type="button" onclick="closeScheduleModal()" class="px-4 py-2 rounded-xl glass-card-nested hover:bg-white/90 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-all cursor-pointer">
                 Tutup
             </button>
 

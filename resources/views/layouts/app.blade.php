@@ -55,11 +55,11 @@
 
         .kezak-input {
             border-radius: 12px;
-            border: 1.5px solid #94A3B8;
-            background: rgba(255, 255, 255, 0.90);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(255, 255, 255, 0.65);
+            border: 1.5px solid rgba(148, 163, 184, 0.65);
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(255, 255, 255, 0.70);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             color: #0F172A;
         }
@@ -67,7 +67,7 @@
             color: #64748B;
         }
         .kezak-input:hover {
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.75);
             border-color: #0F5143;
         }
         .kezak-input:focus,
@@ -78,6 +78,43 @@
             border-color: #10B981 !important;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(0, 0, 0, 0.02) !important;
             outline: none !important;
+        }
+
+        /* Frosted Glass System Classes */
+        .glass-shell {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.70);
+            box-shadow: 0 25px 60px rgba(15, 81, 67, 0.08), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95);
+        }
+        .glass-card-main {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.35) 100%);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.70);
+            box-shadow: 0 10px 30px rgba(15, 81, 67, 0.05), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95), inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
+        }
+        .glass-card-interactive {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.38) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 8px 24px rgba(15, 81, 67, 0.04), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95), inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card-interactive:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0.50) 100%);
+            border-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 16px 36px rgba(15, 81, 67, 0.10), inset 0 1.5px 1.5px 0 #FFFFFF, inset -1px 0 1px 0 rgba(255, 255, 255, 0.60);
+            transform: translateY(-2px);
+        }
+        .glass-card-nested {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(14px) saturate(160%);
+            -webkit-backdrop-filter: blur(14px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.80);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
         }
 
         /* Light Mode Autofill / Autocomplete Override (Soft Mint Green #E8F8F3) */
@@ -204,7 +241,7 @@
          MASTER FLOATING GLASS CONTAINER WINDOW
          (Selaras dengan Admin Dashboard & DESIGN.md)
          ========================================== -->
-    <div class="w-full max-w-[1420px] mx-auto bg-white/45 dark:bg-[#081411]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-[0_25px_60px_rgba(15,81,67,0.12)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col gap-6 sm:gap-8 my-2 sm:my-6 min-h-[880px]">
+    <div class="w-full max-w-[1420px] mx-auto glass-shell rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col gap-6 sm:gap-8 my-2 sm:my-6 min-h-[880px]">
 
         <!-- ==========================================
              TOP HEADER DALAM MASTER CARD
@@ -213,7 +250,7 @@
             
             <!-- Brand Logo & Title -->
             <a href="{{ route('facilities') }}" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-2xl bg-white/80 dark:bg-white/10 backdrop-blur-md border border-white/90 dark:border-white/10 shadow-xs flex items-center justify-center text-[#0F5143] dark:text-[#34D399] group-hover:scale-105 transition-transform">
+                <div class="w-10 h-10 rounded-2xl glass-card-nested flex items-center justify-center text-[#0F5143] dark:text-[#34D399] group-hover:scale-105 transition-transform">
                     <svg class="w-6 h-6 text-[#0F5143] dark:text-[#34D399]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                     </svg>
@@ -234,7 +271,7 @@
                 @include('partials.theme-toggle')
 
                 @auth
-                    <div class="flex items-center gap-3 bg-white/70 dark:bg-white/10 backdrop-blur-md border border-white/80 dark:border-white/15 shadow-2xs rounded-2xl p-1.5 pr-3">
+                    <div class="flex items-center gap-3 glass-card-nested rounded-2xl p-1.5 pr-3">
                         <div class="w-8 h-8 rounded-xl bg-[#0F5143] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                             {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                         </div>
@@ -265,7 +302,7 @@
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-white/70 dark:bg-white/10 hover:bg-white/95 dark:hover:bg-white/20 border border-white/80 dark:border-white/15 transition-all shadow-2xs">
+                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white glass-card-nested hover:bg-white/90 dark:hover:bg-white/20 transition-all">
                         Masuk Akun
                     </a>
                     <a href="{{ route('register') }}" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#0F5143] hover:bg-[#146353] shadow-xs hover:shadow-md transition-all">

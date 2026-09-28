@@ -865,3 +865,169 @@ html.dark select:autofill:active {
     }
 
 }
+
+/* =======================================================
+   FACILITYHUB FROSTED GLASSMORPHISM DESIGN SYSTEM
+   Standardized as per DESIGN.md Section 1, 3.2, 3.3, 3.4 & 3.6
+   ======================================================= */
+
+/* Master Shell Container */
+.glass-shell {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.70);
+    box-shadow: 
+        0 25px 60px rgba(15, 81, 67, 0.08),
+        inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95);
+}
+html.dark .glass-shell {
+    background: rgba(8, 20, 17, 0.65) !important;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.85),
+        inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Primary Glass Card (Hero Banners, Filter Bar, Modals, Empty State) */
+.glass-card-main {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.35) 100%);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.70);
+    box-shadow: 
+        0 10px 30px rgba(15, 81, 67, 0.05),
+        inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95),
+        inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
+}
+html.dark .glass-card-main {
+    background: linear-gradient(135deg, rgba(12, 26, 22, 0.75) 0%, rgba(6, 16, 13, 0.85) 100%) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 
+        0 12px 36px rgba(0, 0, 0, 0.55),
+        inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.12),
+        inset -1px 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Interactive Glass Card (KPI Summary Cards, Catalog Facility Cards) */
+.glass-card-interactive {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.38) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 
+        0 8px 24px rgba(15, 81, 67, 0.04),
+        inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95),
+        inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-interactive:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0.50) 100%);
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 
+        0 16px 36px rgba(15, 81, 67, 0.10),
+        inset 0 1.5px 1.5px 0 #FFFFFF,
+        inset -1px 0 1px 0 rgba(255, 255, 255, 0.60);
+    transform: translateY(-2px);
+}
+html.dark .glass-card-interactive {
+    background: linear-gradient(135deg, rgba(14, 30, 25, 0.70) 0%, rgba(8, 18, 15, 0.80) 100%) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.45),
+        inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.10),
+        inset -1px 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+html.dark .glass-card-interactive:hover {
+    background: linear-gradient(135deg, rgba(18, 38, 32, 0.82) 0%, rgba(10, 24, 20, 0.90) 100%) !important;
+    border-color: rgba(52, 211, 153, 0.35) !important;
+    box-shadow: 
+        0 16px 40px rgba(0, 0, 0, 0.70),
+        inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.18),
+        inset -1px 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    transform: translateY(-2px);
+}
+
+/* Nested Glass Pills, Badges & Containers */
+.glass-card-nested {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.80);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.03),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
+}
+html.dark .glass-card-nested {
+    background: rgba(14, 32, 26, 0.60) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.35),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Standardized Frosted Glass Form Inputs */
+.kezak-input {
+    border-radius: 12px;
+    border: 1.5px solid rgba(148, 163, 184, 0.65);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 
+        inset 0 1px 2px rgba(0, 0, 0, 0.03), 
+        0 1px 2px rgba(255, 255, 255, 0.70);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #0F172A;
+}
+.kezak-input::placeholder {
+    color: #64748B;
+}
+.kezak-input:hover {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: #0F5143;
+}
+.kezak-input:focus,
+.kezak-input:focus-within,
+.kezak-input:active,
+select.kezak-input:focus {
+    background-color: #E8F8F3 !important;
+    border-color: #10B981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(0, 0, 0, 0.02) !important;
+    outline: none !important;
+}
+
+html.dark .kezak-input {
+    background: rgba(14, 32, 26, 0.60) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #FFFFFF !important;
+    box-shadow: 
+        inset 0 1px 2px rgba(0, 0, 0, 0.35), 
+        0 1px 1px rgba(255, 255, 255, 0.04) !important;
+}
+html.dark .kezak-input::placeholder { color: #94A3B8 !important; }
+html.dark .kezak-input:hover {
+    background: rgba(18, 42, 34, 0.75) !important;
+    border-color: #10B981 !important;
+}
+html.dark .kezak-input:focus,
+html.dark .kezak-input:focus-within,
+html.dark .kezak-input:active,
+html.dark select.kezak-input:focus {
+    background-color: rgba(16, 44, 36, 0.85) !important;
+    border-color: #10B981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.2) !important;
+    color: #FFFFFF !important;
+    outline: none !important;
+}
+html.dark select.kezak-input option {
+    background-color: #071D18 !important;
+    color: #F8FAFC !important;
+}
