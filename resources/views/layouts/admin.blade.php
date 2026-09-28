@@ -16,8 +16,9 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
+    @include('partials.theme-script')
 </head>
-<body class="bg-gradient-to-br from-[#0F3830] via-[#1E5247] to-[#0A2621] min-h-screen relative overflow-x-hidden font-sans antialiased text-slate-800 p-3 sm:p-5 lg:p-7 flex flex-col justify-center" style="font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
+<body class="bg-gradient-to-br from-[#0F3830] via-[#1E5247] to-[#0A2621] min-h-screen relative overflow-x-hidden font-sans antialiased text-slate-800 dark:text-slate-100 p-3 sm:p-5 lg:p-7 flex flex-col justify-center" style="font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
 
     <!-- ==========================================
          AMBIENT BLOBS (Kunci Efek Kaca Frosted)
@@ -185,20 +186,22 @@
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <div class="hidden md:flex items-center gap-2 text-xs text-slate-700 bg-white/60 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-white/80 shadow-xs">
-                        <svg class="w-3.5 h-3.5 text-[#0F5143]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="hidden md:flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 bg-white/60 dark:bg-white/5 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-white/80 dark:border-white/10 shadow-xs">
+                        <svg class="w-3.5 h-3.5 text-[#0F5143] dark:text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
                         <span>{{ now()->translatedFormat('l, d F Y') }}</span>
                     </div>
 
-                    <div class="flex items-center gap-2.5 bg-white/70 backdrop-blur-md border border-white/80 pl-2 pr-3.5 py-1.5 rounded-2xl shadow-xs">
+                    @include('partials.theme-toggle')
+
+                    <div class="flex items-center gap-2.5 bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/80 dark:border-white/10 pl-2 pr-3.5 py-1.5 rounded-2xl shadow-xs">
                         <div class="w-8 h-8 rounded-xl bg-[#0F5143] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                             {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
                         </div>
                         <div class="text-left leading-tight hidden sm:block">
-                            <span class="block text-xs font-bold text-slate-800">{{ auth()->user()->name ?? 'Administrator' }}</span>
-                            <span class="block text-[10px] font-semibold text-emerald-800">Super Admin</span>
+                            <span class="block text-xs font-bold text-slate-800 dark:text-white">{{ auth()->user()->name ?? 'Administrator' }}</span>
+                            <span class="block text-[10px] font-semibold text-emerald-800 dark:text-emerald-400">Super Admin</span>
                         </div>
                     </div>
                 </div>

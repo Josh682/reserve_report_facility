@@ -95,6 +95,29 @@
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
         }
+        .theme-icon-sun, .theme-icon-moon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        html:not(.dark) .theme-toggle-pill .theme-icon-sun,
+        html:not(.dark) #theme-icon-sun {
+            background-color: #D1FAE5 !important;
+            border: 1px solid rgba(52, 211, 153, 0.6) !important;
+            color: #F59E0B !important;
+            box-shadow: 0 1px 3px rgba(16, 185, 129, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+        }
+        html:not(.dark) .theme-toggle-pill .theme-icon-moon,
+        html:not(.dark) #theme-icon-moon {
+            background-color: transparent !important;
+            border: 1px solid transparent !important;
+            color: #64748B !important;
+            box-shadow: none !important;
+        }
 
         .auth-tab-track {
             background: rgba(15, 23, 42, 0.05);
@@ -319,6 +342,24 @@
             background: rgba(0, 0, 0, 0.40) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+        }
+        html.dark .theme-toggle-pill .theme-icon-sun,
+        html.dark #theme-icon-sun {
+            background-color: transparent !important;
+            border: 1px solid transparent !important;
+            color: #F59E0B !important;
+            box-shadow: none !important;
+        }
+        html.dark .theme-toggle-pill .theme-icon-sun:hover,
+        html.dark #theme-icon-sun:hover {
+            color: #FBBF24 !important;
+        }
+        html.dark .theme-toggle-pill .theme-icon-moon,
+        html.dark #theme-icon-moon {
+            background-color: #059669 !important;
+            border: 1px solid rgba(52, 211, 153, 0.4) !important;
+            color: #A7F3D0 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
         }
 
         html.dark .auth-tab-track {
@@ -578,24 +619,26 @@
             if (isDark) {
                 html.classList.add('dark');
                 try { localStorage.setItem('facilityhub_theme', 'dark'); } catch(e) {}
+                document.cookie = 'theme=dark;path=/;max-age=' + (60 * 60 * 24 * 365) + ';SameSite=Lax';
                 if (toggleBtn) {
                     toggleBtn.setAttribute('aria-label', 'Beralih ke Mode Terang');
                     toggleBtn.setAttribute('title', 'Beralih ke Mode Terang');
                 }
                 if (sunIcon && moonIcon) {
-                    sunIcon.className = 'w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-200 transition-all duration-200';
-                    moonIcon.className = 'w-7 h-7 rounded-lg flex items-center justify-center bg-emerald-600 text-white shadow-xs transition-all duration-200';
+                    sunIcon.className = 'theme-icon-sun w-7 h-7 rounded-lg flex items-center justify-center text-amber-500 hover:text-amber-400 transition-all duration-200';
+                    moonIcon.className = 'theme-icon-moon w-7 h-7 rounded-lg flex items-center justify-center bg-emerald-600 text-emerald-100 shadow-xs transition-all duration-200';
                 }
             } else {
                 html.classList.remove('dark');
                 try { localStorage.setItem('facilityhub_theme', 'light'); } catch(e) {}
+                document.cookie = 'theme=light;path=/;max-age=' + (60 * 60 * 24 * 365) + ';SameSite=Lax';
                 if (toggleBtn) {
                     toggleBtn.setAttribute('aria-label', 'Beralih ke Mode Gelap');
                     toggleBtn.setAttribute('title', 'Beralih ke Mode Gelap');
                 }
                 if (sunIcon && moonIcon) {
-                    sunIcon.className = 'w-7 h-7 rounded-lg flex items-center justify-center bg-white shadow-xs text-amber-500 transition-all duration-200';
-                    moonIcon.className = 'w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all duration-200';
+                    sunIcon.className = 'theme-icon-sun w-7 h-7 rounded-lg flex items-center justify-center bg-[#D1FAE5] border border-emerald-300/80 shadow-xs text-amber-500 transition-all duration-200';
+                    moonIcon.className = 'theme-icon-moon w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all duration-200';
                 }
             }
         }

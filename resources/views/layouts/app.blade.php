@@ -16,6 +16,7 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
+    @include('partials.theme-script')
 
     <style>
         /* =======================================================
@@ -115,7 +116,7 @@
     </style>
     @stack('styles')
 </head>
-<body class="min-h-screen relative overflow-x-hidden font-sans antialiased text-slate-800 p-3 sm:p-5 lg:p-7 flex flex-col justify-center">
+<body class="min-h-screen relative overflow-x-hidden font-sans antialiased text-slate-800 dark:text-slate-100 p-3 sm:p-5 lg:p-7 flex flex-col justify-center">
 
     <!-- ==========================================
          AMBIENT BLOBS (Kunci Efek Kaca Frosted)
@@ -128,33 +129,35 @@
          MASTER FLOATING GLASS CONTAINER WINDOW
          (Selaras dengan Admin Dashboard & DESIGN.md)
          ========================================== -->
-    <div class="w-full max-w-[1420px] mx-auto bg-white/45 backdrop-blur-2xl border border-white/50 shadow-[0_25px_60px_rgba(15,81,67,0.12)] rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col gap-6 sm:gap-8 my-2 sm:my-6 min-h-[880px]">
+    <div class="w-full max-w-[1420px] mx-auto bg-white/45 dark:bg-[#081411]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-[0_25px_60px_rgba(15,81,67,0.12)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col gap-6 sm:gap-8 my-2 sm:my-6 min-h-[880px]">
 
         <!-- ==========================================
              TOP HEADER DALAM MASTER CARD
              ========================================== -->
-        <header class="flex items-center justify-between pb-5 border-b border-white/40 gap-4">
+        <header class="flex items-center justify-between pb-5 border-b border-white/40 dark:border-white/10 gap-4">
             
             <!-- Brand Logo & Title -->
             <a href="{{ route('facilities') }}" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-2xl bg-white/80 backdrop-blur-md border border-white/90 shadow-xs flex items-center justify-center text-[#0F5143] group-hover:scale-105 transition-transform">
-                    <svg class="w-6 h-6 text-[#0F5143]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <div class="w-10 h-10 rounded-2xl bg-white/80 dark:bg-white/10 backdrop-blur-md border border-white/90 dark:border-white/10 shadow-xs flex items-center justify-center text-[#0F5143] dark:text-[#34D399] group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6 text-[#0F5143] dark:text-[#34D399]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                     </svg>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-800">FacilityHub</span>
-                        <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-500/15 border border-teal-500/20 text-[#0F5143]">
+                        <span class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-800 dark:text-white">FacilityHub</span>
+                        <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-500/15 border border-teal-500/20 text-[#0F5143] dark:text-[#34D399]">
                             Katalog Fasilitas
                         </span>
                     </div>
-                    <p class="text-[11px] text-slate-500 hidden sm:block">Sistem Reservasi & Pelaporan Fasilitas Kampus</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Sistem Reservasi & Pelaporan Fasilitas Kampus</p>
                 </div>
             </a>
 
             <!-- Auth Status / Actions -->
             <div class="flex items-center gap-2.5">
+                @include('partials.theme-toggle')
+
                 @auth
                     <div class="flex items-center gap-3 bg-white/70 backdrop-blur-md border border-white/80 shadow-2xs rounded-2xl p-1.5 pr-3">
                         <div class="w-8 h-8 rounded-xl bg-[#0F5143] text-white flex items-center justify-center font-bold text-xs shadow-xs">
