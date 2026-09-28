@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RekapController extends Controller
 {
@@ -349,26 +350,178 @@ class RekapController extends Controller
     }
 
     /**
-     * Ekspor data rekapitulasi ke format CSV.
+     * Ekspor data rekapitulasi ke format CSV (dengan UTF-8 BOM).
      */
-    public function exportCsv(Request $request): Response
+    public function exportCsv(Request $request): StreamedResponse
     {
-        return response('Export CSV');
+        $filterParams = $this->resolveDateFilter($request);
+
+        $occupancyData = $this->getOccupancyData($filterParams['start_date'], $filterParams['end_date']);
+        $occupancySummary = $this->getOccupancySummary($occupancyData);
+
+        $damageData = $this->getDamageData($filterParams['start_date'], $filterParams['end_date']);
+        $locationDamageData = $this->getLocationDamageData($damageData);
+        $damageSummary = $this->getDamageSummary($damageData, $locationDamageData);
+
+        $filename = sprintf('rekap-fasilitas-%s.csv', now()->format('Ymd-His'));
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $periodeLabel = $filterParams['start_date']
+            ? Carbon::parse($filterParams['start_date'])->format('d/m/Y').' s/d '.Carbon::parse($filterParams['end_date'])->format('d/m/Y')
+            : 'Semua Periode';
+
+        return response()->stream(function () use ($periodeLabel, $occupancyData, $occupancySummary, $damageData, $locationDamageData, $damageSummary, $request) {
+            $handle = fopen('php://output', 'w');
+
+            // Output UTF-8 BOM untuk kompatibilitas Microsoft Excel
+            fwrite($handle, "\xEF\xBB\xBF");
+
+            // 1. Header info periode & waktu ekspor
+            fputcsv($handle, ['LAPORAN REKAPITULASI OKUPANSI FASILITAS & FREKUENSI KERUSAKAN']);
+            fputcsv($handle, ['Biro Sarana dan Prasarana Kampus - FacilityHub']);
+            fputcsv($handle, ['Periode Filter', $periodeLabel]);
+            fputcsv($handle, ['Waktu Ekspor', now()->format('Y-m-d H:i:s')]);
+            fputcsv($handle, ['Administrator', $request->user()?->name ?? 'Administrator']);
+            fputcsv($handle, []);
+
+            // Ringkasan KPI Eksekutif
+            fputcsv($handle, ['RINGKASAN METRIK UTAMA (KPI)']);
+            fputcsv($handle, ['Total Jam Pakai', $occupancySummary['total_jam'].' Jam']);
+            fputcsv($handle, ['Total Reservasi Disetujui', $occupancySummary['total_reservasi']]);
+            fputcsv($handle, ['Fasilitas Teraktif', $occupancySummary['fasilitas_paling_sering']]);
+            fputcsv($handle, ['Total Insiden Kerusakan', $damageSummary['total_insiden']]);
+            fputcsv($handle, ['Laporan Selesai Ditangani', $damageSummary['total_selesai']]);
+            fputcsv($handle, ['Tingkat Resolusi Kerusakan', $damageSummary['persentase_resolusi'].'%']);
+            fputcsv($handle, []);
+
+            // 2. Bagian A: Tabel Rekapitulasi Okupansi Fasilitas
+            fputcsv($handle, ['BAGIAN A: TABEL REKAPITULASI OKUPANSI FASILITAS']);
+            fputcsv($handle, ['No', 'Nama Fasilitas', 'Tipe', 'Lokasi', 'Kapasitas', 'Total Booking', 'Total Jam Pakai', 'Pemesan Teraktif']);
+            $noA = 1;
+            foreach ($occupancyData as $item) {
+                fputcsv($handle, [
+                    $noA++,
+                    $item['facility_nama'],
+                    ucfirst($item['facility_tipe']),
+                    $item['facility_lokasi'],
+                    $item['facility_kapasitas'],
+                    $item['total_reservasi'],
+                    $item['total_jam'],
+                    $item['pemesan_terbanyak'],
+                ]);
+            }
+            fputcsv($handle, []);
+
+            // 3. Bagian B: Tabel Frekuensi Kerusakan per Fasilitas
+            fputcsv($handle, ['BAGIAN B: TABEL FREKUENSI KERUSAKAN PER FASILITAS']);
+            fputcsv($handle, ['No', 'Nama Fasilitas', 'Lokasi', 'Total Laporan', 'Fisik', 'Kebersihan', 'Lainnya', 'Selesai', 'Belum Selesai', '% Resolusi']);
+            $noB = 1;
+            foreach ($damageData as $item) {
+                fputcsv($handle, [
+                    $noB++,
+                    $item['facility_nama'],
+                    $item['facility_lokasi'],
+                    $item['total_laporan'],
+                    $item['kerusakan'],
+                    $item['kebersihan'],
+                    $item['lainnya'],
+                    $item['selesai'],
+                    $item['belum_selesai'],
+                    $item['tingkat_penyelesaian'].'%',
+                ]);
+            }
+            fputcsv($handle, []);
+
+            // 4. Bagian C: Tabel Kerusakan per Lokasi/Gedung
+            fputcsv($handle, ['BAGIAN C: TABEL KERUSAKAN PER LOKASI / GEDUNG']);
+            fputcsv($handle, ['No', 'Lokasi Gedung', 'Total Insiden', 'Selesai', '% Resolusi']);
+            $noC = 1;
+            foreach ($locationDamageData as $item) {
+                fputcsv($handle, [
+                    $noC++,
+                    $item['lokasi'],
+                    $item['total_insiden'],
+                    $item['selesai'],
+                    $item['tingkat_penyelesaian'].'%',
+                ]);
+            }
+
+            fclose($handle);
+        }, 200, $headers);
     }
 
     /**
-     * Ekspor data rekapitulasi ke format Excel.
+     * Ekspor data rekapitulasi ke format Excel (Native HTML/XML Table).
      */
     public function exportExcel(Request $request): Response
     {
-        return response('Export Excel');
+        $filterParams = $this->resolveDateFilter($request);
+
+        $occupancyData = $this->getOccupancyData($filterParams['start_date'], $filterParams['end_date']);
+        $occupancySummary = $this->getOccupancySummary($occupancyData);
+
+        $damageData = $this->getDamageData($filterParams['start_date'], $filterParams['end_date']);
+        $locationDamageData = $this->getLocationDamageData($damageData);
+        $damageSummary = $this->getDamageSummary($damageData, $locationDamageData);
+
+        $filename = sprintf('rekap-fasilitas-%s.xls', now()->format('Ymd-His'));
+
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'max-age=0',
+            'Expires' => '0',
+        ];
+
+        $periodeLabel = $filterParams['start_date']
+            ? Carbon::parse($filterParams['start_date'])->format('d/m/Y').' s/d '.Carbon::parse($filterParams['end_date'])->format('d/m/Y')
+            : 'Semua Periode';
+
+        return response()->view('admin.rekap.excel', compact(
+            'filterParams',
+            'periodeLabel',
+            'occupancyData',
+            'occupancySummary',
+            'damageData',
+            'locationDamageData',
+            'damageSummary'
+        ), 200, $headers);
     }
 
     /**
-     * Pratinjau cetak dokumen rekapitulasi.
+     * Pratinjau cetak dokumen rekapitulasi (PDF Print Friendly).
      */
-    public function print(Request $request): Response
+    public function print(Request $request): View
     {
-        return response('Print Preview');
+        $filterParams = $this->resolveDateFilter($request);
+
+        $occupancyData = $this->getOccupancyData($filterParams['start_date'], $filterParams['end_date']);
+        $occupancySummary = $this->getOccupancySummary($occupancyData);
+
+        $damageData = $this->getDamageData($filterParams['start_date'], $filterParams['end_date']);
+        $locationDamageData = $this->getLocationDamageData($damageData);
+        $damageSummary = $this->getDamageSummary($damageData, $locationDamageData);
+
+        $periodeLabel = $filterParams['start_date']
+            ? Carbon::parse($filterParams['start_date'])->format('d/m/Y').' — '.Carbon::parse($filterParams['end_date'])->format('d/m/Y')
+            : 'Semua Periode';
+
+        return view('admin.rekap.print', compact(
+            'filterParams',
+            'periodeLabel',
+            'occupancyData',
+            'occupancySummary',
+            'damageData',
+            'locationDamageData',
+            'damageSummary'
+        ));
     }
 }
