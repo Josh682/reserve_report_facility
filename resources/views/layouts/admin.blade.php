@@ -63,8 +63,8 @@
                     $sidebarDamagedCount = \App\Models\Facility::where('status', 'dalam_perbaikan')->count();
                 @endphp
 
-                <!-- Navigation Menu (Hanya Dashboard, Pengelolaan Fasilitas, dan Pengelolaan Akun) -->
-                <nav id="nav-links" class="space-y-1.5 hidden lg:block">
+                <!-- Navigation Menu -->
+                <nav id="admin-nav-links" class="space-y-1.5 hidden lg:block">
                     <!-- 1. Dashboard -->
                     <a href="{{ route('admin.dashboard') }}"
                        class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('admin.dashboard') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 hover:bg-white/40 font-medium text-sm' }}">
@@ -108,6 +108,15 @@
                                 {{ $sidebarPendingCount }}
                             </span>
                         @endif
+                    </a>
+
+                    <!-- 4. Rekapitulasi & Ekspor -->
+                    <a href="{{ route('admin.rekap.index') }}"
+                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('admin.rekap.*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 hover:bg-white/40 font-medium text-sm' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('admin.rekap.*') ? 'text-white' : 'text-slate-600 group-hover:text-slate-900' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span>Rekapitulasi & Ekspor</span>
                     </a>
                 </nav>
 
@@ -244,7 +253,7 @@
 
     <script>
         function toggleSidebar() {
-            const nav = document.getElementById('nav-links');
+            const nav = document.getElementById('admin-nav-links') || document.getElementById('nav-links');
             const backdrop = document.getElementById('admin-sidebar-backdrop');
             if (nav) {
                 nav.classList.toggle('hidden');

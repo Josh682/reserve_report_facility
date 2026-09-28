@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FacilityController;
+use App\Http\Controllers\Admin\RekapController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -156,6 +157,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->name('users.reject');
     Route::resource('users', UserController::class)
         ->only(['index', 'create', 'store']);
+
+    Route::get('/rekap', [RekapController::class, 'index'])->name('rekap.index');
+    Route::get('/rekap/export-csv', [RekapController::class, 'exportCsv'])->name('rekap.export-csv');
+    Route::get('/rekap/export-excel', [RekapController::class, 'exportExcel'])->name('rekap.export-excel');
+    Route::get('/rekap/print', [RekapController::class, 'print'])->name('rekap.print');
 });
 
 Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
