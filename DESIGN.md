@@ -154,6 +154,24 @@ Input transparan yang beradaptasi dengan warna latar, berubah menjadi hijau muda
     outline: none;
 }
 
+/* Mode Terang: Autofill / Terisi Otomatis Browser (Menggantikan warna kuning default menjadi hijau muda) */
+.kezak-input:-webkit-autofill,
+.kezak-input:-webkit-autofill:hover, 
+.kezak-input:-webkit-autofill:focus, 
+.kezak-input:-webkit-autofill:active,
+.kezak-input:autofill,
+.kezak-input:autofill:hover,
+.kezak-input:autofill:focus,
+.kezak-input:autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+    box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+    -webkit-text-fill-color: #0F5143 !important;
+    color: #0F5143 !important;
+    border-color: #10B981 !important;
+    caret-color: #0F5143 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Mode Gelap */
 html.dark .kezak-input {
     background: rgba(14, 32, 26, 0.60) !important;
@@ -170,6 +188,24 @@ html.dark .kezak-input:active {
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.2) !important;
     color: #FFFFFF !important;
     outline: none;
+}
+
+/* Mode Gelap: Autofill / Terisi Otomatis Browser (Deep Emerald Green) */
+html.dark .kezak-input:-webkit-autofill,
+html.dark .kezak-input:-webkit-autofill:hover, 
+html.dark .kezak-input:-webkit-autofill:focus, 
+html.dark .kezak-input:-webkit-autofill:active,
+html.dark .kezak-input:autofill,
+html.dark .kezak-input:autofill:hover,
+html.dark .kezak-input:autofill:focus,
+html.dark .kezak-input:autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
+    box-shadow: 0 0 0 1000px #062E25 inset !important;
+    -webkit-text-fill-color: #ECFDF5 !important;
+    color: #ECFDF5 !important;
+    border-color: #059669 !important;
+    caret-color: #34D399 !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 ```
 
