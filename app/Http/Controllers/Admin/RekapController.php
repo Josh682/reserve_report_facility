@@ -166,6 +166,8 @@ class RekapController extends Controller
                 'facility_nama' => $facility->nama,
                 'facility_tipe' => $facility->tipe,
                 'facility_lokasi' => $facility->lokasi,
+                'facility_kapasitas' => $facility->kapasitas,
+                'kapasitas' => $facility->kapasitas,
                 'total_reservasi' => $totalReservasi,
                 'total_menit' => $totalMenit,
                 'total_jam' => $totalJam,
@@ -195,7 +197,9 @@ class RekapController extends Controller
 
         return [
             'total_jam' => $totalJam,
+            'total_hours' => $totalJam,
             'total_reservasi' => $totalReservasi,
+            'total_reservations' => $totalReservasi,
             'fasilitas_paling_sering' => $topFacilityName,
             'fasilitas_terfavorit' => $topFacilityName,
             'most_used_facility' => $topFacilityName,
@@ -329,14 +333,18 @@ class RekapController extends Controller
         return [
             'total_insiden' => $totalInsiden,
             'total_laporan' => $totalInsiden,
+            'total_reports' => $totalInsiden,
             'total_selesai' => $totalSelesai,
+            'resolved_reports' => $totalSelesai,
             'total_belum_selesai' => $totalBelumSelesai,
             'persentase_resolusi' => $persentaseResolusi,
+            'resolution_rate' => $persentaseResolusi,
             'tingkat_penyelesaian' => $persentaseResolusi,
             'persentase_selesai' => $persentaseResolusi,
             'lokasi_paling_rawan' => $lokasiPalingRawan,
             'lokasi_tersering' => $lokasiPalingRawan,
             'gedung_paling_rawan' => $lokasiPalingRawan,
+            'most_damaged_location' => $lokasiPalingRawan,
         ];
     }
 
