@@ -59,7 +59,7 @@
             </p>
         </div>
 
-        <div class="relative z-10 shrink-0">
+        <div class="relative z-10 shrink-0 flex items-center gap-2">
             <a href="{{ route('facilities') }}"
                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-white/70 dark:bg-white/10 hover:bg-white/90 dark:hover:bg-white/20 transition-all border border-white/80 dark:border-white/15 shadow-xs">
                 <svg class="w-4 h-4 text-[#0F5143] dark:text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,20 +67,40 @@
                 </svg>
                 <span>Katalog Fasilitas</span>
             </a>
+
+            <button type="button"
+                    id="toggleReportFormBtn"
+                    onclick="toggleReportForm()"
+                    class="kezak-btn-primary inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold shadow-md cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span id="toggleReportButtonText">Buat Laporan Baru</span>
+            </button>
         </div>
     </div>
 
     {{-- GRID KONTEN FORMULIR & PANDUAN --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+    <div class="grid grid-cols-1 gap-6 sm:gap-8 items-start">
 
-        {{-- FORMULIR UTAMA (2 KOLOM) --}}
-        <div class="lg:col-span-2">
+        {{-- FORMULIR UTAMA --}}
+        <div id="reportFormWrapper" class="w-full {{ ($openForm || $errors->any()) ? 'block' : 'hidden' }}">
             <div class="p-6 sm:p-8 rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/70 dark:border-white/10 shadow-lg space-y-6">
-                <div class="pb-4 border-b border-white/40 dark:border-white/10">
-                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Detail Kerusakan / Kendala</h2>
-                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-                        Isi formulir berikut dengan spesifik untuk mempercepat tindakan petugas di lapangan.
-                    </p>
+                <div class="pb-4 border-b border-white/40 dark:border-white/10 flex items-center justify-between gap-3">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Detail Kerusakan / Kendala</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
+                            Isi formulir berikut dengan spesifik untuk mempercepat tindakan petugas di lapangan.
+                        </p>
+                    </div>
+
+                    @if (!$openForm)
+                        <button type="button" onclick="toggleReportForm()" class="inline-flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg cursor-pointer" aria-label="Tutup formulir laporan">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    @endif
                 </div>
 
                 <form id="reportForm" method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-5">
@@ -229,9 +249,9 @@
             </div>
         </div>
 
-        {{-- SIDEBAR INFORMASI PROSEDUR PELAPORAN --}}
-        <div class="space-y-4">
-            <div class="p-6 rounded-3xl bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-xs space-y-4">
+        {{-- INFORMASI PROSEDUR PELAPORAN --}}
+        <div class="space-y-6 sm:space-y-8 w-full">
+            <div class="p-6 sm:p-8 rounded-3xl bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-xs space-y-4 w-full h-auto">
                 <div class="flex items-center gap-3 mb-2">
                     <div class="w-9 h-9 rounded-2xl bg-emerald-100/80 dark:bg-emerald-950/60 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center shadow-2xs">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -269,7 +289,7 @@
                 </ol>
             </div>
 
-            <div class="p-5 rounded-3xl bg-amber-500/10 backdrop-blur-xl border border-amber-400/40 text-xs text-amber-950 dark:text-amber-200 shadow-xs">
+            <div class="p-6 sm:p-8 rounded-3xl bg-amber-500/10 backdrop-blur-xl border border-amber-400/40 text-xs text-amber-950 dark:text-amber-200 shadow-xs w-full h-auto">
                 <div class="font-extrabold flex items-center gap-2 mb-1.5 text-amber-800 dark:text-amber-300">
                     <svg class="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -523,7 +543,47 @@
 </div>
 
 <script>
+    function toggleReportForm() {
+        const wrapper = document.getElementById('reportFormWrapper');
+        const buttonText = document.getElementById('toggleReportButtonText');
+
+        if (!wrapper) return;
+
+        if (wrapper.classList.contains('hidden')) {
+            wrapper.classList.remove('hidden');
+            if (buttonText) buttonText.textContent = 'Tutup Formulir';
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            wrapper.classList.add('hidden');
+            if (buttonText) buttonText.textContent = 'Buat Laporan Baru';
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
+        const params = new URLSearchParams(window.location.search);
+        const shouldOpen = params.get('open_form') === '1';
+
+        if (shouldOpen) {
+            const wrapper = document.getElementById('reportFormWrapper');
+            const buttonText = document.getElementById('toggleReportButtonText');
+
+            if (wrapper) {
+                wrapper.classList.remove('hidden');
+            }
+            if (buttonText) {
+                buttonText.textContent = 'Tutup Formulir';
+            }
+            if (wrapper) {
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        } else {
+            const wrapper = document.getElementById('reportFormWrapper');
+            const buttonText = document.getElementById('toggleReportButtonText');
+            if (wrapper && wrapper.classList.contains('hidden') && buttonText) {
+                buttonText.textContent = 'Buat Laporan Baru';
+            }
+        }
+
         // 1. Penghitung Karakter Dinamis Deskripsi
         const descTextarea = document.getElementById('reportDescription');
         const charCounter = document.getElementById('charCounter');

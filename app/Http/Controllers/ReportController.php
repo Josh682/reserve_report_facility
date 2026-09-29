@@ -54,7 +54,9 @@ class ReportController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('report', compact('facilities', 'myReports', 'counts'));
+        $openForm = $request->boolean('open_form');
+
+        return view('report', compact('facilities', 'myReports', 'counts', 'openForm'));
     }
 
     /**

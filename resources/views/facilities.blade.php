@@ -449,7 +449,7 @@
             </button>
 
             @auth
-                <a href="{{ route('reservation') }}" class="inline-flex items-center gap-1.5 px-4 py-2 kezak-btn-primary text-white text-xs sm:text-sm font-bold shadow-xs hover:shadow-md transition-all">
+                <a href="{{ route('reservation', ['open_form' => 1]) }}" class="inline-flex items-center gap-1.5 px-4 py-2 kezak-btn-primary text-white text-xs sm:text-sm font-bold shadow-xs hover:shadow-md transition-all">
                     <span>+ Ajukan Reservasi</span>
                 </a>
             @else
