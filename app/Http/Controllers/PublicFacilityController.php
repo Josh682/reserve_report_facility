@@ -13,12 +13,17 @@ class PublicFacilityController extends Controller
 {
     /**
      * Menampilkan katalog fasilitas dan status ketersediaannya untuk publik/pengunjung (US 1 & US 2).
-     * Jika pengguna telah login dengan peran 'pengguna', otomatis arahkan ke katalog fasilitas portal pengguna.
+     * Jika pengguna telah login dengan peran 'pengguna' atau 'petugas', otomatis arahkan ke katalog fasilitas portal masing-masing.
      */
     public function index(Request $request): View|RedirectResponse
     {
-        if (auth()->check() && auth()->user()->role === 'pengguna') {
-            return redirect()->route('pengguna.facilities', $request->query());
+        if (auth()->check()) {
+            if (auth()->user()->role === 'pengguna') {
+                return redirect()->route('pengguna.facilities', $request->query());
+            }
+            if (auth()->user()->role === 'petugas') {
+                return redirect()->route('petugas.facilities', $request->query());
+            }
         }
 
         return $this->renderFacilitiesView($request, 'facilities');
@@ -30,6 +35,14 @@ class PublicFacilityController extends Controller
     public function indexPengguna(Request $request): View
     {
         return $this->renderFacilitiesView($request, 'pengguna.facilities');
+    }
+
+    /**
+     * Menampilkan katalog fasilitas di dalam Dashboard Petugas (dengan sidebar operasional terintegrasi).
+     */
+    public function indexPetugas(Request $request): View
+    {
+        return $this->renderFacilitiesView($request, 'petugas.facilities');
     }
 
     /**

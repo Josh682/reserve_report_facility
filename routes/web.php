@@ -168,6 +168,8 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
 
         return view('petugas.dashboard', compact('stats'));
     })->name('dashboard');
+
+    Route::get('/facilities', [PublicFacilityController::class, 'indexPetugas'])->name('facilities');
 });
 
 Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {

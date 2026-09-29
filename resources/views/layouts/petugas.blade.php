@@ -35,7 +35,240 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
-    @include('partials.theme-script')
+    <style>
+        /* =======================================================
+           FACILITYHUB LIGHT & DARK MODE FROSTED GLASSMORPHISM STYLES
+           ======================================================= */
+        body {
+            background-color: #EDF7F4 !important;
+            background-image: 
+                radial-gradient(ellipse at 15% 15%, rgba(52, 211, 153, 0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at 85% 85%, rgba(94, 234, 212, 0.18) 0%, transparent 60%),
+                linear-gradient(135deg, #F0FAF7 0%, #E6F5F1 100%) !important;
+            color: #1E293B;
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+        }
+
+        .ambient-blob-1 { background-color: rgba(52, 211, 153, 0.25) !important; }
+        .ambient-blob-2 { background-color: rgba(94, 234, 212, 0.25) !important; }
+        .ambient-blob-3 { background-color: rgba(254, 240, 138, 0.15) !important; }
+
+        .kezak-btn-primary {
+            background-color: #0F5143 !important;
+            color: #FFFFFF !important;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(15, 81, 67, 0.25);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .kezak-btn-primary:hover {
+            background-color: #146353 !important;
+            box-shadow: 0 6px 20px rgba(15, 81, 67, 0.35);
+            transform: translateY(-1px);
+        }
+        .kezak-btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .kezak-input {
+            border-radius: 12px;
+            border: 1.5px solid rgba(148, 163, 184, 0.65);
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(255, 255, 255, 0.70);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #0F172A;
+        }
+        .kezak-input::placeholder {
+            color: #64748B;
+        }
+        .kezak-input:hover {
+            background: rgba(255, 255, 255, 0.75);
+            border-color: #0F5143;
+        }
+        .kezak-input:focus,
+        .kezak-input:focus-within,
+        .kezak-input:active,
+        select.kezak-input:focus {
+            background-color: #E8F8F3 !important;
+            border-color: #10B981 !important;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(0, 0, 0, 0.02) !important;
+            outline: none !important;
+        }
+
+        /* Frosted Glass System Classes */
+        .glass-shell {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.70);
+            box-shadow: 0 25px 60px rgba(15, 81, 67, 0.08), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95);
+        }
+        .glass-card-main {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.35) 100%);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.70);
+            box-shadow: 0 10px 30px rgba(15, 81, 67, 0.05), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95), inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
+        }
+        .glass-card-interactive {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.38) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 8px 24px rgba(15, 81, 67, 0.04), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95), inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card-interactive:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0.50) 100%);
+            border-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 16px 36px rgba(15, 81, 67, 0.10), inset 0 1.5px 1.5px 0 #FFFFFF, inset -1px 0 1px 0 rgba(255, 255, 255, 0.60);
+            transform: translateY(-2px);
+        }
+        .glass-card-nested {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(14px) saturate(160%);
+            -webkit-backdrop-filter: blur(14px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.80);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
+        }
+
+        /* Light Mode Autofill / Autocomplete Override (Soft Mint Green #E8F8F3) */
+        .kezak-input:-webkit-autofill,
+        .kezak-input:-webkit-autofill:hover, 
+        .kezak-input:-webkit-autofill:focus, 
+        .kezak-input:-webkit-autofill:active,
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            -webkit-text-fill-color: #0F5143 !important;
+            color: #0F5143 !important;
+            border-color: #10B981 !important;
+            caret-color: #0F5143 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        .kezak-input:autofill,
+        .kezak-input:autofill:hover,
+        .kezak-input:autofill:focus,
+        .kezak-input:autofill:active,
+        input:autofill,
+        input:autofill:hover,
+        input:autofill:focus,
+        input:autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            -webkit-text-fill-color: #0F5143 !important;
+            color: #0F5143 !important;
+            border-color: #10B981 !important;
+            caret-color: #0F5143 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* --- DARK MODE (FULL DARK PAGE + FROSTED OBSIDIAN GLASS) --- */
+        html.dark body {
+            background-color: #040908 !important;
+            background-image: 
+                radial-gradient(ellipse at 50% 0%, #082620 0%, transparent 75%),
+                radial-gradient(ellipse at 85% 85%, #051A16 0%, transparent 65%),
+                linear-gradient(135deg, #040A09 0%, #020706 100%) !important;
+            color: #F8FAFC !important;
+        }
+
+        html.dark .ambient-blob-1 { background-color: rgba(16, 185, 129, 0.12) !important; }
+        html.dark .ambient-blob-2 { background-color: rgba(13, 148, 136, 0.10) !important; }
+        html.dark .ambient-blob-3 { background-color: rgba(5, 150, 105, 0.08) !important; }
+
+        html.dark .glass-shell {
+            background: rgba(8, 20, 17, 0.75) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.12) !important;
+        }
+        html.dark .glass-card-main {
+            background: linear-gradient(135deg, rgba(12, 26, 22, 0.75) 0%, rgba(6, 16, 13, 0.85) 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.12), inset -1px 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+        }
+        html.dark .glass-card-interactive {
+            background: linear-gradient(135deg, rgba(14, 30, 25, 0.70) 0%, rgba(8, 18, 15, 0.80) 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.10), inset -1px 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+        }
+        html.dark .glass-card-interactive:hover {
+            background: linear-gradient(135deg, rgba(18, 38, 32, 0.82) 0%, rgba(10, 24, 20, 0.90) 100%) !important;
+            border-color: rgba(52, 211, 153, 0.35) !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.70), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.18), inset -1px 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+            transform: translateY(-2px);
+        }
+        html.dark .glass-card-nested {
+            background: rgba(14, 32, 26, 0.60) !important;
+            border: 1px solid rgba(255, 255, 255, 0.10) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.08) !important;
+        }
+
+        html.dark .kezak-input {
+            background: rgba(14, 32, 26, 0.60) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            color: #FFFFFF !important;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(255, 255, 255, 0.04) !important;
+        }
+        html.dark .kezak-input::placeholder { color: #94A3B8 !important; }
+        html.dark .kezak-input:hover {
+            background: rgba(18, 42, 34, 0.75) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+        }
+        html.dark .kezak-input:focus,
+        html.dark .kezak-input:focus-within,
+        html.dark .kezak-input:active,
+        html.dark select.kezak-input:focus {
+            background-color: rgba(16, 44, 36, 0.85) !important;
+            border-color: #10B981 !important;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.2) !important;
+            color: #FFFFFF !important;
+            outline: none !important;
+        }
+        html.dark select.kezak-input option {
+            background-color: #071D18 !important;
+            color: #F8FAFC !important;
+        }
+
+        /* Dark Mode Autofill / Autocomplete Override (Deep Emerald Green #062E25) */
+        html.dark .kezak-input:-webkit-autofill,
+        html.dark .kezak-input:-webkit-autofill:hover, 
+        html.dark .kezak-input:-webkit-autofill:focus, 
+        html.dark .kezak-input:-webkit-autofill:active,
+        html.dark input:-webkit-autofill,
+        html.dark input:-webkit-autofill:hover, 
+        html.dark input:-webkit-autofill:focus, 
+        html.dark input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
+            box-shadow: 0 0 0 1000px #062E25 inset !important;
+            -webkit-text-fill-color: #ECFDF5 !important;
+            color: #ECFDF5 !important;
+            border-color: #059669 !important;
+            caret-color: #34D399 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        html.dark .kezak-input:autofill,
+        html.dark .kezak-input:autofill:hover,
+        html.dark .kezak-input:autofill:focus,
+        html.dark .kezak-input:autofill:active,
+        html.dark input:autofill,
+        html.dark input:autofill:hover,
+        html.dark input:autofill:focus,
+        html.dark input:autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
+            box-shadow: 0 0 0 1000px #062E25 inset !important;
+            -webkit-text-fill-color: #ECFDF5 !important;
+            color: #ECFDF5 !important;
+            border-color: #059669 !important;
+            caret-color: #34D399 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
     @stack('styles')
 </head>
 <body class="min-h-screen relative overflow-x-hidden font-sans antialiased text-slate-800 dark:text-slate-100 p-3 sm:p-5 lg:p-7 flex flex-col justify-center" style="font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
@@ -53,7 +286,7 @@
     <!-- ==========================================
          MASTER GLASS CONTAINER WINDOW
          ========================================== -->
-    <div class="w-full max-w-[1420px] mx-auto bg-white/45 dark:bg-[#081411]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-[0_25px_60px_rgba(15,81,67,0.12)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col lg:flex-row gap-7 my-2 sm:my-6 min-h-[880px]">
+    <div class="w-full max-w-[1420px] mx-auto glass-shell rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col lg:flex-row gap-7 my-2 sm:my-6 min-h-[880px]">
 
         <!-- ==========================================
              LEFT SIDEBAR (FROSTED SIDEBAR)
@@ -97,9 +330,9 @@
                     </a>
 
                     <!-- 2. Katalog Fasilitas -->
-                    <a href="{{ route('facilities') }}"
-                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('facilities*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
-                        <svg class="w-5 h-5 {{ request()->routeIs('facilities*') ? 'text-white' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('petugas.facilities') }}"
+                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('petugas.facilities*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
+                        <svg class="w-5 h-5 {{ request()->routeIs('petugas.facilities*') ? 'text-white' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                         <span>Katalog Fasilitas</span>
@@ -254,5 +487,6 @@
             }
         }
     </script>
+    @stack('scripts')
 </body>
 </html>
