@@ -188,3 +188,32 @@ test('petugas can restore facility status to aktif when report is resolved (US 1
         'status' => 'pending',
     ]);
 });
+
+test('petugas can mark facility status as dalam_perbaikan during processing and restore to aktif upon resolution (US 12)', function () {
+    $petugas = User::factory()->petugas()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+    $report = Report::factory()->create([
+        'facility_id' => $facility->id,
+        'status' => 'baru',
+    ]);
+
+    // 1. Petugas memproses laporan dan menandai fasilitas dalam perbaikan
+    $response1 = $this->actingAs($petugas)->patch("/petugas/reports/{$report->id}", [
+        'status' => 'diproses',
+        'catatan_resolusi' => 'Sedang diperiksa oleh teknisi listrik.',
+        'mark_facility_status' => 'dalam_perbaikan',
+    ]);
+
+    $response1->assertRedirect();
+    expect($facility->fresh()->status)->toBe('dalam_perbaikan');
+
+    // 2. Petugas menyelesaikan laporan dan mengembalikan fasilitas ke aktif
+    $response2 = $this->actingAs($petugas)->patch("/petugas/reports/{$report->id}", [
+        'status' => 'selesai',
+        'catatan_resolusi' => 'Komponen rusak telah diganti baru dan diuji normal.',
+        'mark_facility_status' => 'aktif',
+    ]);
+
+    $response2->assertRedirect();
+    expect($facility->fresh()->status)->toBe('aktif');
+});

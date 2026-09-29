@@ -184,32 +184,46 @@
                             #REP-{{ str_pad($report->id, 4, '0', STR_PAD_LEFT) }}
                         </span>
 
-                        <div class="flex items-center gap-1.5">
-                            <div class="w-6 h-6 rounded-lg bg-emerald-100/80 dark:bg-emerald-950/60 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center shrink-0">
-                                <x-facility-icon :tipe="$report->facility->tipe ?? 'aula'" class="w-3.5 h-3.5" />
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/60 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center shrink-0">
+                                <x-facility-icon :tipe="$report->facility->tipe ?? 'aula'" class="w-4 h-4" />
                             </div>
-                            <span class="text-sm font-extrabold text-slate-900 dark:text-white">
-                                {{ $report->facility->nama ?? 'Fasilitas Terhapus' }}
-                            </span>
-                        </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="text-sm font-extrabold text-slate-900 dark:text-white">
+                                        {{ $report->facility->nama ?? 'Fasilitas Terhapus' }}
+                                    </span>
 
-                        {{-- Status Fasilitas Operasional Saat Ini --}}
-                        @if ($report->facility)
-                            @if ($report->facility->status === 'dalam_perbaikan')
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-400/40 flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
-                                    Fasilitas: Dalam Perbaikan (US 12)
-                                </span>
-                            @elseif ($report->facility->status === 'aktif')
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-400/30">
-                                    Fasilitas: Aktif
-                                </span>
-                            @else
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                                    Fasilitas: Nonaktif
-                                </span>
-                            @endif
-                        @endif
+                                    {{-- Status Fasilitas Operasional Saat Ini (US 12) --}}
+                                    @if ($report->facility)
+                                        @if ($report->facility->status === 'dalam_perbaikan')
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-400/40">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                                Fasilitas: Dalam Perbaikan
+                                            </span>
+                                        @elseif ($report->facility->status === 'aktif')
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-400/30">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                                Fasilitas: Aktif
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                                                Fasilitas: Nonaktif
+                                            </span>
+                                        @endif
+                                    @endif
+                                </div>
+                                @if ($report->facility && $report->facility->lokasi)
+                                    <div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5 font-medium">
+                                        <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span>{{ $report->facility->lokasi }}</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Status Laporan Badge --}}
@@ -361,7 +375,7 @@
 {{-- ==========================================
      4. MODAL UPDATE STATUS & RESOLUSI (US 11 & US 12)
      ========================================== --}}
-<div id="updateStatusModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+<div id="updateReportModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="w-full max-w-lg rounded-3xl bg-white/95 dark:bg-[#081411]/95 backdrop-blur-2xl border border-white/60 dark:border-white/10 p-6 sm:p-7 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
         <div class="flex items-start justify-between pb-3 border-b border-white/40 dark:border-white/10">
             <div class="flex items-center gap-3">
@@ -418,23 +432,31 @@
             </div>
 
             {{-- US 12: Pengaturan Status Operasional Fasilitas --}}
-            <div class="p-4 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/20 border border-emerald-400/30 space-y-2">
-                <div class="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-white">
-                    <svg class="w-4 h-4 text-[#0F5143] dark:text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                    <span>Pengaturan Ketersediaan Ruangan (US 12)</span>
+            <div class="p-4 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/20 border border-emerald-400/30 space-y-2.5">
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-white">
+                        <svg class="w-4 h-4 text-[#0F5143] dark:text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        <span>Pengaturan Ketersediaan Ruangan (US 12)</span>
+                    </div>
+                    <span id="modalCurrentFacilityBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full"></span>
                 </div>
                 <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Jika kerusakan parah dan fasilitas tidak dapat digunakan, alihkan status menjadi <strong class="text-amber-700 dark:text-amber-300">Dalam Perbaikan</strong> untuk memblokir peminjaman baru oleh mahasiswa/dosen.
+                    Jika kerusakan memerlukan penutupan operasional, alihkan status menjadi <strong class="text-amber-700 dark:text-amber-300">Dalam Perbaikan</strong> untuk memblokir peminjaman baru. Setelah selesai diperbaiki, kembalikan ke <strong class="text-emerald-700 dark:text-emerald-300">Aktif</strong>.
                 </p>
-                <select id="modal_mark_facility_status"
-                        name="mark_facility_status"
-                        class="kezak-input w-full px-3.5 py-2 text-xs">
-                    <option value="">-- Biarkan status operasional saat ini --</option>
-                    <option value="dalam_perbaikan">Set Fasilitas: Dalam Perbaikan (Blokir Reservasi Baru)</option>
-                    <option value="aktif">Set Fasilitas: Aktif (Buka Kembali Reservasi)</option>
-                </select>
+                <div>
+                    <label for="modal_mark_facility_status" class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                        Pembaruan Status Fasilitas:
+                    </label>
+                    <select id="modal_mark_facility_status"
+                            name="mark_facility_status"
+                            class="kezak-input w-full px-3.5 py-2 text-xs">
+                        <option value="">-- Biarkan status operasional saat ini --</option>
+                        <option value="dalam_perbaikan">Set Fasilitas: Dalam Perbaikan (Blokir Reservasi Baru)</option>
+                        <option value="aktif">Set Fasilitas: Aktif (Buka Kembali Reservasi)</option>
+                    </select>
+                </div>
             </div>
 
             <div class="flex items-center justify-end gap-2.5 pt-4 border-t border-white/40 dark:border-white/10">
@@ -465,11 +487,31 @@
         const facilitySelect = document.getElementById('modal_mark_facility_status');
         facilitySelect.value = '';
 
-        document.getElementById('updateStatusModal').classList.remove('hidden');
+        const badge = document.getElementById('modalCurrentFacilityBadge');
+        if (badge) {
+            if (currentFacilityStatus === 'dalam_perbaikan') {
+                badge.innerText = 'Saat Ini: Dalam Perbaikan';
+                badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-400/40';
+            } else if (currentFacilityStatus === 'aktif') {
+                badge.innerText = 'Saat Ini: Aktif';
+                badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-400/30';
+            } else {
+                badge.innerText = 'Saat Ini: ' + (currentFacilityStatus || 'Unknown');
+                badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+            }
+        }
+
+        const modal = document.getElementById('updateReportModal') || document.getElementById('updateStatusModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
     }
 
     function closeUpdateModal() {
-        document.getElementById('updateStatusModal').classList.add('hidden');
+        const modal = document.getElementById('updateReportModal') || document.getElementById('updateStatusModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
     }
 </script>
 @endsection
