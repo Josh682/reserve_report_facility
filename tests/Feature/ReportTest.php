@@ -45,6 +45,8 @@ test('authenticated verified user can view report page, facilities, and their re
     $response->assertSee('Lab Komputer AI');
     $response->assertSee('Pendingin ruangan AC mati total');
     $response->assertSee('Layanan Sarana & Prasarana Kampus', false);
+    $response->assertSee('id="photoPreviewContainer"', false);
+    $response->assertSee('id="charCounter"', false);
 });
 
 test('authenticated user can submit report without photo successfully (US 6)', function () {
@@ -151,4 +153,22 @@ test('submitting report fails with invalid facility or short description', funct
     ]);
 
     $response->assertSessionHasErrors(['facility_id', 'description']);
+});
+
+test('server rejects report photo exceeding 2048 kilobytes even if client validation is bypassed', function () {
+    $user = User::factory()->pengguna()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    $largeFile = extension_loaded('gd')
+        ? UploadedFile::fake()->image('damage-evidence.jpg')->size(2500)
+        : UploadedFile::fake()->create('damage-evidence.jpg', 2500, 'image/jpeg');
+
+    $response = $this->actingAs($user)->post('/reports', [
+        'facility_id' => $facility->id,
+        'category' => 'kerusakan',
+        'description' => 'Sebagai contoh nyata di lapangan kampus, mahasiswa dapat melaporkan insiden tak terduga seperti gangguan kebersihan atau kabel proyektor yang digigit kucing liar yang menyelinap ke ruang kelas.',
+        'photo' => $largeFile,
+    ]);
+
+    $response->assertSessionHasErrors('photo');
 });

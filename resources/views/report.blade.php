@@ -83,7 +83,7 @@
                     </p>
                 </div>
 
-                <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-5">
+                <form id="reportForm" method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="space-y-5">
                     @csrf
 
                     {{-- Fasilitas Terkait --}}
@@ -133,9 +133,14 @@
                         <textarea id="reportDescription"
                                   name="description"
                                   rows="4"
+                                  maxlength="2000"
                                   required
                                   placeholder="Jelaskan secara spesifik kerusakan atau kendala yang dialami, misalnya: AC tidak dingin, proyektor bergaris ungu, stopkontak meja depan kendor..."
                                   class="kezak-input block w-full px-3.5 py-2.5 text-xs sm:text-sm resize-y">{{ old('description') }}</textarea>
+                        <div class="flex items-center justify-between mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+                            <span>Minimal 5 karakter, maksimal 2000 karakter</span>
+                            <span id="charCounter" class="font-medium text-slate-600 dark:text-slate-300">0 / 2000 karakter</span>
+                        </div>
                         @error('description')
                             <p class="text-xs text-rose-500 mt-1 font-semibold">{{ $message }}</p>
                         @enderror
@@ -162,9 +167,47 @@
                                 Format JPEG atau PNG (maksimal 2MB). Lampirkan foto pendukung untuk mempercepat verifikasi teknisi.
                             </p>
                         </div>
+
+                        {{-- Pesan Error Validasi Client-Side --}}
+                        <div id="photoError" class="hidden mt-2 p-3 rounded-2xl bg-rose-500/15 border border-rose-400/30 text-rose-900 dark:text-rose-200 text-xs flex items-center gap-2 backdrop-blur-md shadow-2xs">
+                            <svg class="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span id="photoErrorMessage" class="font-semibold"></span>
+                        </div>
+
                         @error('photo')
                             <p class="text-xs text-rose-500 mt-1 font-semibold">{{ $message }}</p>
                         @enderror
+
+                        {{-- Live Photo Preview Container --}}
+                        <div id="photoPreviewContainer" class="hidden mt-3 p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/70 dark:border-white/10 shadow-xs">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-white/80 dark:border-white/15 shrink-0 shadow-2xs">
+                                        <img id="photoPreviewImg" src="" alt="Pratinjau Foto Bukti" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p id="photoPreviewName" class="text-xs font-bold text-slate-800 dark:text-white truncate">nama_file.jpg</p>
+                                        <p id="photoPreviewSize" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">1.2 MB</p>
+                                        <span class="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Foto siap diunggah
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type="button"
+                                        id="removePhotoBtn"
+                                        class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold text-rose-700 dark:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-400/20 transition-colors flex items-center gap-1.5 cursor-pointer">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    <span>Hapus / Ganti Foto</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Tombol Aksi --}}
@@ -174,11 +217,12 @@
                             Batal
                         </a>
                         <button type="submit"
-                                class="kezak-btn-primary inline-flex items-center justify-center gap-2 px-6 py-2.5 text-xs sm:text-sm font-bold shadow-md cursor-pointer">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                id="submitReportBtn"
+                                class="kezak-btn-primary inline-flex items-center justify-center gap-2 px-6 py-2.5 text-xs sm:text-sm font-bold shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                            <svg id="submitReportIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                             </svg>
-                            <span>Kirim Laporan</span>
+                            <span id="submitReportText">Kirim Laporan</span>
                         </button>
                     </div>
                 </form>
@@ -388,4 +432,144 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. Penghitung Karakter Dinamis Deskripsi
+        const descTextarea = document.getElementById('reportDescription');
+        const charCounter = document.getElementById('charCounter');
+
+        function updateCharCounter() {
+            if (descTextarea && charCounter) {
+                const count = descTextarea.value.length;
+                charCounter.textContent = `${count} / 2000 karakter`;
+            }
+        }
+
+        if (descTextarea) {
+            descTextarea.addEventListener('input', updateCharCounter);
+            updateCharCounter();
+        }
+
+        // 2. Validasi Client-Side Foto & Live Image Preview
+        const photoInput = document.getElementById('reportPhoto');
+        const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+        const photoPreviewImg = document.getElementById('photoPreviewImg');
+        const photoPreviewName = document.getElementById('photoPreviewName');
+        const photoPreviewSize = document.getElementById('photoPreviewSize');
+        const photoError = document.getElementById('photoError');
+        const photoErrorMessage = document.getElementById('photoErrorMessage');
+        const removePhotoBtn = document.getElementById('removePhotoBtn');
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function showPhotoError(message) {
+            if (photoErrorMessage) {
+                photoErrorMessage.textContent = message;
+            }
+            if (photoError) {
+                photoError.classList.remove('hidden');
+            }
+            if (photoPreviewContainer) {
+                photoPreviewContainer.classList.add('hidden');
+            }
+            if (photoPreviewImg) {
+                photoPreviewImg.src = '';
+            }
+        }
+
+        function clearPhotoError() {
+            if (photoError) {
+                photoError.classList.add('hidden');
+            }
+        }
+
+        function resetPhoto() {
+            if (photoInput) {
+                photoInput.value = '';
+            }
+            if (photoPreviewContainer) {
+                photoPreviewContainer.classList.add('hidden');
+            }
+            if (photoPreviewImg) {
+                photoPreviewImg.src = '';
+            }
+            clearPhotoError();
+        }
+
+        if (removePhotoBtn) {
+            removePhotoBtn.addEventListener('click', function () {
+                resetPhoto();
+            });
+        }
+
+        if (photoInput) {
+            photoInput.addEventListener('change', function () {
+                clearPhotoError();
+
+                const file = this.files && this.files[0];
+                if (!file) {
+                    resetPhoto();
+                    return;
+                }
+
+                // Validasi tipe mime
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!validTypes.includes(file.type.toLowerCase())) {
+                    this.value = '';
+                    showPhotoError('Hanya file gambar JPG atau PNG yang diperbolehkan');
+                    return;
+                }
+
+                // Validasi ukuran maksimal (2MB = 2 * 1024 * 1024 bytes)
+                const maxSizeBytes = 2 * 1024 * 1024;
+                if (file.size > maxSizeBytes) {
+                    this.value = '';
+                    showPhotoError('Ukuran file foto melebihi batas maksimal 2MB.');
+                    return;
+                }
+
+                // Baca file dan tampilkan live preview
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    if (photoPreviewImg) {
+                        photoPreviewImg.src = e.target.result;
+                    }
+                    if (photoPreviewName) {
+                        photoPreviewName.textContent = file.name;
+                    }
+                    if (photoPreviewSize) {
+                        photoPreviewSize.textContent = formatFileSize(file.size);
+                    }
+                    if (photoPreviewContainer) {
+                        photoPreviewContainer.classList.remove('hidden');
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // 3. Proteksi Anti-Double Submit
+        const reportForm = document.getElementById('reportForm');
+        const submitBtn = document.getElementById('submitReportBtn');
+        const submitText = document.getElementById('submitReportText');
+
+        if (reportForm && submitBtn) {
+            reportForm.addEventListener('submit', function () {
+                setTimeout(function () {
+                    submitBtn.disabled = true;
+                }, 0);
+                if (submitText) {
+                    submitText.textContent = 'Mengirim laporan...';
+                }
+            });
+        }
+    });
+</script>
 @endsection
