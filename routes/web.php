@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\FacilityController;
+use App\Http\Controllers\Admin\RekapController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Petugas\ReportController as PetugasReportController;
+use App\Http\Controllers\Petugas\ReservationController as PetugasReservationController;
 use App\Http\Controllers\PublicFacilityController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReservationController;
 use App\Models\Facility;
 use App\Models\Report;
 use App\Models\Reservation;
@@ -56,11 +59,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
-    Route::view('/reservation', 'reservation')->name('reservation');
-    Route::post('/reservations', function () {
-        return redirect()->route('reservation')->with('status', 'Pengajuan reservasi berhasil dikirim dan menunggu persetujuan petugas.');
-    });
-
+    Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
     Route::get('/report', [ReportController::class, 'index'])->name('report');
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
 });
@@ -156,6 +157,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->name('users.reject');
     Route::resource('users', UserController::class)
         ->only(['index', 'create', 'store']);
+
+    Route::get('/rekap', [RekapController::class, 'index'])->name('rekap.index');
+    Route::get('/rekap/export-csv', [RekapController::class, 'exportCsv'])->name('rekap.export-csv');
+    Route::get('/rekap/export-excel', [RekapController::class, 'exportExcel'])->name('rekap.export-excel');
+    Route::get('/rekap/print', [RekapController::class, 'print'])->name('rekap.print');
 });
 
 Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
@@ -164,27 +170,72 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
             'total_facilities' => Facility::count(),
             'aktif' => Facility::where('status', 'aktif')->count(),
             'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
-            'laporan_baru' => Report::where('status', 'baru')->count(),
-            'laporan_diproses' => Report::where('status', 'diproses')->count(),
+            'pending_reservations' => Reservation::where('status', 'pending')->count(),
+            'pending_reports' => Report::where('status', 'baru')->count(),
+            'today_reservations' => Reservation::where('status', 'approved')->whereDate('tanggal', now()->toDateString())->count(),
         ];
 
-        return view('petugas.dashboard', compact('stats'));
+        $pendingReservations = Reservation::with(['facility', 'user'])
+            ->where('status', 'pending')
+            ->orderBy('tanggal', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->take(5)
+            ->get();
+
+        $pendingReports = Report::with(['facility', 'user'])
+            ->where('status', 'baru')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('petugas.dashboard', compact('stats', 'pendingReservations', 'pendingReports'));
     })->name('dashboard');
 
-    Route::get('/facilities', [PublicFacilityController::class, 'indexPetugas'])->name('facilities');
+    Route::get('/reservations', [PetugasReservationController::class, 'index'])->name('reservations.index');
+    Route::patch('/reservations/{reservation}/approve', [PetugasReservationController::class, 'approve'])->name('reservations.approve');
+    Route::patch('/reservations/{reservation}/reject', [PetugasReservationController::class, 'reject'])->name('reservations.reject');
+    Route::patch('/reservations/{reservation}/emergency-cancel', [PetugasReservationController::class, 'emergencyCancel'])->name('reservations.emergency-cancel');
+
     Route::get('/reports', [PetugasReportController::class, 'index'])->name('reports.index');
     Route::patch('/reports/{report}', [PetugasReportController::class, 'update'])->name('reports.update');
+
+    Route::get('/facilities', [PublicFacilityController::class, 'indexPetugas'])->name('facilities');
 });
 
 Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {
     Route::get('/dashboard', function () {
+        $user = auth()->user();
         $stats = [
             'total_facilities' => Facility::count(),
             'aktif' => Facility::where('status', 'aktif')->count(),
             'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
+            'my_reservations' => Reservation::where('user_id', $user->id)->count(),
+            'my_pending' => Reservation::where('user_id', $user->id)->where('status', 'pending')->count(),
+            'my_approved' => Reservation::where('user_id', $user->id)->where('status', 'approved')->count(),
+            'my_reports' => Report::where('user_id', $user->id)->count(),
+            'my_reports_pending' => Report::where('user_id', $user->id)->where('status', 'baru')->count(),
+            'my_reports_in_progress' => Report::where('user_id', $user->id)->where('status', 'diproses')->count(),
+            'my_reports_resolved' => Report::where('user_id', $user->id)->where('status', 'selesai')->count(),
         ];
 
-        return view('pengguna.dashboard', compact('stats'));
+        $recentReservations = Reservation::with('facility')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recentReports = Report::with(['facility', 'resolver'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $availableFacilities = Facility::where('status', 'aktif')
+            ->orderBy('nama')
+            ->take(4)
+            ->get();
+
+        return view('pengguna.dashboard', compact('stats', 'recentReservations', 'recentReports', 'availableFacilities'));
     })->name('dashboard');
 
     Route::get('/facilities', [PublicFacilityController::class, 'indexPengguna'])->name('facilities');

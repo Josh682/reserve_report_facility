@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Dashboard Pengguna') — {{ config('app.name', 'FacilityHub') }}</title>
+    <title>@yield('title', 'Dashboard Mahasiswa') — {{ config('app.name', 'FacilityHub') }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,241 +36,6 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
     @include('partials.theme-script')
-
-    <style>
-        /* =======================================================
-           FACILITYHUB LIGHT & DARK MODE FROSTED GLASSMORPHISM STYLES
-           ======================================================= */
-        body {
-            background-color: #EDF7F4 !important;
-            background-image: 
-                radial-gradient(ellipse at 15% 15%, rgba(52, 211, 153, 0.18) 0%, transparent 60%),
-                radial-gradient(ellipse at 85% 85%, rgba(94, 234, 212, 0.18) 0%, transparent 60%),
-                linear-gradient(135deg, #F0FAF7 0%, #E6F5F1 100%) !important;
-            color: #1E293B;
-            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-        }
-
-        .ambient-blob-1 { background-color: rgba(52, 211, 153, 0.25) !important; }
-        .ambient-blob-2 { background-color: rgba(94, 234, 212, 0.25) !important; }
-        .ambient-blob-3 { background-color: rgba(254, 240, 138, 0.15) !important; }
-
-        .kezak-btn-primary {
-            background-color: #0F5143 !important;
-            color: #FFFFFF !important;
-            border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(15, 81, 67, 0.25);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .kezak-btn-primary:hover {
-            background-color: #146353 !important;
-            box-shadow: 0 6px 20px rgba(15, 81, 67, 0.35);
-            transform: translateY(-1px);
-        }
-        .kezak-btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .kezak-input {
-            border-radius: 12px;
-            border: 1.5px solid rgba(148, 163, 184, 0.65);
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(255, 255, 255, 0.70);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            color: #0F172A;
-        }
-        .kezak-input::placeholder {
-            color: #64748B;
-        }
-        .kezak-input:hover {
-            background: rgba(255, 255, 255, 0.75);
-            border-color: #0F5143;
-        }
-        .kezak-input:focus,
-        .kezak-input:focus-within,
-        .kezak-input:active,
-        select.kezak-input:focus {
-            background-color: #E8F8F3 !important;
-            border-color: #10B981 !important;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(0, 0, 0, 0.02) !important;
-            outline: none !important;
-        }
-
-        /* Frosted Glass System Classes */
-        .glass-shell {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.70);
-            box-shadow: 0 25px 60px rgba(15, 81, 67, 0.08), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95);
-        }
-        .glass-card-main {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.35) 100%);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.70);
-            box-shadow: 0 10px 30px rgba(15, 81, 67, 0.05), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95), inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
-        }
-        .glass-card-interactive {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.38) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.75);
-            box-shadow: 0 8px 24px rgba(15, 81, 67, 0.04), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95), inset -1px 0 1px 0 rgba(255, 255, 255, 0.40);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .glass-card-interactive:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0.50) 100%);
-            border-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 16px 36px rgba(15, 81, 67, 0.10), inset 0 1.5px 1.5px 0 #FFFFFF, inset -1px 0 1px 0 rgba(255, 255, 255, 0.60);
-            transform: translateY(-2px);
-        }
-        .glass-card-nested {
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(14px) saturate(160%);
-            -webkit-backdrop-filter: blur(14px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.80);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
-        }
-
-        /* Light Mode Autofill / Autocomplete Override (Soft Mint Green #E8F8F3) */
-        .kezak-input:-webkit-autofill,
-        .kezak-input:-webkit-autofill:hover, 
-        .kezak-input:-webkit-autofill:focus, 
-        .kezak-input:-webkit-autofill:active,
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
-            box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
-            -webkit-text-fill-color: #0F5143 !important;
-            color: #0F5143 !important;
-            border-color: #10B981 !important;
-            caret-color: #0F5143 !important;
-            transition: background-color 5000s ease-in-out 0s;
-        }
-        .kezak-input:autofill,
-        .kezak-input:autofill:hover,
-        .kezak-input:autofill:focus,
-        .kezak-input:autofill:active,
-        input:autofill,
-        input:autofill:hover,
-        input:autofill:focus,
-        input:autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
-            box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
-            -webkit-text-fill-color: #0F5143 !important;
-            color: #0F5143 !important;
-            border-color: #10B981 !important;
-            caret-color: #0F5143 !important;
-            transition: background-color 5000s ease-in-out 0s;
-        }
-
-        /* --- DARK MODE (FULL DARK PAGE + FROSTED OBSIDIAN GLASS) --- */
-        html.dark body {
-            background-color: #040908 !important;
-            background-image: 
-                radial-gradient(ellipse at 50% 0%, #082620 0%, transparent 75%),
-                radial-gradient(ellipse at 85% 85%, #051A16 0%, transparent 65%),
-                linear-gradient(135deg, #040A09 0%, #020706 100%) !important;
-            color: #F8FAFC !important;
-        }
-
-        html.dark .ambient-blob-1 { background-color: rgba(16, 185, 129, 0.12) !important; }
-        html.dark .ambient-blob-2 { background-color: rgba(13, 148, 136, 0.10) !important; }
-        html.dark .ambient-blob-3 { background-color: rgba(5, 150, 105, 0.08) !important; }
-
-        html.dark .glass-shell {
-            background: rgba(8, 20, 17, 0.75) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.12) !important;
-        }
-        html.dark .glass-card-main {
-            background: linear-gradient(135deg, rgba(12, 26, 22, 0.75) 0%, rgba(6, 16, 13, 0.85) 100%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.12), inset -1px 0 1px 0 rgba(255, 255, 255, 0.04) !important;
-        }
-        html.dark .glass-card-interactive {
-            background: linear-gradient(135deg, rgba(14, 30, 25, 0.70) 0%, rgba(8, 18, 15, 0.80) 100%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.10), inset -1px 0 1px 0 rgba(255, 255, 255, 0.04) !important;
-        }
-        html.dark .glass-card-interactive:hover {
-            background: linear-gradient(135deg, rgba(18, 38, 32, 0.82) 0%, rgba(10, 24, 20, 0.90) 100%) !important;
-            border-color: rgba(52, 211, 153, 0.35) !important;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.70), inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.18), inset -1px 0 1px 0 rgba(255, 255, 255, 0.06) !important;
-            transform: translateY(-2px);
-        }
-        html.dark .glass-card-nested {
-            background: rgba(14, 32, 26, 0.60) !important;
-            border: 1px solid rgba(255, 255, 255, 0.10) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.08) !important;
-        }
-
-        html.dark .kezak-input {
-            background: rgba(14, 32, 26, 0.60) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            color: #FFFFFF !important;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(255, 255, 255, 0.04) !important;
-        }
-        html.dark .kezak-input::placeholder { color: #94A3B8 !important; }
-        html.dark .kezak-input:hover {
-            background: rgba(18, 42, 34, 0.75) !important;
-            border-color: rgba(255, 255, 255, 0.25) !important;
-        }
-        html.dark .kezak-input:focus,
-        html.dark .kezak-input:focus-within,
-        html.dark .kezak-input:active,
-        html.dark select.kezak-input:focus {
-            background-color: rgba(16, 44, 36, 0.85) !important;
-            border-color: #10B981 !important;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.2) !important;
-            color: #FFFFFF !important;
-            outline: none !important;
-        }
-        html.dark select.kezak-input option {
-            background-color: #071D18 !important;
-            color: #F8FAFC !important;
-        }
-
-        /* Dark Mode Autofill / Autocomplete Override (Deep Emerald Green #062E25) */
-        html.dark .kezak-input:-webkit-autofill,
-        html.dark .kezak-input:-webkit-autofill:hover, 
-        html.dark .kezak-input:-webkit-autofill:focus, 
-        html.dark .kezak-input:-webkit-autofill:active,
-        html.dark input:-webkit-autofill,
-        html.dark input:-webkit-autofill:hover, 
-        html.dark input:-webkit-autofill:focus, 
-        html.dark input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
-            box-shadow: 0 0 0 1000px #062E25 inset !important;
-            -webkit-text-fill-color: #ECFDF5 !important;
-            color: #ECFDF5 !important;
-            border-color: #059669 !important;
-            caret-color: #34D399 !important;
-            transition: background-color 5000s ease-in-out 0s;
-        }
-        html.dark .kezak-input:autofill,
-        html.dark .kezak-input:autofill:hover,
-        html.dark .kezak-input:autofill:focus,
-        html.dark .kezak-input:autofill:active,
-        html.dark input:autofill,
-        html.dark input:autofill:hover,
-        html.dark input:autofill:focus,
-        html.dark input:autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
-            box-shadow: 0 0 0 1000px #062E25 inset !important;
-            -webkit-text-fill-color: #ECFDF5 !important;
-            color: #ECFDF5 !important;
-            border-color: #059669 !important;
-            caret-color: #34D399 !important;
-            transition: background-color 5000s ease-in-out 0s;
-        }
-    </style>
     @stack('styles')
 </head>
 <body class="min-h-screen relative overflow-x-hidden font-sans antialiased text-slate-800 dark:text-slate-100 p-3 sm:p-5 lg:p-7 flex flex-col justify-center" style="font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
@@ -283,17 +48,82 @@
     <div class="ambient-blob-3 fixed top-[40%] right-[30%] w-[350px] h-[350px] rounded-full blur-[100px] pointer-events-none -z-0"></div>
 
     <!-- Mobile Sidebar Backdrop -->
-    <div id="pengguna-sidebar-backdrop" class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs hidden lg:hidden" onclick="togglePenggunaSidebar()"></div>
+    <div id="pengguna-sidebar-backdrop" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs hidden lg:hidden" onclick="togglePenggunaSidebar()"></div>
+
+    <!-- ==========================================
+         MOBILE OFF-CANVAS DRAWER (z-50 di root body)
+         ========================================== -->
+    <aside id="pengguna-sidebar-panel"
+           class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 bg-white/95 dark:bg-[#081411]/95 backdrop-blur-2xl border-r border-white/60 dark:border-white/10 shadow-2xl p-6 flex flex-col justify-between overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+        <div class="space-y-6">
+            <!-- Brand Header Inside Drawer with Close Button -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/30 dark:border-white/10">
+                <a href="{{ route('pengguna.dashboard') }}" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-md border border-white/80 dark:border-white/15 shadow-xs flex items-center justify-center text-[#0F5143] dark:text-[#34D399] group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6 text-[#0F5143] dark:text-[#34D399]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-xl tracking-tight text-slate-800 dark:text-white block leading-tight">FacilityHub</span>
+                        <span class="text-[11px] font-semibold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider block">Portal Pengguna</span>
+                    </div>
+                </a>
+
+                <!-- Close Button for Mobile Drawer -->
+                <button type="button" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/10 cursor-pointer" onclick="togglePenggunaSidebar()" aria-label="Tutup Menu Navigasi">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation Links & Quick Actions -->
+            @include('partials.sidebar-pengguna-nav')
+        </div>
+
+        <!-- User Profile & Logout -->
+        @include('partials.sidebar-pengguna-user')
+    </aside>
 
     <!-- ==========================================
          MASTER GLASS CONTAINER WINDOW
          ========================================== -->
-    <div class="w-full max-w-[1420px] mx-auto glass-shell rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col lg:flex-row gap-7 my-2 sm:my-6 min-h-[880px]">
+    <div class="w-full max-w-[1420px] mx-auto bg-white/45 dark:bg-[#081411]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-[0_25px_60px_rgba(15,81,67,0.12)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col lg:flex-row gap-7 my-2 sm:my-6 min-h-[880px]">
 
         <!-- ==========================================
-             LEFT SIDEBAR (FROSTED SIDEBAR)
+             MOBILE TOPBAR (Khusus Layar < lg / Split Screen)
              ========================================== -->
-        <aside id="pengguna-sidebar-panel" class="w-full lg:w-64 shrink-0 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/40 dark:border-white/10 pb-6 lg:pb-0 lg:pr-6">
+        <div class="flex lg:hidden items-center justify-between pb-4 border-b border-white/30 dark:border-white/10">
+            <a href="{{ route('pengguna.dashboard') }}" class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-white/70 dark:bg-white/10 backdrop-blur-md border border-white/80 dark:border-white/15 shadow-xs flex items-center justify-center text-[#0F5143] dark:text-[#34D399]">
+                    <svg class="w-5 h-5 text-[#0F5143] dark:text-[#34D399]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-extrabold text-lg tracking-tight text-slate-800 dark:text-white block leading-tight">FacilityHub</span>
+                    <span class="text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider block">Portal Pengguna</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-2">
+                @include('partials.theme-toggle')
+                <button type="button"
+                        class="p-2 rounded-xl bg-white/70 dark:bg-white/10 border border-white/80 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-white/90 dark:hover:bg-white/20 transition-all cursor-pointer shadow-2xs"
+                        onclick="togglePenggunaSidebar()"
+                        aria-label="Buka Menu Navigasi">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             LEFT SIDEBAR (STATIC UNTUK DESKTOP >= lg)
+             ========================================== -->
+        <aside class="hidden lg:flex lg:w-64 shrink-0 flex-col justify-between border-r border-white/40 dark:border-white/10 pr-6">
             <div class="space-y-6">
                 <!-- Brand Header -->
                 <div class="flex items-center justify-between pb-4 border-b border-white/30 dark:border-white/10">
@@ -308,119 +138,14 @@
                             <span class="text-[11px] font-semibold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider block">Portal Pengguna</span>
                         </div>
                     </a>
-
-                    <!-- Mobile Menu Hamburger -->
-                    <button type="button" class="lg:hidden p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white/40 dark:hover:bg-white/10" onclick="togglePenggunaSidebar()">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                    </button>
                 </div>
 
-                <!-- Navigation Menu -->
-                <nav id="pengguna-nav-links" class="space-y-1.5 hidden lg:block">
-                    <!-- 1. Dashboard Saya -->
-                    <a href="{{ route('pengguna.dashboard') }}"
-                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('pengguna.dashboard') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
-                        <svg class="w-5 h-5 {{ request()->routeIs('pengguna.dashboard') ? 'text-white' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5" stroke-width="2"/>
-                            <rect x="14" y="3" width="7" height="7" rx="1.5" stroke-width="2"/>
-                            <rect x="14" y="14" width="7" height="7" rx="1.5" stroke-width="2"/>
-                            <rect x="3" y="14" width="7" height="7" rx="1.5" stroke-width="2"/>
-                        </svg>
-                        <span>Dashboard Saya</span>
-                    </a>
-
-                    <!-- 2. Katalog Fasilitas -->
-                    <a href="{{ route('pengguna.facilities') }}"
-                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('pengguna.facilities*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
-                        <svg class="w-5 h-5 {{ request()->routeIs('pengguna.facilities*') ? 'text-white' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
-                        <span>Katalog Fasilitas</span>
-                    </a>
-
-                    <!-- 3. Peminjaman Ruang -->
-                    <a href="{{ route('reservation') }}"
-                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('reservation*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
-                        <svg class="w-5 h-5 {{ request()->routeIs('reservation*') ? 'text-white' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <span>Peminjaman Ruang</span>
-                    </a>
-
-                    <!-- 4. Laporan Kendala -->
-                    <a href="{{ route('report') }}"
-                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('report*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
-                        <svg class="w-5 h-5 {{ request()->routeIs('report*') ? 'text-white' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                        <span>Laporan Kendala</span>
-                    </a>
-                </nav>
-
-                <!-- Aksi Cepat Pengguna -->
-                <div class="pt-5 border-t border-white/30 dark:border-white/10 space-y-2 hidden lg:block">
-                    <div class="flex items-center justify-between px-2 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        <span>Aksi Cepat</span>
-                    </div>
-
-                    <a href="{{ route('reservation') }}"
-                       class="flex items-center justify-between p-3 rounded-2xl bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 border border-white/70 dark:border-white/10 transition-all group shadow-2xs">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-emerald-500/15 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                </svg>
-                            </div>
-                            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Buat Reservasi</span>
-                        </div>
-                        <svg class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-
-                    <a href="{{ route('report') }}"
-                       class="flex items-center justify-between p-3 rounded-2xl bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 border border-white/70 dark:border-white/10 transition-all group shadow-2xs">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 flex items-center justify-center">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                </svg>
-                            </div>
-                            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Lapor Kerusakan</span>
-                        </div>
-                        <svg class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
+                <!-- Navigation Links & Quick Actions -->
+                @include('partials.sidebar-pengguna-nav')
             </div>
 
-            <!-- Bottom: User & Logout -->
-            <div class="pt-5 border-t border-white/30 dark:border-white/10 hidden lg:block space-y-3">
-                <div class="flex items-center gap-3 px-2">
-                    <div class="w-9 h-9 rounded-2xl bg-[#0F5143] text-white flex items-center justify-center font-bold text-xs shadow-xs shrink-0">
-                        {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 2)) }}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <p class="text-xs font-bold text-slate-800 dark:text-white truncate">{{ auth()->user()->name ?? 'Pengguna' }}</p>
-                        <p class="text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider truncate">
-                            {{ ucfirst(auth()->user()->tipe_pengguna ?? 'Mahasiswa') }}
-                        </p>
-                    </div>
-                </div>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-700 dark:text-rose-400 hover:bg-rose-50/70 dark:hover:bg-rose-950/30 border border-transparent hover:border-rose-200 dark:hover:border-rose-900 transition-all cursor-pointer">
-                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                        <span>Keluar Sistem</span>
-                    </button>
-                </form>
-            </div>
+            <!-- User Profile & Logout -->
+            @include('partials.sidebar-pengguna-user')
         </aside>
 
         <!-- ==========================================
@@ -508,15 +233,36 @@
 
     <script>
         function togglePenggunaSidebar() {
-            const nav = document.getElementById('pengguna-nav-links');
+            const panel = document.getElementById('pengguna-sidebar-panel');
             const backdrop = document.getElementById('pengguna-sidebar-backdrop');
-            if (nav) {
-                nav.classList.toggle('hidden');
+            if (panel) {
+                const isOpen = panel.classList.contains('translate-x-0');
+                if (isOpen) {
+                    panel.classList.remove('translate-x-0');
+                    panel.classList.add('-translate-x-full');
+                } else {
+                    panel.classList.remove('-translate-x-full');
+                    panel.classList.add('translate-x-0');
+                }
             }
             if (backdrop) {
                 backdrop.classList.toggle('hidden');
             }
         }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const panel = document.getElementById('pengguna-sidebar-panel');
+                const backdrop = document.getElementById('pengguna-sidebar-backdrop');
+                if (panel && panel.classList.contains('translate-x-0')) {
+                    panel.classList.remove('translate-x-0');
+                    panel.classList.add('-translate-x-full');
+                    if (backdrop) {
+                        backdrop.classList.add('hidden');
+                    }
+                }
+            }
+        });
     </script>
     @stack('scripts')
 </body>

@@ -116,7 +116,7 @@ test('petugas can resolve report with resolution note (US 11)', function () {
     ]);
 });
 
-test('petugas can mark facility as dalam_perbaikan during report update and block schedule (US 12)', function () {
+test('petugas can mark facility as dalam_perbaikan during report update and block reservations (US 12)', function () {
     $petugas = User::factory()->petugas()->verified()->create();
     $facility = Facility::factory()->create(['status' => 'aktif']);
     $report = Report::factory()->create([
@@ -135,9 +135,24 @@ test('petugas can mark facility as dalam_perbaikan during report update and bloc
     // Pastikan status fasilitas telah berubah di database
     expect($facility->fresh()->status)->toBe('dalam_perbaikan');
 
-    // Pastikan jadwal ketersediaan fasilitas otomatis tidak tersedia untuk seluruh slot
+    // Pastikan seluruh 26 slot ketersediaan publik terkunci menjadi tidak tersedia
     $schedule = $facility->fresh()->getScheduleForDate(now()->addDays(2)->toDateString());
     expect(collect($schedule)->every(fn ($slot) => ! $slot['is_available']))->toBeTrue();
+
+    // Pastikan reservasi untuk fasilitas ini sekarang otomatis ditolak
+    $user = User::factory()->pengguna()->verified()->create();
+    $tomorrow = now()->addDays(2)->toDateString();
+
+    $reservationResponse = $this->actingAs($user)->post('/reservations', [
+        'facility_id' => $facility->id,
+        'tanggal' => $tomorrow,
+        'start_time' => '09:00',
+        'end_time' => '11:00',
+        'tujuan_penggunaan' => 'Rapat kerja himpunan mahasiswa',
+    ]);
+
+    $reservationResponse->assertSessionHasErrors(['facility_id']);
+    $this->assertDatabaseEmpty('reservations');
 });
 
 test('petugas can restore facility status to aktif when report is resolved (US 12)', function () {
@@ -158,7 +173,55 @@ test('petugas can restore facility status to aktif when report is resolved (US 1
     // Fasilitas aktif kembali
     expect($facility->fresh()->status)->toBe('aktif');
 
-    // Jadwal ketersediaan kembali terbuka
-    $schedule = $facility->fresh()->getScheduleForDate(now()->addDays(2)->toDateString());
-    expect(collect($schedule)->every(fn ($slot) => $slot['is_available']))->toBeTrue();
+    // Pastikan seluruh 26 slot ketersediaan publik kembali terbuka menjadi tersedia
+    $scheduleActive = $facility->fresh()->getScheduleForDate(now()->addDays(2)->toDateString());
+    expect(collect($scheduleActive)->every(fn ($slot) => $slot['is_available']))->toBeTrue();
+
+    // Sekarang user bisa memesan fasilitas tersebut
+    $user = User::factory()->pengguna()->verified()->create();
+    $tomorrow = now()->addDays(2)->toDateString();
+
+    $reservationResponse = $this->actingAs($user)->post('/reservations', [
+        'facility_id' => $facility->id,
+        'tanggal' => $tomorrow,
+        'start_time' => '09:00',
+        'end_time' => '11:00',
+        'tujuan_penggunaan' => 'Rapat kerja himpunan mahasiswa',
+    ]);
+
+    $reservationResponse->assertRedirect(route('reservation'));
+    $this->assertDatabaseHas('reservations', [
+        'facility_id' => $facility->id,
+        'user_id' => $user->id,
+        'status' => 'pending',
+    ]);
+});
+
+test('petugas can mark facility status as dalam_perbaikan during processing and restore to aktif upon resolution (US 12)', function () {
+    $petugas = User::factory()->petugas()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+    $report = Report::factory()->create([
+        'facility_id' => $facility->id,
+        'status' => 'baru',
+    ]);
+
+    // 1. Petugas memproses laporan dan menandai fasilitas dalam perbaikan
+    $response1 = $this->actingAs($petugas)->patch("/petugas/reports/{$report->id}", [
+        'status' => 'diproses',
+        'catatan_resolusi' => 'Sedang diperiksa oleh teknisi listrik.',
+        'mark_facility_status' => 'dalam_perbaikan',
+    ]);
+
+    $response1->assertRedirect();
+    expect($facility->fresh()->status)->toBe('dalam_perbaikan');
+
+    // 2. Petugas menyelesaikan laporan dan mengembalikan fasilitas ke aktif
+    $response2 = $this->actingAs($petugas)->patch("/petugas/reports/{$report->id}", [
+        'status' => 'selesai',
+        'catatan_resolusi' => 'Komponen rusak telah diganti baru dan diuji normal.',
+        'mark_facility_status' => 'aktif',
+    ]);
+
+    $response2->assertRedirect();
+    expect($facility->fresh()->status)->toBe('aktif');
 });

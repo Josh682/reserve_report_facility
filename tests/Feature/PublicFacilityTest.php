@@ -132,3 +132,35 @@ test('all slots are marked unavailable when facility is in maintenance or inacti
             ->and($slot['status_label'])->toBe('Nonaktif');
     }
 });
+
+test('authenticated pengguna can access internal facility catalog with integrated sidebar', function () {
+    $pengguna = User::factory()->pengguna()->create();
+    Facility::factory()->create(['nama' => 'Ruang Seminar 101', 'status' => 'aktif']);
+
+    $response = $this->actingAs($pengguna)->get(route('pengguna.facilities'));
+
+    $response->assertOk()
+        ->assertSee('Ruang Seminar 101')
+        ->assertViewIs('pengguna.facilities');
+});
+
+test('authenticated petugas can access internal facility catalog with operational sidebar', function () {
+    $petugas = User::factory()->petugas()->create();
+    Facility::factory()->create(['nama' => 'Ruang Server Jaringan', 'status' => 'aktif']);
+
+    $response = $this->actingAs($petugas)->get(route('petugas.facilities'));
+
+    $response->assertOk()
+        ->assertSee('Ruang Server Jaringan')
+        ->assertViewIs('petugas.facilities');
+});
+
+test('authenticated users visiting public facilities route are smoothly redirected to their portal catalog', function () {
+    $pengguna = User::factory()->pengguna()->create();
+    $responsePengguna = $this->actingAs($pengguna)->get(route('facilities'));
+    $responsePengguna->assertRedirect(route('pengguna.facilities'));
+
+    $petugas = User::factory()->petugas()->create();
+    $responsePetugas = $this->actingAs($petugas)->get(route('facilities'));
+    $responsePetugas->assertRedirect(route('petugas.facilities'));
+});

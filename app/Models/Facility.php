@@ -45,7 +45,7 @@ class Facility extends Model
     }
 
     /**
-     * Relasi ke laporan kendala fasilitas.
+     * Relasi ke laporan kendala/kerusakan fasilitas.
      */
     public function reports(): HasMany
     {
