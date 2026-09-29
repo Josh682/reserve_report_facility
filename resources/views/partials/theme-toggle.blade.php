@@ -19,3 +19,59 @@
         </svg>
     </span>
 </button>
+
+<script>
+    (function() {
+        if (typeof window.applyTheme === 'undefined') {
+            window.applyTheme = function(isDark) {
+                const html = document.documentElement;
+                const sunIcons = document.querySelectorAll('.theme-icon-sun, #theme-icon-sun');
+                const moonIcons = document.querySelectorAll('.theme-icon-moon, #theme-icon-moon');
+                const toggleBtns = document.querySelectorAll('.theme-toggle-pill, #theme-toggle');
+
+                if (isDark) {
+                    html.classList.add('dark');
+                    try { localStorage.setItem('facilityhub_theme', 'dark'); } catch(e) {}
+                    document.cookie = 'theme=dark;path=/;max-age=' + (60 * 60 * 24 * 365) + ';SameSite=Lax';
+                    toggleBtns.forEach(function(btn) {
+                        btn.setAttribute('aria-label', 'Beralih ke Mode Terang');
+                        btn.setAttribute('title', 'Beralih ke Mode Terang');
+                    });
+                    sunIcons.forEach(function(icon) {
+                        icon.className = 'theme-icon-sun w-7 h-7 rounded-lg flex items-center justify-center text-amber-500 hover:text-amber-400 transition-all duration-200';
+                    });
+                    moonIcons.forEach(function(icon) {
+                        icon.className = 'theme-icon-moon w-7 h-7 rounded-lg flex items-center justify-center bg-emerald-600 text-emerald-100 shadow-xs transition-all duration-200';
+                    });
+                } else {
+                    html.classList.remove('dark');
+                    try { localStorage.setItem('facilityhub_theme', 'light'); } catch(e) {}
+                    document.cookie = 'theme=light;path=/;max-age=' + (60 * 60 * 24 * 365) + ';SameSite=Lax';
+                    toggleBtns.forEach(function(btn) {
+                        btn.setAttribute('aria-label', 'Beralih ke Mode Gelap');
+                        btn.setAttribute('title', 'Beralih ke Mode Gelap');
+                    });
+                    sunIcons.forEach(function(icon) {
+                        icon.className = 'theme-icon-sun w-7 h-7 rounded-lg flex items-center justify-center bg-[#D1FAE5] border border-emerald-300/80 shadow-xs text-amber-500 transition-all duration-200';
+                    });
+                    moonIcons.forEach(function(icon) {
+                        icon.className = 'theme-icon-moon w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all duration-200';
+                    });
+                }
+            };
+
+            window.toggleTheme = function() {
+                const isDark = document.documentElement.classList.contains('dark');
+                window.applyTheme(!isDark);
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    window.applyTheme(document.documentElement.classList.contains('dark'));
+                });
+            } else {
+                window.applyTheme(document.documentElement.classList.contains('dark'));
+            }
+        }
+    })();
+</script>

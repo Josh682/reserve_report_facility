@@ -607,52 +607,5 @@
     <div class="ambient-blob-focus-3 fixed top-[15%] left-[28%] w-[320px] h-[320px] rounded-full blur-[85px] pointer-events-none -z-0"></div>
 
     @yield('content')
-
-    <!-- Theme Toggle Helper Script -->
-    <script>
-        function applyTheme(isDark) {
-            const html = document.documentElement;
-            const sunIcon = document.getElementById('theme-icon-sun');
-            const moonIcon = document.getElementById('theme-icon-moon');
-            const toggleBtn = document.getElementById('theme-toggle');
-
-            if (isDark) {
-                html.classList.add('dark');
-                try { localStorage.setItem('facilityhub_theme', 'dark'); } catch(e) {}
-                document.cookie = 'theme=dark;path=/;max-age=' + (60 * 60 * 24 * 365) + ';SameSite=Lax';
-                if (toggleBtn) {
-                    toggleBtn.setAttribute('aria-label', 'Beralih ke Mode Terang');
-                    toggleBtn.setAttribute('title', 'Beralih ke Mode Terang');
-                }
-                if (sunIcon && moonIcon) {
-                    sunIcon.className = 'theme-icon-sun w-7 h-7 rounded-lg flex items-center justify-center text-amber-500 hover:text-amber-400 transition-all duration-200';
-                    moonIcon.className = 'theme-icon-moon w-7 h-7 rounded-lg flex items-center justify-center bg-emerald-600 text-emerald-100 shadow-xs transition-all duration-200';
-                }
-            } else {
-                html.classList.remove('dark');
-                try { localStorage.setItem('facilityhub_theme', 'light'); } catch(e) {}
-                document.cookie = 'theme=light;path=/;max-age=' + (60 * 60 * 24 * 365) + ';SameSite=Lax';
-                if (toggleBtn) {
-                    toggleBtn.setAttribute('aria-label', 'Beralih ke Mode Gelap');
-                    toggleBtn.setAttribute('title', 'Beralih ke Mode Gelap');
-                }
-                if (sunIcon && moonIcon) {
-                    sunIcon.className = 'theme-icon-sun w-7 h-7 rounded-lg flex items-center justify-center bg-[#D1FAE5] border border-emerald-300/80 shadow-xs text-amber-500 transition-all duration-200';
-                    moonIcon.className = 'theme-icon-moon w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all duration-200';
-                }
-            }
-        }
-
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.contains('dark');
-            applyTheme(!isDark);
-        }
-
-        // Initialize toggle button state on DOM load
-        document.addEventListener('DOMContentLoaded', function() {
-            const isDark = document.documentElement.classList.contains('dark');
-            applyTheme(isDark);
-        });
-    </script>
 </body>
 </html>
