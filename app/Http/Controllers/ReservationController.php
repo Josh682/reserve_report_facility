@@ -29,8 +29,9 @@ class ReservationController extends Controller
             ->get();
 
         $selectedFacilityId = $request->query('facility_id');
+        $openForm = $request->boolean('open_form') || $request->filled('facility_id');
 
-        return view('reservation', compact('reservations', 'facilities', 'selectedFacilityId'));
+        return view('reservation', compact('reservations', 'facilities', 'selectedFacilityId', 'openForm'));
     }
 
     /**
