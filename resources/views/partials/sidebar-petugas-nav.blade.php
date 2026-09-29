@@ -17,7 +17,16 @@
         <span>Dashboard Petugas</span>
     </a>
 
-    <!-- 2. Antrean Reservasi -->
+    <!-- 2. Katalog Fasilitas -->
+    <a href="{{ route('petugas.facilities') }}"
+       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('petugas.facilities*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
+        <svg class="w-5 h-5 {{ request()->routeIs('petugas.facilities*') ? 'text-white' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white' }} shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+        </svg>
+        <span>Katalog Fasilitas</span>
+    </a>
+
+    <!-- 3. Antrean Reservasi -->
     <a href="{{ route('petugas.reservations.index') }}"
        class="flex items-center justify-between px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('petugas.reservations.*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
         <div class="flex items-center gap-3.5">

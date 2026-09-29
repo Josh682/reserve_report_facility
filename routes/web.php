@@ -192,6 +192,8 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
 
     Route::get('/reports', [PetugasReportController::class, 'index'])->name('reports.index');
     Route::patch('/reports/{report}', [PetugasReportController::class, 'update'])->name('reports.update');
+
+    Route::get('/facilities', [PublicFacilityController::class, 'indexPetugas'])->name('facilities');
 });
 
 Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {
@@ -229,4 +231,6 @@ Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna
 
         return view('pengguna.dashboard', compact('stats', 'recentReservations', 'recentReports', 'availableFacilities'));
     })->name('dashboard');
+
+    Route::get('/facilities', [PublicFacilityController::class, 'indexPengguna'])->name('facilities');
 });
