@@ -182,7 +182,13 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
             ->take(5)
             ->get();
 
-        return view('petugas.dashboard', compact('stats', 'pendingReservations'));
+        $pendingReports = Report::with(['facility', 'user'])
+            ->where('status', 'baru')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('petugas.dashboard', compact('stats', 'pendingReservations', 'pendingReports'));
     })->name('dashboard');
 
     Route::get('/reservations', [PetugasReservationController::class, 'index'])->name('reservations.index');
