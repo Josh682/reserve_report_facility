@@ -51,7 +51,7 @@
            class="p-5 rounded-2xl glass-card-interactive flex items-center justify-between hover:scale-[1.01] hover:border-emerald-500/50 transition-all group">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Fasilitas Siap Pakai</span>
-                <span class="text-3xl sm:text-4xl font-extrabold text-[#0F5143] dark:text-white mt-1 block tracking-tight">{{ $stats['aktif'] ?? 0 }}</span>
+                <span class="text-3xl sm:text-4xl font-extrabold text-[#0F5143] dark:text-emerald-400 mt-1 block tracking-tight">{{ $stats['aktif'] ?? 0 }}</span>
                 <span class="text-xs font-semibold text-[#0F5143] dark:text-[#34D399] mt-1.5 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                     Status aktif & operasional &rarr;
                 </span>
@@ -141,13 +141,85 @@
             </div>
         @else
             <div class="text-center py-8">
-                <div class="w-12 h-12 rounded-2xl bg-emerald-100/80 dark:bg-emerald-950/60 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center mx-auto mb-3">
+                <div class="w-12 h-12 rounded-2xl bg-teal-500/15 dark:bg-teal-950/60 border border-teal-500/20 dark:border-teal-500/30 text-[#0F5143] dark:text-[#34D399] flex items-center justify-center mx-auto mb-3 shadow-2xs">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
                 <p class="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">Tidak ada fasilitas dalam perbaikan.</p>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Seluruh fasilitas kampus siap beroperasi normal.</p>
+            </div>
+        @endif
+    </div>
+
+    {{-- ==========================================
+         4. RINGKASAN FASILITAS SIAP OPERASIONAL
+         ========================================== --}}
+    <div class="glass-card-main rounded-3xl p-6 sm:p-7">
+        <div class="flex items-center justify-between mb-5">
+            <div>
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    Fasilitas Siap Operasional
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                    Fasilitas berstatus aktif yang siap digunakan untuk operasional kampus
+                </p>
+            </div>
+            <a href="{{ route('petugas.facilities') }}"
+               class="text-xs font-bold text-[#0F5143] dark:text-[#34D399] hover:underline flex items-center gap-1">
+                <span>Katalog Lengkap</span>
+                <span>&rarr;</span>
+            </a>
+        </div>
+
+        @if ($activeFacilities->isNotEmpty())
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach ($activeFacilities as $facility)
+                    <div class="p-4 rounded-2xl glass-card-nested border border-emerald-500/20 dark:border-emerald-500/15 shadow-2xs flex flex-col justify-between group hover:border-emerald-500/40 transition-all">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2.5">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/25">
+                                    <x-facility-icon :tipe="$facility->tipe" class="w-3.5 h-3.5" />
+                                    <span>{{ str_replace('_', ' ', ucfirst($facility->tipe)) }}</span>
+                                </span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Aktif Siap Pakai"></span>
+                            </div>
+
+                            <h3 class="font-extrabold text-sm text-slate-800 dark:text-white group-hover:text-[#0F5143] dark:group-hover:text-[#34D399] transition-colors line-clamp-1" title="{{ $facility->nama }}">
+                                {{ $facility->nama }}
+                            </h3>
+
+                            <div class="mt-2 space-y-1 text-xs text-slate-500 dark:text-slate-400">
+                                <p class="flex items-center gap-1.5 truncate">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <span class="truncate">{{ $facility->lokasi }}</span>
+                                </p>
+                                @if ($facility->kapasitas)
+                                    <p class="flex items-center gap-1.5">
+                                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                        <span>Kapasitas: {{ $facility->kapasitas }} orang</span>
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="mt-3.5 pt-2.5 border-t border-white/60 dark:border-white/10">
+                            <a href="{{ route('petugas.facilities', ['search' => $facility->nama]) }}"
+                               class="w-full inline-flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl text-xs font-semibold text-[#0F5143] dark:text-[#34D399] bg-emerald-500/10 hover:bg-emerald-500/20 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 transition-colors">
+                                <span>Pantau Jadwal Slot &rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-6 text-xs text-slate-500 dark:text-slate-400">
+                Tidak ada data fasilitas aktif yang tercatat.
             </div>
         @endif
     </div>

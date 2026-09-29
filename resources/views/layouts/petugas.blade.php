@@ -134,6 +134,41 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
         }
 
+        .theme-toggle-pill {
+            background: rgba(255, 255, 255, 0.50);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 1px rgba(255,255,255,0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        .theme-icon-sun, .theme-icon-moon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        html:not(.dark) .theme-toggle-pill .theme-icon-sun,
+        html:not(.dark) #theme-icon-sun {
+            background-color: #D1FAE5 !important;
+            border: 1px solid rgba(52, 211, 153, 0.6) !important;
+            color: #F59E0B !important;
+            box-shadow: 0 1px 3px rgba(16, 185, 129, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+        }
+        html:not(.dark) .theme-toggle-pill .theme-icon-moon,
+        html:not(.dark) #theme-icon-moon {
+            background-color: transparent !important;
+            border: 1px solid transparent !important;
+            color: #64748B !important;
+            box-shadow: none !important;
+        }
+        html:not(.dark) .theme-toggle-pill .theme-icon-moon:hover,
+        html:not(.dark) #theme-icon-moon:hover {
+            color: #334155 !important;
+        }
+
         /* Light Mode Autofill / Autocomplete Override (Soft Mint Green #E8F8F3) */
         .kezak-input:-webkit-autofill,
         .kezak-input:-webkit-autofill:hover, 
@@ -267,6 +302,41 @@
             border-color: #059669 !important;
             caret-color: #34D399 !important;
             transition: background-color 5000s ease-in-out 0s;
+        }
+
+        html.dark .theme-toggle-pill {
+            background: rgba(0, 0, 0, 0.40) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+        }
+        html.dark .theme-toggle-pill .theme-icon-sun,
+        html.dark #theme-icon-sun {
+            background-color: transparent !important;
+            border: 1px solid transparent !important;
+            color: #F59E0B !important;
+            box-shadow: none !important;
+        }
+        html.dark .theme-toggle-pill .theme-icon-sun:hover,
+        html.dark #theme-icon-sun:hover {
+            color: #FBBF24 !important;
+        }
+        html.dark .theme-toggle-pill .theme-icon-moon,
+        html.dark #theme-icon-moon {
+            background-color: #059669 !important;
+            border: 1px solid rgba(52, 211, 153, 0.4) !important;
+            color: #A7F3D0 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+        }
+
+        html.dark .kezak-btn-primary {
+            background: linear-gradient(135deg, #0F5143 0%, #0B3D32 100%) !important;
+            border: 1px solid rgba(52, 211, 153, 0.3) !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+        }
+        html.dark .kezak-btn-primary:hover {
+            background: linear-gradient(135deg, #146353 0%, #0F5143 100%) !important;
+            border-color: rgba(52, 211, 153, 0.5) !important;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
         }
     </style>
     @stack('styles')
