@@ -78,6 +78,40 @@
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(0, 0, 0, 0.02) !important;
             outline: none !important;
         }
+
+        /* Light Mode Autofill / Autocomplete Override (Soft Mint Green #E8F8F3) */
+        .kezak-input:-webkit-autofill,
+        .kezak-input:-webkit-autofill:hover, 
+        .kezak-input:-webkit-autofill:focus, 
+        .kezak-input:-webkit-autofill:active,
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            -webkit-text-fill-color: #0F5143 !important;
+            color: #0F5143 !important;
+            border-color: #10B981 !important;
+            caret-color: #0F5143 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        .kezak-input:autofill,
+        .kezak-input:autofill:hover,
+        .kezak-input:autofill:focus,
+        .kezak-input:autofill:active,
+        input:autofill,
+        input:autofill:hover,
+        input:autofill:focus,
+        input:autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+            -webkit-text-fill-color: #0F5143 !important;
+            color: #0F5143 !important;
+            border-color: #10B981 !important;
+            caret-color: #0F5143 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
     </style>
     @stack('styles')
 </head>

@@ -111,6 +111,40 @@ textarea.kezak-input:focus {
     outline: none !important;
 }
 
+/* Light Mode Autofill / Autocomplete Override (Soft Mint Green #E8F8F3) */
+.kezak-input:-webkit-autofill,
+.kezak-input:-webkit-autofill:hover, 
+.kezak-input:-webkit-autofill:focus, 
+.kezak-input:-webkit-autofill:active,
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+    box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+    -webkit-text-fill-color: #0F5143 !important;
+    color: #0F5143 !important;
+    border-color: #10B981 !important;
+    caret-color: #0F5143 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+.kezak-input:autofill,
+.kezak-input:autofill:hover,
+.kezak-input:autofill:focus,
+.kezak-input:autofill:active,
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+    box-shadow: 0 0 0 1000px #E8F8F3 inset !important;
+    -webkit-text-fill-color: #0F5143 !important;
+    color: #0F5143 !important;
+    border-color: #10B981 !important;
+    caret-color: #0F5143 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .auth-btn-primary {
     background-color: #0F5143;
     color: #FFFFFF;
@@ -294,6 +328,40 @@ html.dark textarea.kezak-input:focus {
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(0, 0, 0, 0.2) !important;
     color: #FFFFFF !important;
     outline: none !important;
+}
+
+/* Dark Mode Autofill / Autocomplete Override (Deep Emerald Green #062E25) */
+html.dark .kezak-input:-webkit-autofill,
+html.dark .kezak-input:-webkit-autofill:hover, 
+html.dark .kezak-input:-webkit-autofill:focus, 
+html.dark .kezak-input:-webkit-autofill:active,
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:hover, 
+html.dark input:-webkit-autofill:focus, 
+html.dark input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
+    box-shadow: 0 0 0 1000px #062E25 inset !important;
+    -webkit-text-fill-color: #ECFDF5 !important;
+    color: #ECFDF5 !important;
+    border-color: #059669 !important;
+    caret-color: #34D399 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+html.dark .kezak-input:autofill,
+html.dark .kezak-input:autofill:hover,
+html.dark .kezak-input:autofill:focus,
+html.dark .kezak-input:autofill:active,
+html.dark input:autofill,
+html.dark input:autofill:hover,
+html.dark input:autofill:focus,
+html.dark input:autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #062E25 inset !important;
+    box-shadow: 0 0 0 1000px #062E25 inset !important;
+    -webkit-text-fill-color: #ECFDF5 !important;
+    color: #ECFDF5 !important;
+    border-color: #059669 !important;
+    caret-color: #34D399 !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 html.dark select.kezak-input option {
     background-color: #071D18 !important;

@@ -208,9 +208,6 @@
                 <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-800">
                     Daftar Fasilitas & Jadwal Ketersediaan
                 </h2>
-                <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
-                    Setiap fasilitas memiliki 26 slot waktu (07.00 - 20.00 WIB). Klik tombol untuk memeriksa detail tiap slot.
-                </p>
             </div>
             <div>
                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/70 backdrop-blur-md border border-white/80 text-slate-600 shadow-2xs">
@@ -258,12 +255,12 @@
                         </div>
 
                         <!-- Category Tag -->
-                        <span class="text-[11px] font-bold text-teal-700 uppercase tracking-wider mt-4 block">
+                        <span class="text-[11px] font-bold text-teal-700 uppercase tracking-wider ml-3 mt-4 block">
                             {{ ucwords(str_replace('_', ' ', $facility->tipe)) }}
                         </span>
 
                         <!-- Facility Name -->
-                        <h3 class="text-lg font-extrabold text-slate-800 group-hover:text-[#0F5143] transition-colors mt-0.5 line-clamp-1" title="{{ $facility->nama }}">
+                        <h3 class="text-lg font-extrabold ml-3 text-slate-800 group-hover:text-[#0F5143] transition-colors mt-0.5 line-clamp-1" title="{{ $facility->nama }}">
                             {{ $facility->nama }}
                         </h3>
 
@@ -286,7 +283,7 @@
 
                         <!-- Description Snippet -->
                         @if ($facility->deskripsi)
-                            <p class="text-xs text-slate-500 mt-2.5 line-clamp-2 leading-relaxed" title="{{ $facility->deskripsi }}">
+                            <p class="text-xs text-slate-500 ml-3 mt-2.5 line-clamp-2 leading-relaxed" title="{{ $facility->deskripsi }}">
                                 {{ $facility->deskripsi }}
                             </p>
                         @endif
