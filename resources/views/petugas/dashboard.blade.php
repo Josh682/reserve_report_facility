@@ -2,7 +2,6 @@
 
 @section('title', 'Dashboard Petugas')
 @section('header_title', 'Dashboard Operasional')
-@section('header_subtitle', 'Pantau kesiapan fasilitas kampus, jadwal operasional, dan status pemeliharaan secara realtime')
 
 @php
     $repairFacilities = \App\Models\Facility::where('status', 'dalam_perbaikan')->orderBy('nama')->take(4)->get();

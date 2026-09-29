@@ -2,7 +2,6 @@
 
 @section('title', 'Katalog & Ketersediaan Fasilitas — Panel Petugas')
 @section('header_title', 'Katalog Fasilitas')
-@section('header_subtitle', 'Pantau kesiapan fasilitas kampus, status pemeliharaan, dan jadwal 26 slot operasional')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">

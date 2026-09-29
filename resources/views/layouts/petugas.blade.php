@@ -484,11 +484,6 @@
                             @yield('title', 'Panel Petugas')
                         @endif
                     </h1>
-                    @hasSection('header_subtitle')
-                        <p class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 mt-0.5">
-                            @yield('header_subtitle')
-                        </p>
-                    @endif
                 </div>
 
                 <div class="flex items-center gap-3">

@@ -2,7 +2,6 @@
 
 @section('title', 'Laporan Kendala Fasilitas')
 @section('header_title', 'Antrean & Resolusi Laporan Fasilitas')
-@section('header_subtitle', 'Tinjau keluhan kerusakan, lakukan investigasi lapangan, perbarui status resolusi, dan atur ketersediaan fasilitas')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
