@@ -27,9 +27,9 @@
             </p>
         </div>
 
-        <div class="relative z-10 shrink-0 flex items-center gap-3">
+        <div class="relative z-10 shrink-0 flex flex-wrap items-center gap-2.5">
             <a href="{{ route('facilities') }}"
-               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-white/70 dark:bg-white/10 hover:bg-white/90 dark:hover:bg-white/20 transition-all border border-white/80 dark:border-white/15 shadow-xs">
+               class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-white/70 dark:bg-white/10 hover:bg-white/90 dark:hover:bg-white/20 transition-all border border-white/80 dark:border-white/15 shadow-xs">
                 <svg class="w-4 h-4 text-[#0F5143] dark:text-[#34D399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
@@ -42,13 +42,20 @@
                 </svg>
                 <span>+ Pinjam Ruangan</span>
             </a>
+            <a href="{{ route('report') }}"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-all border border-rose-200/80 dark:border-rose-800/40 shadow-xs">
+                <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>+ Lapor Kendala</span>
+            </a>
         </div>
     </div>
 
     {{-- ==========================================
          2. STATS METRIK KPI (FROSTED GLASS CARDS)
          ========================================== --}}
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {{-- Card 1: Fasilitas Siap Pakai --}}
         <a href="{{ route('facilities') }}"
            class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between hover:scale-[1.01] hover:border-emerald-500/50 transition-all group">
@@ -96,6 +103,23 @@
             <div class="w-12 h-12 rounded-2xl bg-amber-100/80 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 shadow-2xs">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </a>
+
+        {{-- Card 4: Laporan Kendala Saya --}}
+        <a href="{{ route('report') }}"
+           class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/60 dark:border-white/10 shadow-xs flex items-center justify-between hover:scale-[1.01] hover:border-rose-500/50 transition-all group">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Laporan Kendala Saya</span>
+                <span class="text-3xl sm:text-4xl font-extrabold text-rose-600 dark:text-rose-400 mt-1 block tracking-tight">{{ $stats['my_reports'] ?? 0 }}</span>
+                <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-1 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                    <span>{{ $stats['my_reports_in_progress'] ?? 0 }} ditangani • {{ $stats['my_reports_resolved'] ?? 0 }} selesai</span>
+                </span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-rose-100/80 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 flex items-center justify-center shrink-0 shadow-2xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
             </div>
         </a>
@@ -246,6 +270,98 @@
                                 Belum ada riwayat reservasi yang diajukan.
                                 <a href="{{ route('reservation') }}" class="text-[#0F5143] dark:text-[#34D399] font-bold ml-1 hover:underline">
                                     Ajukan ruangan &rarr;
+                                </a>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{-- ==========================================
+         5. RIWAYAT LAPORAN KENDALA TERAKHIR SAYA (TABLE/CARDS)
+         ========================================== --}}
+    <div class="rounded-3xl bg-white/65 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 p-6 sm:p-7 space-y-6 shadow-xs">
+        <div class="flex items-center justify-between pb-4 border-b border-white/40 dark:border-white/10">
+            <div>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">Riwayat Laporan Kendala Terakhir</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">Pantau status penanganan kendala fasilitas yang Anda laporkan ke petugas.</p>
+            </div>
+            <a href="{{ route('report') }}" class="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1">
+                Kelola Semua &rarr;
+            </a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                <thead>
+                    <tr class="text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 border-b border-white/50 dark:border-white/10">
+                        <th class="py-3 px-4">Laporan & Fasilitas</th>
+                        <th class="py-3 px-4">Kategori & Waktu</th>
+                        <th class="py-3 px-4">Deskripsi Kendala</th>
+                        <th class="py-3 px-4">Status & Tindak Lanjut</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/40 dark:divide-white/5">
+                    @forelse ($recentReports as $rep)
+                        <tr class="hover:bg-white/50 dark:hover:bg-white/5 transition-colors">
+                            <td class="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase bg-white/80 dark:bg-white/10 text-slate-700 dark:text-slate-300 border border-white/90 dark:border-white/15">
+                                        #REP-{{ str_pad($rep->id, 4, '0', STR_PAD_LEFT) }}
+                                    </span>
+                                    <div>
+                                        <span class="block leading-tight font-extrabold">{{ $rep->facility->nama ?? 'Fasilitas Terhapus' }}</span>
+                                        <span class="block text-[11px] font-normal text-slate-500 dark:text-slate-400">{{ $rep->facility->lokasi ?? '' }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md font-semibold text-[11px] bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 mb-1">
+                                    {{ ucfirst($rep->kategori) }}
+                                </span>
+                                <span class="text-[11px] text-slate-500 dark:text-slate-400 block">
+                                    {{ $rep->created_at->translatedFormat('d M Y, H:i') }}
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 max-w-xs">
+                                <p class="text-slate-700 dark:text-slate-300 font-medium line-clamp-2" title="{{ $rep->deskripsi }}">
+                                    {{ $rep->deskripsi }}
+                                </p>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                @if ($rep->status === 'baru')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300 border border-sky-300 dark:border-sky-800 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse"></span> Baru
+                                    </span>
+                                @elseif ($rep->status === 'diproses')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-800 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Diproses
+                                    </span>
+                                @elseif ($rep->status === 'selesai')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Selesai
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-800 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Ditolak
+                                    </span>
+                                @endif
+
+                                @if ($rep->catatan_resolusi)
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-1 italic" title="{{ $rep->catatan_resolusi }}">
+                                        "{{ $rep->catatan_resolusi }}"
+                                    </p>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="py-8 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Belum ada laporan kendala yang dikirimkan.
+                                <a href="{{ route('report') }}" class="text-rose-600 dark:text-rose-400 font-bold ml-1 hover:underline">
+                                    Lapor fasilitas &rarr;
                                 </a>
                             </td>
                         </tr>

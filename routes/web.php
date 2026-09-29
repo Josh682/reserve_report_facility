@@ -204,9 +204,19 @@ Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna
             'my_reservations' => Reservation::where('user_id', $user->id)->count(),
             'my_pending' => Reservation::where('user_id', $user->id)->where('status', 'pending')->count(),
             'my_approved' => Reservation::where('user_id', $user->id)->where('status', 'approved')->count(),
+            'my_reports' => Report::where('user_id', $user->id)->count(),
+            'my_reports_pending' => Report::where('user_id', $user->id)->where('status', 'baru')->count(),
+            'my_reports_in_progress' => Report::where('user_id', $user->id)->where('status', 'diproses')->count(),
+            'my_reports_resolved' => Report::where('user_id', $user->id)->where('status', 'selesai')->count(),
         ];
 
         $recentReservations = Reservation::with('facility')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recentReports = Report::with(['facility', 'resolver'])
             ->where('user_id', $user->id)
             ->latest()
             ->take(5)
@@ -217,6 +227,6 @@ Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna
             ->take(4)
             ->get();
 
-        return view('pengguna.dashboard', compact('stats', 'recentReservations', 'availableFacilities'));
+        return view('pengguna.dashboard', compact('stats', 'recentReservations', 'recentReports', 'availableFacilities'));
     })->name('dashboard');
 });
