@@ -26,8 +26,47 @@
     <div class="fixed bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-teal-300/25 blur-[140px] pointer-events-none -z-0"></div>
     <div class="fixed top-[40%] right-[30%] w-[350px] h-[350px] rounded-full bg-amber-200/10 blur-[100px] pointer-events-none -z-0"></div>
 
-    <!-- Backdrop untuk Modal / Slide-over Mobile -->
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="admin-sidebar-backdrop" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Backdrop untuk Modal / Dialog Admin Lainnya -->
     <div id="general-backdrop" class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs hidden" onclick="closeAllModals()"></div>
+
+    <!-- ==========================================
+         MOBILE OFF-CANVAS DRAWER (z-50 di root body)
+         ========================================== -->
+    <aside id="admin-sidebar-panel"
+           class="fixed inset-y-0 left-0 z-50 w-72 sm:w-80 bg-white/95 backdrop-blur-2xl border-r border-white/60 shadow-2xl p-6 flex flex-col justify-between overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+        <div class="space-y-6">
+            <!-- Brand Header Inside Drawer with Close Button -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/30">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-xs flex items-center justify-center text-[#0F5143] group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6 text-[#0F5143]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-xl tracking-tight text-slate-800 block leading-tight">FacilityHub</span>
+                        <span class="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider block">Administrator</span>
+                    </div>
+                </a>
+
+                <!-- Close Button for Mobile Drawer -->
+                <button type="button" class="p-2 rounded-xl text-slate-600 hover:bg-white/40 cursor-pointer" onclick="toggleSidebar()" aria-label="Tutup Menu Navigasi">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation Menu & Quick Actions -->
+            @include('partials.sidebar-admin-nav')
+        </div>
+
+        <!-- User Profile & Logout -->
+        @include('partials.sidebar-admin-user')
+    </aside>
 
     <!-- ==========================================
          MASTER GLASS CONTAINER WINDOW
@@ -35,9 +74,35 @@
     <div class="w-full max-w-[1420px] mx-auto bg-white/45 backdrop-blur-2xl border border-white/50 shadow-[0_25px_60px_rgba(0,0,0,0.22)] rounded-[32px] p-5 sm:p-7 lg:p-8 relative z-10 flex flex-col lg:flex-row gap-7 my-2 sm:my-6 min-h-[880px]">
 
         <!-- ==========================================
-             A. LEFT SIDEBAR (FROSTED SIDEBAR)
+             MOBILE TOPBAR (Khusus Layar < lg / Split Screen)
              ========================================== -->
-        <aside id="sidebar-panel" class="w-full lg:w-64 shrink-0 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/40 pb-6 lg:pb-0 lg:pr-6">
+        <div class="flex lg:hidden items-center justify-between pb-4 border-b border-white/30">
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-xs flex items-center justify-center text-[#0F5143]">
+                    <svg class="w-5 h-5 text-[#0F5143]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-extrabold text-lg tracking-tight text-slate-800 block leading-tight">FacilityHub</span>
+                    <span class="text-[10px] font-semibold text-emerald-800 uppercase tracking-wider block">Administrator</span>
+                </div>
+            </a>
+
+            <button type="button"
+                    class="p-2 rounded-xl bg-white/70 border border-white/80 text-slate-700 hover:bg-white/90 transition-all cursor-pointer shadow-2xs"
+                    onclick="toggleSidebar()"
+                    aria-label="Buka Menu Navigasi">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- ==========================================
+             A. LEFT SIDEBAR (STATIC UNTUK DESKTOP >= lg)
+             ========================================== -->
+        <aside class="hidden lg:flex lg:w-64 shrink-0 flex-col justify-between border-r border-white/40 pr-6">
             <div class="space-y-6">
                 <!-- Brand Header -->
                 <div class="flex items-center justify-between pb-4 border-b border-white/30">
@@ -47,128 +112,19 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                             </svg>
                         </div>
-                        <span class="font-extrabold text-xl tracking-tight text-slate-800">FacilityHub</span>
+                        <div>
+                            <span class="font-extrabold text-xl tracking-tight text-slate-800 block leading-tight">FacilityHub</span>
+                            <span class="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider block">Administrator</span>
+                        </div>
                     </a>
-
-                    <!-- Mobile Menu Hamburger -->
-                    <button type="button" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-white/40" onclick="toggleSidebar()">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                    </button>
                 </div>
 
-                <!-- Navigation Menu (Hanya Dashboard, Pengelolaan Fasilitas, dan Pengelolaan Akun) -->
-                <nav id="nav-links" class="space-y-1.5 hidden lg:block">
-                    <!-- 1. Dashboard (Active) -->
-                    <a href="{{ route('admin.dashboard') }}"
-                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-[#0F5143] text-white shadow-md font-semibold text-sm transition-all group">
-                        <svg class="w-5 h-5 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5" stroke-width="2"/>
-                            <rect x="14" y="3" width="7" height="7" rx="1.5" stroke-width="2"/>
-                            <rect x="14" y="14" width="7" height="7" rx="1.5" stroke-width="2"/>
-                            <rect x="3" y="14" width="7" height="7" rx="1.5" stroke-width="2"/>
-                        </svg>
-                        <span>Dashboard</span>
-                    </a>
-
-                    <!-- 2. Pengelolaan Fasilitas -->
-                    <a href="{{ route('admin.facilities.index') }}"
-                       class="flex items-center justify-between px-4 py-3 rounded-2xl text-slate-700 hover:bg-white/40 transition-all font-medium text-sm group">
-                        <div class="flex items-center gap-3.5">
-                            <svg class="w-5 h-5 text-slate-600 group-hover:text-slate-900 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                            <span>Pengelolaan Fasilitas</span>
-                        </div>
-                        @if (($stats['dalam_perbaikan'] ?? 0) > 0)
-                            <span class="w-5 h-5 rounded-full bg-rose-500 text-white text-[11px] font-bold flex items-center justify-center shrink-0 shadow-xs" title="{{ $stats['dalam_perbaikan'] }} fasilitas rusak">
-                                {{ $stats['dalam_perbaikan'] }}
-                            </span>
-                        @endif
-                    </a>
-
-                    <!-- 3. Pengelolaan Akun (Verifikasi & Manajemen Pengguna) -->
-                    <a href="{{ route('admin.users.index') }}"
-                       class="flex items-center justify-between px-4 py-3 rounded-2xl text-slate-700 hover:bg-white/40 transition-all font-medium text-sm group"
-                       title="Verifikasi Akun ({{ $stats['pending_users'] ?? 0 }} Menunggu Verifikasi)">
-                        <div class="flex items-center gap-3.5">
-                            <svg class="w-5 h-5 text-slate-600 group-hover:text-slate-900 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                            <span>Pengelolaan Akun</span>
-                        </div>
-                        @if (($stats['pending_users'] ?? 0) > 0)
-                            <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 text-[11px] font-bold flex items-center justify-center shrink-0 shadow-xs" title="{{ $stats['pending_users'] }} akun pending">
-                                {{ $stats['pending_users'] }}
-                            </span>
-                        @endif
-                    </a>
-
-                    <!-- 4. Rekapitulasi & Ekspor -->
-                    <a href="{{ route('admin.rekap.index') }}"
-                       class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-slate-700 hover:bg-white/40 transition-all font-medium text-sm group">
-                        <svg class="w-5 h-5 text-slate-600 group-hover:text-slate-900 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        </svg>
-                        <span>Rekapitulasi & Ekspor</span>
-                    </a>
-                </nav>
-
-                <!-- Aksi Cepat Admin (Shortcut Langsung ke Form Tambah Akun & Tambah Fasilitas) -->
-                <div class="pt-5 border-t border-white/30 space-y-2 hidden lg:block">
-                    <div class="flex items-center justify-between px-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                        <span>Aksi Cepat Admin</span>
-                    </div>
-
-                    <!-- Shortcut 1: Tambah Akun Langsung -->
-                    <a href="{{ route('admin.users.create') }}"
-                       class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white/60 hover:bg-white/85 border border-white/70 text-slate-700 text-xs font-semibold transition-all shadow-2xs group"
-                       title="Tambahkan Akun Langsung">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-6 h-6 rounded-lg bg-emerald-100/90 text-emerald-800 flex items-center justify-center shrink-0">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-                                </svg>
-                            </div>
-                            <span class="group-hover:text-[#0F5143] transition-colors">Tambah Akun Langsung</span>
-                        </div>
-                        <svg class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-
-                    <!-- Shortcut 2: Tambah Fasilitas Langsung -->
-                    <a href="{{ route('admin.facilities.create') }}"
-                       class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white/60 hover:bg-white/85 border border-white/70 text-slate-700 text-xs font-semibold transition-all shadow-2xs group"
-                       title="Tambahkan Fasilitas Langsung">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-6 h-6 rounded-lg bg-teal-100/90 text-teal-800 flex items-center justify-center shrink-0">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                            </div>
-                            <span class="group-hover:text-[#0F5143] transition-colors">Tambah Fasilitas Langsung</span>
-                        </div>
-                        <svg class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
+                <!-- Navigation Menu & Quick Actions -->
+                @include('partials.sidebar-admin-nav')
             </div>
 
-            <!-- Bottom: Logout Form Terproteksi -->
-            <div class="pt-5 border-t border-white/30 hidden lg:block">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-700 hover:bg-rose-50/70 border border-transparent hover:border-rose-200 transition-all cursor-pointer">
-                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                        <span>Keluar Sistem</span>
-                    </button>
-                </form>
-            </div>
+            <!-- User Profile & Logout -->
+            @include('partials.sidebar-admin-user')
         </aside>
 
         <!-- ==========================================
@@ -704,16 +660,20 @@
          ========================================== -->
     <script>
         function toggleSidebar() {
-            const navLinks = document.getElementById('nav-links');
-            const backdrop = document.getElementById('general-backdrop');
-            const isHidden = navLinks.classList.contains('hidden');
-
-            if (isHidden) {
-                navLinks.classList.remove('hidden');
-                backdrop.classList.remove('hidden');
-            } else {
-                navLinks.classList.add('hidden');
-                backdrop.classList.add('hidden');
+            const panel = document.getElementById('admin-sidebar-panel');
+            const backdrop = document.getElementById('admin-sidebar-backdrop');
+            if (panel) {
+                const isOpen = panel.classList.contains('translate-x-0');
+                if (isOpen) {
+                    panel.classList.remove('translate-x-0');
+                    panel.classList.add('-translate-x-full');
+                } else {
+                    panel.classList.remove('-translate-x-full');
+                    panel.classList.add('translate-x-0');
+                }
+            }
+            if (backdrop) {
+                backdrop.classList.toggle('hidden');
             }
         }
 
@@ -749,16 +709,27 @@
         function closeAllModals() {
             const modal = document.getElementById('settings-modal');
             const backdrop = document.getElementById('general-backdrop');
-            const navLinks = document.getElementById('nav-links');
             const notif = document.getElementById('notification-popover');
             const profile = document.getElementById('profile-dropdown');
+            const adminPanel = document.getElementById('admin-sidebar-panel');
+            const adminBackdrop = document.getElementById('admin-sidebar-backdrop');
 
             if (modal) modal.classList.add('hidden');
             if (backdrop) backdrop.classList.add('hidden');
-            if (navLinks && window.innerWidth < 1024) navLinks.classList.add('hidden');
+            if (adminPanel && adminPanel.classList.contains('translate-x-0')) {
+                adminPanel.classList.remove('translate-x-0');
+                adminPanel.classList.add('-translate-x-full');
+            }
+            if (adminBackdrop) adminBackdrop.classList.add('hidden');
             if (notif) notif.classList.add('hidden');
             if (profile) profile.classList.add('hidden');
         }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
+        });
 
         // Tutup popover jika klik di luar elemen
         document.addEventListener('click', function(event) {
