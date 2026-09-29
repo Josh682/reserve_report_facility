@@ -45,6 +45,14 @@ class Facility extends Model
     }
 
     /**
+     * Relasi ke laporan kendala fasilitas.
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    /**
      * Menghasilkan 26 slot waktu operasional tetap (07.00 - 20.00, interval 30 menit).
      *
      * @return array<int, array{start: string, end: string, label: string}>

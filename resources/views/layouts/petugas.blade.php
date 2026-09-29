@@ -422,6 +422,9 @@
                     @endif
 
                     @if (Route::has('petugas.reports.index'))
+                        @php
+                            $pendingReportsSidebar = \App\Models\Report::where('status', 'baru')->count();
+                        @endphp
                         <!-- 4. Laporan Kerusakan (Jika modul laporan aktif) -->
                         <a href="{{ route('petugas.reports.index') }}"
                            class="flex items-center justify-between px-4 py-3 rounded-2xl transition-all group {{ request()->routeIs('petugas.reports.*') ? 'bg-[#0F5143] text-white shadow-md font-semibold text-sm' : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 font-medium text-sm' }}">
@@ -431,6 +434,11 @@
                                 </svg>
                                 <span>Laporan Kerusakan</span>
                             </div>
+                            @if ($pendingReportsSidebar > 0)
+                                <span class="w-5 h-5 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-200 border border-rose-300 dark:border-rose-800 text-[11px] font-bold flex items-center justify-center shrink-0 shadow-xs" title="{{ $pendingReportsSidebar }} laporan baru">
+                                    {{ $pendingReportsSidebar }}
+                                </span>
+                            @endif
                         </a>
                     @endif
                 </nav>

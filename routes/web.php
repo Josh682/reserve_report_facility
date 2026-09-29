@@ -4,8 +4,11 @@ use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Petugas\ReportController as PetugasReportController;
 use App\Http\Controllers\PublicFacilityController;
+use App\Http\Controllers\ReportController;
 use App\Models\Facility;
+use App\Models\Report;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -54,15 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
     Route::view('/reservation', 'reservation')->name('reservation');
-    Route::view('/report', 'report')->name('report');
-
     Route::post('/reservations', function () {
         return redirect()->route('reservation')->with('status', 'Pengajuan reservasi berhasil dikirim dan menunggu persetujuan petugas.');
     });
 
-    Route::post('/reports', function () {
-        return redirect()->route('report')->with('status', 'Laporan kerusakan fasilitas berhasil dikirim dan menunggu tindak lanjut teknisi.');
-    });
+    Route::get('/report', [ReportController::class, 'index'])->name('report');
+    Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -164,12 +164,16 @@ Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')
             'total_facilities' => Facility::count(),
             'aktif' => Facility::where('status', 'aktif')->count(),
             'dalam_perbaikan' => Facility::where('status', 'dalam_perbaikan')->count(),
+            'laporan_baru' => Report::where('status', 'baru')->count(),
+            'laporan_diproses' => Report::where('status', 'diproses')->count(),
         ];
 
         return view('petugas.dashboard', compact('stats'));
     })->name('dashboard');
 
     Route::get('/facilities', [PublicFacilityController::class, 'indexPetugas'])->name('facilities');
+    Route::get('/reports', [PetugasReportController::class, 'index'])->name('reports.index');
+    Route::patch('/reports/{report}', [PetugasReportController::class, 'update'])->name('reports.update');
 });
 
 Route::middleware(['auth', 'role:pengguna'])->prefix('pengguna')->name('pengguna.')->group(function () {
