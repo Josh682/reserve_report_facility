@@ -7,24 +7,54 @@ use App\Models\Facility;
 use App\Models\Report;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     /**
      * Display a listing of user reports and the submission form.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $facilities = Facility::where('status', '!=', 'nonaktif')
             ->orderBy('nama')
             ->get();
 
-        $myReports = Report::where('user_id', auth()->id())
-            ->with(['facility', 'resolver'])
-            ->latest()
-            ->paginate(10);
+        $statusCounts = Report::where('user_id', auth()->id())
+            ->selectRaw('status, count(*) as aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
 
-        return view('report', compact('facilities', 'myReports'));
+        $counts = [
+            'all' => (int) $statusCounts->sum(),
+            'baru' => (int) ($statusCounts['baru'] ?? 0),
+            'diproses' => (int) ($statusCounts['diproses'] ?? 0),
+            'selesai' => (int) ($statusCounts['selesai'] ?? 0),
+            'ditolak' => (int) ($statusCounts['ditolak'] ?? 0),
+        ];
+
+        $reportsQuery = Report::where('user_id', auth()->id())
+            ->with(['facility', 'resolver']);
+
+        if (in_array($request->query('status'), ['baru', 'diproses', 'selesai', 'ditolak'], true)) {
+            $reportsQuery->where('status', $request->query('status'));
+        }
+
+        if ($request->filled('search')) {
+            $search = trim((string) $request->query('search'));
+            $reportsQuery->where(function ($q) use ($search) {
+                $q->where('deskripsi', 'like', "%{$search}%")
+                    ->orWhereHas('facility', function ($fq) use ($search) {
+                        $fq->where('nama', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $myReports = $reportsQuery->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('report', compact('facilities', 'myReports', 'counts'));
     }
 
     /**

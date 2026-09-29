@@ -305,6 +305,83 @@
             </span>
         </div>
 
+        {{-- Filter Status Tabs & Pencarian (US 7) --}}
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2">
+            @php
+                $activeStatus = request('status', '');
+                $searchQuery = request('search', '');
+            @endphp
+            {{-- Status Tabs --}}
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 sm:mx-0 sm:px-0">
+                <a href="{{ route('report', array_filter(['search' => $searchQuery])) }}"
+                   class="shrink-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeStatus === '' ? 'bg-[#0F5143] text-white shadow-xs' : 'bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-white/70 dark:border-white/10' }}">
+                    <span>Semua</span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] {{ $activeStatus === '' ? 'bg-white/20 text-white' : 'bg-slate-200/80 dark:bg-white/10 text-slate-700 dark:text-slate-300' }}">
+                        {{ $counts['all'] ?? 0 }}
+                    </span>
+                </a>
+
+                <a href="{{ route('report', array_filter(['status' => 'baru', 'search' => $searchQuery])) }}"
+                   class="shrink-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeStatus === 'baru' ? 'bg-sky-600 text-white shadow-xs' : 'bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-sky-300 border border-white/70 dark:border-white/10' }}">
+                    <span>Baru</span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] {{ $activeStatus === 'baru' ? 'bg-white/20 text-white' : 'bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300' }}">
+                        {{ $counts['baru'] ?? 0 }}
+                    </span>
+                </a>
+
+                <a href="{{ route('report', array_filter(['status' => 'diproses', 'search' => $searchQuery])) }}"
+                   class="shrink-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeStatus === 'diproses' ? 'bg-amber-600 text-white shadow-xs' : 'bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-amber-700 dark:hover:text-amber-300 border border-white/70 dark:border-white/10' }}">
+                    <span>Diproses</span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] {{ $activeStatus === 'diproses' ? 'bg-white/20 text-white' : 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300' }}">
+                        {{ $counts['diproses'] ?? 0 }}
+                    </span>
+                </a>
+
+                <a href="{{ route('report', array_filter(['status' => 'selesai', 'search' => $searchQuery])) }}"
+                   class="shrink-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeStatus === 'selesai' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 border border-white/70 dark:border-white/10' }}">
+                    <span>Selesai</span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] {{ $activeStatus === 'selesai' ? 'bg-white/20 text-white' : 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300' }}">
+                        {{ $counts['selesai'] ?? 0 }}
+                    </span>
+                </a>
+
+                <a href="{{ route('report', array_filter(['status' => 'ditolak', 'search' => $searchQuery])) }}"
+                   class="shrink-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeStatus === 'ditolak' ? 'bg-rose-600 text-white shadow-xs' : 'bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-rose-700 dark:hover:text-rose-300 border border-white/70 dark:border-white/10' }}">
+                    <span>Ditolak</span>
+                    <span class="px-1.5 py-0.5 rounded-full text-[10px] {{ $activeStatus === 'ditolak' ? 'bg-white/20 text-white' : 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300' }}">
+                        {{ $counts['ditolak'] ?? 0 }}
+                    </span>
+                </a>
+            </div>
+
+            {{-- Formulir Pencarian Riwayat Laporan --}}
+            <form method="GET" action="{{ route('report') }}" class="flex items-center gap-2 w-full lg:w-auto">
+                @if ($activeStatus !== '')
+                    <input type="hidden" name="status" value="{{ $activeStatus }}">
+                @endif
+                <div class="relative flex-1 lg:w-64">
+                    <input type="text"
+                           name="search"
+                           value="{{ $searchQuery }}"
+                           placeholder="Cari fasilitas / kendala..."
+                           class="kezak-input w-full pl-9 pr-4 py-1.5 text-xs">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <button type="submit"
+                        class="kezak-btn-primary px-3.5 py-1.5 rounded-xl text-xs font-bold cursor-pointer shrink-0">
+                    Cari
+                </button>
+                @if ($activeStatus !== '' || $searchQuery !== '')
+                    <a href="{{ route('report') }}"
+                       class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white/60 dark:bg-white/5 border border-white/70 dark:border-white/10 hover:border-slate-300 transition-colors shrink-0">
+                        Reset
+                    </a>
+                @endif
+            </form>
+        </div>
+
         <div class="space-y-4">
             @forelse ($myReports as $report)
                 <div class="p-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md border border-white/70 dark:border-white/10 hover:border-emerald-500/50 hover:shadow-sm transition-all space-y-4">
@@ -415,10 +492,22 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Belum Ada Riwayat Laporan</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-                        Anda belum pernah mengirim laporan kendala fasilitas. Jika menemukan sarana kampus yang rusak atau tidak berfungsi, silakan gunakan formulir di atas.
-                    </p>
+                    @if (request('search') || request('status'))
+                        <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Tidak Ada Laporan yang Cocok</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                            Tidak ditemukan laporan kendala dengan kriteria filter yang Anda tentukan. Silakan bersihkan pencarian atau pilih kategori status lain.
+                        </p>
+                        <div class="pt-2">
+                            <a href="{{ route('report') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-[#0F5143] dark:text-[#34D399] bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-colors">
+                                Reset Semua Filter
+                            </a>
+                        </div>
+                    @else
+                        <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Belum Ada Riwayat Laporan</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                            Anda belum pernah mengirim laporan kendala fasilitas. Jika menemukan sarana kampus yang rusak atau tidak berfungsi, silakan gunakan formulir di atas.
+                        </p>
+                    @endif
                 </div>
             @endforelse
 

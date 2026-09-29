@@ -172,3 +172,92 @@ test('server rejects report photo exceeding 2048 kilobytes even if client valida
 
     $response->assertSessionHasErrors('photo');
 });
+
+test('authenticated user can filter their report history by status (US 7)', function () {
+    $user = User::factory()->pengguna()->verified()->create();
+    $facility = Facility::factory()->create(['nama' => 'Ruang Teater 1']);
+
+    Report::factory()->create([
+        'user_id' => $user->id,
+        'facility_id' => $facility->id,
+        'deskripsi' => 'Kabel HDMI panggung putus',
+        'status' => 'baru',
+    ]);
+
+    Report::factory()->create([
+        'user_id' => $user->id,
+        'facility_id' => $facility->id,
+        'deskripsi' => 'Lampu sorot telah diganti baru',
+        'status' => 'selesai',
+    ]);
+
+    // Akses tanpa filter (melihat keduanya)
+    $responseAll = $this->actingAs($user)->get('/report');
+    $responseAll->assertOk();
+    $responseAll->assertSee('Kabel HDMI panggung putus');
+    $responseAll->assertSee('Lampu sorot telah diganti baru');
+
+    // Filter status baru
+    $responseBaru = $this->actingAs($user)->get('/report?status=baru');
+    $responseBaru->assertOk();
+    $responseBaru->assertSee('Kabel HDMI panggung putus');
+    $responseBaru->assertDontSee('Lampu sorot telah diganti baru');
+
+    // Filter status selesai
+    $responseSelesai = $this->actingAs($user)->get('/report?status=selesai');
+    $responseSelesai->assertOk();
+    $responseSelesai->assertSee('Lampu sorot telah diganti baru');
+    $responseSelesai->assertDontSee('Kabel HDMI panggung putus');
+});
+
+test('authenticated user can search their report history by keyword and facility name (US 7)', function () {
+    $user = User::factory()->pengguna()->verified()->create();
+    $facilityA = Facility::factory()->create(['nama' => 'Laboratorium Multimedia']);
+    $facilityB = Facility::factory()->create(['nama' => 'Auditorium Utama']);
+
+    Report::factory()->create([
+        'user_id' => $user->id,
+        'facility_id' => $facilityA->id,
+        'deskripsi' => 'Sebagai simulasi laporan sarana kampus, ada insiden seekor kucing liar menumpahkan wadah air di meja kontrol lab.',
+        'status' => 'baru',
+    ]);
+
+    Report::factory()->create([
+        'user_id' => $user->id,
+        'facility_id' => $facilityB->id,
+        'deskripsi' => 'AC utama auditorium bersuara bising dan kurang dingin.',
+        'status' => 'diproses',
+    ]);
+
+    // Cari kata kunci deskripsi "kucing"
+    $responseSearchDesc = $this->actingAs($user)->get('/report?search=kucing');
+    $responseSearchDesc->assertOk();
+    $responseSearchDesc->assertSee('insiden seekor kucing liar');
+    $responseSearchDesc->assertDontSee('bersuara bising dan kurang dingin');
+
+    // Cari nama fasilitas "Auditorium"
+    $responseSearchFac = $this->actingAs($user)->get('/report?search=Auditorium');
+    $responseSearchFac->assertOk();
+    $responseSearchFac->assertSee('bersuara bising dan kurang dingin');
+    $responseSearchFac->assertDontSee('insiden seekor kucing liar');
+});
+
+test('authenticated user sees accurate report status counts in view (US 7)', function () {
+    $user = User::factory()->pengguna()->verified()->create();
+    $facility = Facility::factory()->create();
+
+    Report::factory()->create(['user_id' => $user->id, 'facility_id' => $facility->id, 'status' => 'baru']);
+    Report::factory()->create(['user_id' => $user->id, 'facility_id' => $facility->id, 'status' => 'baru']);
+    Report::factory()->create(['user_id' => $user->id, 'facility_id' => $facility->id, 'status' => 'diproses']);
+    Report::factory()->create(['user_id' => $user->id, 'facility_id' => $facility->id, 'status' => 'selesai']);
+
+    $response = $this->actingAs($user)->get('/report');
+    $response->assertOk();
+    $response->assertViewHas('counts', function ($counts) {
+        return $counts['all'] === 4
+            && $counts['baru'] === 2
+            && $counts['diproses'] === 1
+            && $counts['selesai'] === 1
+            && $counts['ditolak'] === 0;
+    });
+});
