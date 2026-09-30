@@ -4,6 +4,7 @@ use App\Models\Facility;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 
 uses(RefreshDatabase::class);
 
@@ -279,4 +280,76 @@ test('pengguna dashboard displays active facilities and recent user reservations
     $response->assertSee('Ruang Diskusi Perpustakaan');
     $response->assertSee('Mengerjakan tugas akhir bersama');
     $response->assertSee('Peminjaman Disetujui');
+});
+
+test('reservation rejects invalid booking dates and times', function (string $clock, string $date, mixed $start, mixed $end, string $field) {
+    $this->travelTo(Carbon::parse($clock, 'Asia/Jakarta'));
+    $user = User::factory()->pengguna()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    $response = $this->actingAs($user)->post('/reservations', [
+        'facility_id' => $facility->id,
+        'tanggal' => $date,
+        'start_time' => $start,
+        'end_time' => $end,
+        'tujuan_penggunaan' => 'Rapat koordinasi mahasiswa',
+    ]);
+
+    $response->assertSessionHasErrors($field);
+    $this->assertDatabaseCount('reservations', 0);
+})->with([
+    'past time today in WIB' => ['2026-09-30 10:15:00', '2026-09-30', '10:00', '11:00', 'start_time'],
+    'elapsed seconds in current minute' => ['2026-09-30 10:00:01', '2026-09-30', '10:00', '11:00', 'start_time'],
+    'past date across UTC midnight' => ['2026-09-30 00:15:00', '2026-09-29', '19:00', '20:00', 'tanggal'],
+    '61 days ahead' => ['2026-09-30 10:15:00', '2026-11-30', '09:00', '10:00', 'tanggal'],
+    'two years ahead' => ['2026-09-30 10:15:00', '2028-09-30', '09:00', '10:00', 'tanggal'],
+    'six and a half hours' => ['2026-09-30 10:15:00', '2026-10-01', '07:00', '13:30', 'end_time'],
+    'thirteen hours' => ['2026-09-30 10:15:00', '2026-10-01', '07:00', '20:00', 'end_time'],
+    'invalid date' => ['2026-09-30 10:15:00', 'not-a-date', '09:00', '10:00', 'tanggal'],
+    'invalid start' => ['2026-09-30 10:15:00', '2026-10-01', 'invalid', '10:00', 'start_time'],
+    'array start' => ['2026-09-30 10:15:00', '2026-10-01', ['09:00'], '10:00', 'start_time'],
+    'invalid end' => ['2026-09-30 10:15:00', '2026-10-01', '09:00', 'invalid', 'end_time'],
+    'equal start and end' => ['2026-09-30 10:15:00', '2026-10-01', '10:00', '10:00', 'end_time'],
+    'array end' => ['2026-09-30 10:15:00', '2026-10-01', '09:00', ['10:00'], 'end_time'],
+    'end before start' => ['2026-09-30 10:15:00', '2026-10-01', '10:00', '09:00', 'end_time'],
+    'before opening' => ['2026-09-30 10:15:00', '2026-10-01', '06:30', '07:30', 'start_time'],
+    'after closing' => ['2026-09-30 10:15:00', '2026-10-01', '19:00', '20:30', 'end_time'],
+]);
+
+test('reservation accepts valid booking boundaries', function (string $clock, string $date, string $start, string $end) {
+    $this->travelTo(Carbon::parse($clock, 'Asia/Jakarta'));
+    $user = User::factory()->pengguna()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    $response = $this->actingAs($user)->post('/reservations', [
+        'facility_id' => $facility->id,
+        'tanggal' => $date,
+        'start_time' => $start,
+        'end_time' => $end,
+        'tujuan_penggunaan' => 'Rapat koordinasi mahasiswa',
+    ]);
+
+    $response->assertSessionHasNoErrors()->assertRedirect(route('reservation'));
+    $this->assertDatabaseHas('reservations', [
+        'user_id' => $user->id,
+        'facility_id' => $facility->id,
+        'status' => 'pending',
+    ]);
+})->with([
+    'next slot today' => ['2026-09-30 10:15:00', '2026-09-30', '10:30', '11:00'],
+    'exact current instant' => ['2026-09-30 10:00:00', '2026-09-30', '10:00', '11:00'],
+    'earlier clock time tomorrow' => ['2026-09-30 10:15:00', '2026-10-01', '07:00', '08:00'],
+    'exactly sixty days and six hours' => ['2026-09-30 10:15:00', '2026-11-29', '14:00', '20:00'],
+    'today before UTC date changes' => ['2026-09-30 00:15:00', '2026-09-30', '07:00', '08:00'],
+]);
+
+test('reservation form uses WIB dates and shows booking limits', function () {
+    $this->travelTo(Carbon::parse('2026-09-30 00:15:00', 'Asia/Jakarta'));
+    $user = User::factory()->pengguna()->verified()->create();
+
+    $this->actingAs($user)->get('/reservation')
+        ->assertOk()
+        ->assertSee('min="2026-09-30"', false)
+        ->assertSee('max="2026-11-29"', false)
+        ->assertSee('Reservasi hingga 60 hari ke depan, maksimal 6 jam per peminjaman.');
 });

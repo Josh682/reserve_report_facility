@@ -5,6 +5,11 @@
 @section('header_subtitle', 'Ajukan peminjaman ruangan kampus, pantau status persetujuan, serta kelola pembatalan mandiri H-1')
 
 @section('content')
+@php
+    $bookingToday = now(\App\Http\Requests\StoreReservationRequest::TIMEZONE)->startOfDay();
+    $maxAdvanceDays = \App\Http\Requests\StoreReservationRequest::MAX_ADVANCE_DAYS;
+    $maxDurationHours = \App\Http\Requests\StoreReservationRequest::MAX_DURATION_HOURS;
+@endphp
 <div class="space-y-6 sm:space-y-8">
 
     {{-- ==========================================
@@ -61,7 +66,7 @@
             <div class="flex items-center justify-between pb-4 border-b border-white/40 dark:border-white/10">
                 <div>
                     <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Formulir Peminjaman Fasilitas</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">Pilih ruangan, tentukan tanggal, dan tentukan slot jam operasional (07.00 - 20.00 WIB).</p>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">Reservasi hingga {{ $maxAdvanceDays }} hari ke depan, maksimal {{ $maxDurationHours }} jam per peminjaman. Jam operasional 07.00 - 20.00 WIB; jam mulai hari ini tidak boleh sudah terlewat.</p>
                 </div>
                 <button type="button" onclick="toggleForm()" class="inline-flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg cursor-pointer">
                     <kbd class="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-white/60 dark:bg-white/10 border border-white/80 dark:border-white/20 hidden sm:inline-flex">ESC</kbd>
@@ -71,7 +76,7 @@
                 </button>
             </div>
 
-            <form method="POST" action="{{ route('reservations.store') }}" class="space-y-5">
+            <form method="POST" action="{{ route('reservations.store') }}" class="space-y-5" data-reservation-form data-max-duration-hours="{{ $maxDurationHours }}" data-server-now="{{ now(\App\Http\Requests\StoreReservationRequest::TIMEZONE)->toIso8601String() }}">
                 @csrf
 
                 {{-- Pilihan Fasilitas --}}
@@ -83,7 +88,7 @@
                             class="kezak-input block w-full px-3.5 py-2.5 text-xs sm:text-sm">
                         <option value="">-- Pilih Fasilitas yang Akan Dipinjam --</option>
                         @foreach ($facilities as $facility)
-                            <option value="{{ $facility->id }}" {{ (old('facility_id', $selectedFacilityId) == $facility->id) ? 'selected' : '' }}>
+                            <option data-schedule-url="{{ route('facilities.schedule', $facility) }}" value="{{ $facility->id }}" {{ (old('facility_id', $selectedFacilityId) == $facility->id) ? 'selected' : '' }}>
                                 {{ $facility->nama }} ({{ ucfirst(str_replace('_', ' ', $facility->tipe)) }} • {{ $facility->lokasi }} • Kapasitas: {{ $facility->kapasitas ? $facility->kapasitas.' org' : 'Fleksibel' }})
                             </option>
                         @endforeach
@@ -99,8 +104,9 @@
                         <input
                             type="date"
                             name="tanggal"
-                            min="{{ date('Y-m-d') }}"
-                            value="{{ old('tanggal', request('tanggal', date('Y-m-d'))) }}"
+                            min="{{ $bookingToday->toDateString() }}"
+                            max="{{ $bookingToday->copy()->addDays($maxAdvanceDays)->toDateString() }}"
+                            value="{{ old('tanggal', request('tanggal', $bookingToday->toDateString())) }}"
                             required
                             class="kezak-input block w-full px-3.5 py-2.5 text-xs sm:text-sm"
                         >
@@ -110,15 +116,9 @@
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                             Jam Mulai (07.00 - 19.30) <span class="text-rose-500">*</span>
                         </label>
-                        <select name="start_time" required
+                        <select name="start_time" required disabled data-selected="{{ old('start_time') }}"
                                 class="kezak-input block w-full px-3.5 py-2.5 text-xs sm:text-sm">
                             <option value="">-- Jam Mulai --</option>
-                            @php
-                                $startTimes = ['07:00','07:30','08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
-                            @endphp
-                            @foreach ($startTimes as $time)
-                                <option value="{{ $time }}" {{ old('start_time') === $time ? 'selected' : '' }}>{{ $time }} WIB</option>
-                            @endforeach
                         </select>
                     </div>
 
@@ -126,18 +126,16 @@
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                             Jam Selesai (07.30 - 20.00) <span class="text-rose-500">*</span>
                         </label>
-                        <select name="end_time" required
+                        <select name="end_time" required disabled data-selected="{{ old('end_time') }}"
                                 class="kezak-input block w-full px-3.5 py-2.5 text-xs sm:text-sm">
                             <option value="">-- Jam Selesai --</option>
-                            @php
-                                $endTimes = ['07:30','08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00'];
-                            @endphp
-                            @foreach ($endTimes as $time)
-                                <option value="{{ $time }}" {{ old('end_time') === $time ? 'selected' : '' }}>{{ $time }} WIB</option>
-                            @endforeach
                         </select>
                     </div>
                 </div>
+
+                <p data-schedule-status role="status" aria-live="polite" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Pilih fasilitas dan tanggal untuk melihat jam tersedia.</p>
+                <button type="button" data-schedule-retry hidden>Coba muat jadwal lagi</button>
+                <noscript>Aktifkan JavaScript untuk memilih jam reservasi yang tersedia.</noscript>
 
                 {{-- Tujuan Penggunaan --}}
                 <div>
@@ -155,7 +153,7 @@
 
                 {{-- Action Buttons --}}
                 <div class="flex items-center gap-3 pt-2">
-                    <button type="submit"
+                    <button type="submit" disabled
                             class="kezak-btn-primary px-6 py-2.5 text-xs sm:text-sm font-bold shadow-md cursor-pointer">
                         Kirim Pengajuan
                     </button>

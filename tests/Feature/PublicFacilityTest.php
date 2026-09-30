@@ -164,3 +164,55 @@ test('authenticated users visiting public facilities route are smoothly redirect
     $responsePetugas = $this->actingAs($petugas)->get(route('facilities'));
     $responsePetugas->assertRedirect(route('petugas.facilities'));
 });
+
+test('schedule hides approved bookings for every viewer only on the matching facility and date', function (string $viewer) {
+    $owner = User::factory()->pengguna()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+    $otherFacility = Facility::factory()->create(['status' => 'aktif']);
+    Reservation::factory()->approved()->create([
+        'facility_id' => $facility->id,
+        'user_id' => $owner->id,
+        'tanggal' => '2026-10-01',
+        'start_time' => '08:00',
+        'end_time' => '10:00',
+    ]);
+    if ($viewer !== 'guest') {
+        $this->actingAs($viewer === 'owner' ? $owner : User::factory()->pengguna()->verified()->create());
+    }
+
+    $response = $this->getJson(route('facilities.schedule', ['facility' => $facility, 'date' => '2026-10-01']))->assertOk();
+    $slots = collect($response->json('slots'));
+    foreach (['08:00', '08:30', '09:00', '09:30'] as $time) {
+        expect($slots->firstWhere('start', $time)['is_available'])->toBeFalse();
+    }
+    expect($slots->firstWhere('start', '07:30')['is_available'])->toBeTrue()
+        ->and($slots->firstWhere('start', '10:00')['is_available'])->toBeTrue();
+
+    $this->getJson(route('facilities.schedule', ['facility' => $otherFacility, 'date' => '2026-10-01']))
+        ->assertOk()->assertJsonPath('available_slots', 26);
+    $this->getJson(route('facilities.schedule', ['facility' => $facility, 'date' => '2026-10-02']))
+        ->assertOk()->assertJsonPath('available_slots', 26);
+})->with(['guest', 'owner', 'other user']);
+
+test('schedule frees slots when an approved reservation is cancelled and ignores unapproved reservations', function () {
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+    $booking = Reservation::factory()->approved()->create([
+        'facility_id' => $facility->id,
+        'tanggal' => '2026-10-01',
+        'start_time' => '08:00',
+        'end_time' => '10:00',
+    ]);
+    $url = route('facilities.schedule', ['facility' => $facility, 'date' => '2026-10-01']);
+    $this->getJson($url)->assertOk()->assertJsonPath('available_slots', 22);
+    $booking->update(['status' => 'cancelled']);
+    foreach (['pending', 'rejected'] as $status) {
+        Reservation::factory()->create([
+            'facility_id' => $facility->id,
+            'tanggal' => '2026-10-01',
+            'start_time' => '08:00',
+            'end_time' => '10:00',
+            'status' => $status,
+        ]);
+    }
+    $this->getJson($url)->assertOk()->assertJsonPath('available_slots', 26);
+});
