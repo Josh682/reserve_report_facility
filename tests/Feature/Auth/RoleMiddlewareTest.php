@@ -142,3 +142,12 @@ test('pengguna dashboard renders view with statistics and single logout button',
     $response->assertSee('Keluar');
     $response->assertSee(route('logout'));
 });
+
+test('unverified or rejected user is logged out and redirected to login when accessing role-protected route', function () {
+    $rejectedUser = User::factory()->pengguna()->rejected()->create();
+
+    $response = $this->actingAs($rejectedUser)->get('/pengguna/dashboard');
+
+    $response->assertRedirect(route('login'));
+    $this->assertGuest();
+});

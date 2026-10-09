@@ -3,6 +3,7 @@
 use App\Models\Facility;
 use App\Models\Reservation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -279,4 +280,43 @@ test('pengguna dashboard displays active facilities and recent user reservations
     $response->assertSee('Ruang Diskusi Perpustakaan');
     $response->assertSee('Mengerjakan tugas akhir bersama');
     $response->assertSee('Peminjaman Disetujui');
+});
+
+test('user cannot book past time slot on current date', function () {
+    Carbon::setTestNow('2026-10-09 14:00:00');
+
+    $user = User::factory()->pengguna()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    $payload = [
+        'facility_id' => $facility->id,
+        'tanggal' => '2026-10-09',
+        'start_time' => '10:00',
+        'end_time' => '11:00',
+        'tujuan_penggunaan' => 'Peminjaman di jam yang sudah lewat',
+    ];
+
+    $response = $this->actingAs($user)->post('/reservations', $payload);
+
+    $response->assertSessionHasErrors('start_time');
+    $this->assertDatabaseMissing('reservations', [
+        'facility_id' => $facility->id,
+    ]);
+
+    Carbon::setTestNow();
+});
+
+test('unverified user cannot submit reservation', function () {
+    $user = User::factory()->pengguna()->pending()->create();
+    $facility = Facility::factory()->create(['status' => 'aktif']);
+
+    $response = $this->actingAs($user)->post('/reservations', [
+        'facility_id' => $facility->id,
+        'tanggal' => now()->addDays(2)->toDateString(),
+        'start_time' => '09:00',
+        'end_time' => '10:00',
+        'tujuan_penggunaan' => 'Percobaan oleh akun belum terverifikasi',
+    ]);
+
+    $response->assertForbidden();
 });

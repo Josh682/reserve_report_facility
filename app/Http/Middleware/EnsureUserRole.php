@@ -19,7 +19,17 @@ class EnsureUserRole
             return redirect()->route('login');
         }
 
-        if (! in_array($request->user()->role, $roles, true)) {
+        if ($request->user()->status_akun !== 'verified') {
+            auth()->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')->withErrors([
+                'email' => 'Akun Anda belum diverifikasi atau ditolak oleh Administrator.',
+            ]);
+        }
+
+        if (! empty($roles) && ! in_array($request->user()->role, $roles, true)) {
             abort(403, 'Anda tidak memiliki hak akses untuk membuka halaman ini.');
         }
 

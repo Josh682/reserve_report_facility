@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -12,7 +13,7 @@ class StoreReservationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->status_akun === 'verified';
     }
 
     /**
@@ -34,6 +35,12 @@ class StoreReservationRequest extends FormRequest
                     $parts = explode(':', (string) $value);
                     if (count($parts) !== 2 || ! in_array($parts[1], ['00', '30'], true)) {
                         $fail('Jam mulai peminjaman harus berupa slot kelipatan 30 menit (misal :00 atau :30).');
+
+                        return;
+                    }
+
+                    if (Carbon::parse($this->input('tanggal'))->isToday() && $value <= now()->format('H:i')) {
+                        $fail('Jam mulai peminjaman tidak boleh waktu yang sudah terlewat hari ini.');
                     }
                 },
             ],

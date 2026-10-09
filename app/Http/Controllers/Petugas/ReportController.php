@@ -80,14 +80,20 @@ class ReportController extends Controller
      */
     public function update(UpdateReportStatusRequest $request, Report $report): RedirectResponse
     {
-        $report->update([
+        $data = [
             'status' => $request->status,
-            'catatan_resolusi' => $request->catatan_resolusi,
-            'resolved_by' => auth()->id(),
-        ]);
+        ];
 
-        // US 12: Opsional sinkronisasi status operasional fasilitas (misal: dalam_perbaikan saat diproses atau aktif kembali)
-        if ($request->filled('mark_facility_status')) {
+        if ($request->filled('catatan_resolusi')) {
+            $data['catatan_resolusi'] = $request->catatan_resolusi;
+        }
+
+        $data['resolved_by'] = auth()->id();
+
+        $report->update($data);
+
+        // US 12: Opsional sinkronisasi status operasional fasilitas (hanya jika fasilitas tidak nonaktif)
+        if ($request->filled('mark_facility_status') && $report->facility && $report->facility->status !== 'nonaktif') {
             $report->facility->update([
                 'status' => $request->mark_facility_status,
             ]);

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 test('pengguna layout renders root z-50 off-canvas drawer and z-40 backdrop on mobile/split-screen', function () {
-    $user = User::factory()->pengguna()->create();
+    $user = User::factory()->pengguna()->verified()->create();
 
     $response = $this->actingAs($user)->get(route('pengguna.dashboard'));
 

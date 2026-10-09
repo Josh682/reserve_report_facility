@@ -408,13 +408,13 @@ class RekapController extends Controller
             foreach ($occupancyData as $item) {
                 fputcsv($handle, [
                     $noA++,
-                    $item['facility_nama'],
-                    ucfirst($item['facility_tipe']),
-                    $item['facility_lokasi'],
+                    $this->sanitizeCsvCell($item['facility_nama']),
+                    $this->sanitizeCsvCell(ucfirst($item['facility_tipe'])),
+                    $this->sanitizeCsvCell($item['facility_lokasi']),
                     $item['facility_kapasitas'],
                     $item['total_reservasi'],
                     $item['total_jam'],
-                    $item['pemesan_terbanyak'],
+                    $this->sanitizeCsvCell($item['pemesan_terbanyak']),
                 ]);
             }
             fputcsv($handle, []);
@@ -426,8 +426,8 @@ class RekapController extends Controller
             foreach ($damageData as $item) {
                 fputcsv($handle, [
                     $noB++,
-                    $item['facility_nama'],
-                    $item['facility_lokasi'],
+                    $this->sanitizeCsvCell($item['facility_nama']),
+                    $this->sanitizeCsvCell($item['facility_lokasi']),
                     $item['total_laporan'],
                     $item['kerusakan'],
                     $item['kebersihan'],
@@ -446,7 +446,7 @@ class RekapController extends Controller
             foreach ($locationDamageData as $item) {
                 fputcsv($handle, [
                     $noC++,
-                    $item['lokasi'],
+                    $this->sanitizeCsvCell($item['lokasi']),
                     $item['total_insiden'],
                     $item['selesai'],
                     $item['tingkat_penyelesaian'].'%',
@@ -523,5 +523,17 @@ class RekapController extends Controller
             'locationDamageData',
             'damageSummary'
         ));
+    }
+
+    /**
+     * Sanitasi nilai string untuk mencegah CSV formula injection.
+     */
+    private function sanitizeCsvCell(mixed $value): mixed
+    {
+        if (is_string($value) && preg_match('/^[=+\-@\t\r]/', $value)) {
+            return "'".$value;
+        }
+
+        return $value;
     }
 }

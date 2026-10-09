@@ -96,16 +96,27 @@ class ReservationController extends Controller
 
         try {
             DB::transaction(function () use ($reservation) {
+                // Mutex lock pada baris fasilitas untuk mencegah race condition
+                $lockedFacility = Facility::whereKey($reservation->facility_id)->lockForUpdate()->first();
+                if (! $lockedFacility || $lockedFacility->status !== 'aktif') {
+                    throw new \RuntimeException('Fasilitas saat ini tidak aktif atau sedang dalam perbaikan, tidak dapat menyetujui jadwal.');
+                }
+
+                // Kunci baris reservasi yang sedang diproses
+                $lockedReservation = Reservation::whereKey($reservation->id)->lockForUpdate()->first();
+                if (! $lockedReservation || $lockedReservation->status !== 'pending') {
+                    throw new \RuntimeException('Hanya permohonan reservasi berstatus menunggu (pending) yang dapat disetujui.');
+                }
+
                 // Cek apakah ada reservasi approved lain yang bentrok
-                $conflict = Reservation::where('facility_id', $reservation->facility_id)
+                $conflict = Reservation::where('facility_id', $lockedReservation->facility_id)
                     ->where('status', 'approved')
-                    ->whereDate('tanggal', $reservation->tanggal)
-                    ->where('id', '!=', $reservation->id)
-                    ->where(function ($query) use ($reservation) {
-                        $query->where('start_time', '<', $reservation->end_time)
-                            ->where('end_time', '>', $reservation->start_time);
+                    ->whereDate('tanggal', $lockedReservation->tanggal)
+                    ->where('id', '!=', $lockedReservation->id)
+                    ->where(function ($query) use ($lockedReservation) {
+                        $query->where('start_time', '<', $lockedReservation->end_time)
+                            ->where('end_time', '>', $lockedReservation->start_time);
                     })
-                    ->lockForUpdate()
                     ->first();
 
                 if ($conflict) {
@@ -113,19 +124,19 @@ class ReservationController extends Controller
                 }
 
                 // Setujui reservasi saat ini
-                $reservation->update([
+                $lockedReservation->update([
                     'status' => 'approved',
                     'processed_by' => auth()->id(),
                 ]);
 
                 // Auto-reject permohonan pending lain yang tumpang tindih waktu (US 9)
-                Reservation::where('facility_id', $reservation->facility_id)
+                Reservation::where('facility_id', $lockedReservation->facility_id)
                     ->where('status', 'pending')
-                    ->whereDate('tanggal', $reservation->tanggal)
-                    ->where('id', '!=', $reservation->id)
-                    ->where(function ($query) use ($reservation) {
-                        $query->where('start_time', '<', $reservation->end_time)
-                            ->where('end_time', '>', $reservation->start_time);
+                    ->whereDate('tanggal', $lockedReservation->tanggal)
+                    ->where('id', '!=', $lockedReservation->id)
+                    ->where(function ($query) use ($lockedReservation) {
+                        $query->where('start_time', '<', $lockedReservation->end_time)
+                            ->where('end_time', '>', $lockedReservation->start_time);
                     })
                     ->update([
                         'status' => 'rejected',

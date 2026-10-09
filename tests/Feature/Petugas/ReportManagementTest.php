@@ -225,3 +225,37 @@ test('petugas can mark facility status as dalam_perbaikan during processing and 
     $response2->assertRedirect();
     expect($facility->fresh()->status)->toBe('aktif');
 });
+
+test('petugas cannot modify status of finalized report (state machine enforcement)', function () {
+    $petugas = User::factory()->petugas()->verified()->create();
+    $report = Report::factory()->resolved()->create([
+        'status' => 'selesai',
+        'catatan_resolusi' => 'Masalah selesai diperbaiki.',
+    ]);
+
+    $response = $this->actingAs($petugas)->patch("/petugas/reports/{$report->id}", [
+        'status' => 'baru',
+    ]);
+
+    $response->assertSessionHasErrors('status');
+    expect($report->fresh()->status)->toBe('selesai')
+        ->and($report->fresh()->catatan_resolusi)->toBe('Masalah selesai diperbaiki.');
+});
+
+test('petugas cannot reactivate a nonaktif facility via report update', function () {
+    $petugas = User::factory()->petugas()->verified()->create();
+    $facility = Facility::factory()->create(['status' => 'nonaktif']);
+    $report = Report::factory()->create([
+        'facility_id' => $facility->id,
+        'status' => 'diproses',
+    ]);
+
+    $response = $this->actingAs($petugas)->patch("/petugas/reports/{$report->id}", [
+        'status' => 'selesai',
+        'catatan_resolusi' => 'Selesai ditangani.',
+        'mark_facility_status' => 'aktif',
+    ]);
+
+    $response->assertSessionHasErrors('mark_facility_status');
+    expect($facility->fresh()->status)->toBe('nonaktif');
+});

@@ -134,7 +134,7 @@ test('all slots are marked unavailable when facility is in maintenance or inacti
 });
 
 test('authenticated pengguna can access internal facility catalog with integrated sidebar', function () {
-    $pengguna = User::factory()->pengguna()->create();
+    $pengguna = User::factory()->pengguna()->verified()->create();
     Facility::factory()->create(['nama' => 'Ruang Seminar 101', 'status' => 'aktif']);
 
     $response = $this->actingAs($pengguna)->get(route('pengguna.facilities'));

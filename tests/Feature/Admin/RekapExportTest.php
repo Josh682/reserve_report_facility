@@ -358,3 +358,30 @@ test('export endpoints support preset filter semua and 30_hari', function () {
     $printSemua->assertOk();
     $printSemua->assertSee('Semua Periode');
 });
+
+test('csv export sanitizes formula injection characters in user and facility data', function () {
+    $admin = User::factory()->admin()->create();
+    $maliciousUser = User::factory()->pengguna()->verified()->create(['name' => '=HYPERLINK("http://evil.com")']);
+
+    $facility = Facility::factory()->create([
+        'nama' => '@MaliciousFacility',
+        'lokasi' => '+GedungJahat',
+    ]);
+
+    Reservation::factory()->approved()->create([
+        'facility_id' => $facility->id,
+        'user_id' => $maliciousUser->id,
+        'tanggal' => Carbon::today()->toDateString(),
+        'start_time' => '08:00',
+        'end_time' => '09:00',
+    ]);
+
+    $response = $this->actingAs($admin)->get(route('admin.rekap.export-csv'));
+    $response->assertOk();
+
+    $content = $response->streamedContent();
+
+    expect($content)->toContain("'=HYPERLINK")
+        ->and($content)->toContain("'+GedungJahat")
+        ->and($content)->toContain("'@MaliciousFacility");
+});
