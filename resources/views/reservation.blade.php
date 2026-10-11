@@ -2,7 +2,6 @@
 
 @section('title', 'Peminjaman Fasilitas — FacilityHub')
 @section('header_title', 'Reservasi Fasilitas')
-@section('header_subtitle', 'Ajukan peminjaman ruangan kampus, pantau status persetujuan, serta kelola pembatalan mandiri H-1')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -21,9 +20,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-800 dark:text-white">
                 Peminjaman Fasilitas Saya
             </h1>
-            <p class="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
-                Ajukan peminjaman ruangan kampus, pantau status persetujuan dari petugas, serta kelola pembatalan mandiri maksimal H-1.
-            </p>
         </div>
 
         @if (!$openForm)
@@ -63,7 +59,6 @@
             <div class="flex items-center justify-between pb-4 border-b border-white/40 dark:border-white/10">
                 <div>
                     <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Formulir Peminjaman Fasilitas</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">Pilih ruangan, tentukan tanggal, dan tentukan slot jam operasional (07.00 - 20.00 WIB).</p>
                 </div>
                 @if (!$openForm)
                     <button type="button" onclick="toggleForm()" class="inline-flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg cursor-pointer">

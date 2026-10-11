@@ -2,7 +2,6 @@
 
 @section('title', 'Pelaporan Kendala Fasilitas — FacilityHub')
 @section('header_title', 'Laporan Kendala Fasilitas')
-@section('header_subtitle', 'Laporkan kerusakan sarana prasarana, kendala kebersihan, atau gangguan fungsi ruangan kampus')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -54,9 +53,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-800 dark:text-white">
                 Form Pelaporan Kendala Fasilitas
             </h1>
-            <p class="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                Laporkan kerusakan alat, kendala kebersihan, atau gangguan fungsi ruangan kampus agar tim teknisi dapat segera melakukan inspeksi dan perbaikan.
-            </p>
         </div>
 
         <div class="relative z-10 shrink-0 flex items-center gap-2">
@@ -89,9 +85,6 @@
                 <div class="pb-4 border-b border-white/40 dark:border-white/10 flex items-center justify-between gap-3">
                     <div>
                         <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Detail Kerusakan / Kendala</h2>
-                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-                            Isi formulir berikut dengan spesifik untuk mempercepat tindakan petugas di lapangan.
-                        </p>
                     </div>
 
                     @if (!$openForm)

@@ -1,7 +1,6 @@
 @extends('layouts.guest', [
     'title' => 'Sign In — FacilityHub',
-    'header' => 'Masuk ke Sistem',
-    'subheader' => 'Sistem Reservasi & Pelaporan Fasilitas Kampus'
+    'header' => 'Masuk ke Sistem'
 ])
 
 @section('content')

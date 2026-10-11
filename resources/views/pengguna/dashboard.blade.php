@@ -2,7 +2,6 @@
 
 @section('title', 'Dashboard Mahasiswa')
 @section('header_title', 'Dashboard Mahasiswa')
-@section('header_subtitle', 'Pantau ketersediaan fasilitas dan status pengajuan peminjaman ruangan Anda secara realtime')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -22,9 +21,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
                 Selamat Datang, {{ auth()->user()->name }}
             </h1>
-            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mt-1.5 leading-relaxed">
-                Cek fasilitas kampus yang siap digunakan, ajukan peminjaman ruangan mandiri, dan pantau status verifikasi jadwal secara transparan.
-            </p>
         </div>
 
         <div class="relative z-10 shrink-0 flex flex-wrap items-center gap-2.5">

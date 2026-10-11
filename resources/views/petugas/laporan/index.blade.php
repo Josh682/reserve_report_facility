@@ -2,7 +2,6 @@
 
 @section('title', 'Laporan Kendala Fasilitas')
 @section('header_title', 'Antrean & Resolusi Laporan Fasilitas')
-@section('header_subtitle', 'Tinjau keluhan kerusakan, lakukan investigasi lapangan, perbarui status resolusi, dan atur ketersediaan fasilitas')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -21,9 +20,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-800 dark:text-white">
                 Antrean & Penanganan Kendala
             </h1>
-            <p class="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
-                Tindak lanjuti laporan kerusakan dari sivitas akademika. Periksa bukti visual, catat progres investigasi, serta sesuaikan status fasilitas jika memerlukan pemeliharaan intensif.
-            </p>
         </div>
 
         {{-- Quick Summary Counters --}}

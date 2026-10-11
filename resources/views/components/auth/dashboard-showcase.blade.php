@@ -184,13 +184,8 @@
     <!-- Center/Bottom Content: Headline & Description -->
     <div class="relative z-20 flex flex-col items-center text-center mt-auto pb-2 sm:pb-4 px-2 max-w-lg mx-auto">
         <!-- Headline -->
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-3">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
             Pusat Terpadu Reservasi & Pelaporan Fasilitas Kampus
         </h2>
-
-        <!-- Description -->
-        <p class="text-xs sm:text-sm text-teal-100/75 leading-relaxed font-normal max-w-md">
-            FacilityHub mempermudah civitas akademika dalam peminjaman ruangan, pengecekan jadwal ketersediaan, serta pemantauan status perbaikan sarana kampus secara real-time.
-        </p>
     </div>
 </div>

@@ -76,9 +76,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
                 Katalog & Ketersediaan Fasilitas Kampus
             </h1>
-            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mt-1.5 leading-relaxed">
-                Periksa ketersediaan ruangan, laboratorium, aula, dan sarana prasarana.
-            </p>
         </div>
 
         <div class="relative z-10 shrink-0 flex flex-col items-start md:items-end gap-2">

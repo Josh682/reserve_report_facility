@@ -21,9 +21,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
                 Katalog Sarana & Monitoring Fasilitas
             </h1>
-            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mt-1.5 leading-relaxed">
-                Pantau ketersediaan sarana prasarana kampus secara realtime. Periksa kapasitas, status pemeliharaan fisik, dan 26 slot waktu operasional (07.00 - 20.00 WIB) untuk mendukung pengawasan fasilitas kampus.
-            </p>
 
             <div class="flex flex-wrap items-center gap-3 mt-4">
                 <a href="{{ route('petugas.dashboard') }}"

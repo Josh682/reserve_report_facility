@@ -2,7 +2,6 @@
 
 @section('title', 'Dashboard Petugas')
 @section('header_title', 'Dashboard Operasional')
-@section('header_subtitle', 'Tinjau antrean reservasi, laporan kerusakan fasilitas, dan status operasional kampus secara realtime (US 8)')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -21,9 +20,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
                 Selamat Datang, {{ auth()->user()->name ?? 'Petugas' }}!
             </h1>
-            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mt-1.5 leading-relaxed">
-                Ini adalah portal operasional Petugas Fasilitas. Anda dapat memantau antrean permohonan reservasi serta menindaklanjuti laporan kerusakan fasilitas kampus secara terpusat.
-            </p>
         </div>
 
         <div class="relative z-10 shrink-0 flex flex-wrap items-center gap-3">

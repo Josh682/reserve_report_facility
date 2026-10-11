@@ -28,9 +28,6 @@
                 <h1 class="text-2xl sm:text-3xl font-extrabold auth-title tracking-tight">
                     Welcome to FacilityHub
                 </h1>
-                <p class="mt-2 text-xs sm:text-sm auth-subtitle">
-                    Sistem peminjaman dan pelaporan fasilitas kampus terpadu.
-                </p>
             </div>
 
             <!-- Tab Switcher (Sign In / Sign Up) -->

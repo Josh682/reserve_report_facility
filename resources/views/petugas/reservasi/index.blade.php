@@ -2,7 +2,6 @@
 
 @section('title', 'Antrean Reservasi Fasilitas')
 @section('header_title', 'Antrean Permohonan Reservasi')
-@section('header_subtitle', 'Tinjau jadwal peminjaman ruangan, cegah bentrok waktu otomatis, dan lakukan pembatalan darurat jika terjadi kendala')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -21,9 +20,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-800 dark:text-white">
                 Antrean Permohonan Reservasi
             </h1>
-            <p class="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
-                Tinjau jadwal peminjaman ruangan, cegah bentrok waktu otomatis, dan lakukan pembatalan darurat jika terjadi kendala operasional mendadak.
-            </p>
         </div>
 
         {{-- Quick Summary Counters --}}

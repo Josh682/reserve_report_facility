@@ -2,7 +2,6 @@
 
 @section('title', 'Katalog & Ketersediaan Fasilitas — FacilityHub')
 @section('header_title', 'Katalog Fasilitas')
-@section('header_subtitle', 'Pantau ketersediaan sarana prasarana kampus dan jadwalkan peminjaman ruangan')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -22,9 +21,6 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
                 Katalog Sarana & Prasarana Kampus
             </h1>
-            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mt-1.5 leading-relaxed">
-                Eksplorasi seluruh ruang kelas, laboratorium, auditorium, dan perangkat kampus. Cek 26 slot waktu operasional dan ajukan peminjaman secara langsung.
-            </p>
 
             <div class="flex flex-wrap items-center gap-3 mt-4">
                 <a href="{{ route('reservation') }}"
