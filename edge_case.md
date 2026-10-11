@@ -17,9 +17,9 @@ Dokumen ini memetakan seluruh *edge case* yang relevan dengan arsitektur dan rua
 - [x] **Durasi booking terlalu pendek (< 30 menit):** Ditangani. Karena jam selesai harus `after:start_time` dan keduanya kelipatan 30 menit, durasi minimum otomatis 30 menit.
 - [x] **Booking pada tanggal kabisat (29 Februari):** Ditangani. Tipe data kolom MySQL `DATE` dan PHP `DateTime` menangani tahun kabisat secara *native*.
 - [x] **Perbedaan timezone antara client dan server:** Ditangani. Aplikasi menetapkan timezone aplikasi secara konsisten (`Asia/Jakarta` / WIB) dan label antarmuka secara eksplisit menampilkan format WIB.
-- [ ] **Booking untuk hari ini tetapi jam mulai sudah terlewat:** Validasi tanggal mengizinkan `today`, namun jam mulai belum divalidasi terhadap `now()->format('H:i')` jika tanggal yang dipilih adalah hari ini. *(Saran: tambahkan rule komparasi waktu saat tanggal = hari ini).*
-- [ ] **Booking terlalu jauh ke masa depan (misal: 2 tahun ke depan):** Belum ada batasan maksimum tanggal ke depan. *(Saran: tambahkan rule `before_or_equal:+60 days`).*
-- [ ] **Durasi booking terlalu panjang (misal: meminjam seharian penuh 13 jam):** Saat ini diizinkan selama dalam rentang 07.00–20.00. *(Saran: tambahkan batasan maksimal durasi sekali pinjam, misal 4–6 jam).*
+- [x] **Booking untuk hari ini tetapi jam mulai sudah terlewat:** Validasi tanggal mengizinkan `today`, namun jam mulai belum divalidasi terhadap `now()->format('H:i')` jika tanggal yang dipilih adalah hari ini. *(Saran: tambahkan rule komparasi waktu saat tanggal = hari ini).*
+- [x] **Booking terlalu jauh ke masa depan (misal: 2 tahun ke depan):** Belum ada batasan maksimum tanggal ke depan. *(Saran: tambahkan rule `before_or_equal:+60 days`).*
+- [x] **Durasi booking terlalu panjang (misal: meminjam seharian penuh 13 jam):** Saat ini diizinkan selama dalam rentang 07.00–20.00. *(Saran: tambahkan batasan maksimal durasi sekali pinjam, misal 4–6 jam).*
 
 ---
 
